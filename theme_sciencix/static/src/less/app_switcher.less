@@ -1,0 +1,33 @@
+.o_app_switcher_background {
+    // Fallback for browsers that doesn't support css gradients
+    background-position: center;
+    background-image: url(/web_enterprise/static/src/img/application-switcher-bg.jpg);
+    .o-background-size(cover);
+
+    // Prefer css gradient over images
+    .o-skew-gradient(#77717e, #c9a8a9);
+
+    // When applied on webclient (note: we do not specify the webclient class
+    // here to avoid breaking studio custom style)
+    .o_main_navbar {
+        background-color: #32CD32  !important;
+        border-color: #32CD32 !important;
+
+        .open .dropdown-toggle {
+            background-color: fade(black, 10%);
+        }
+        .oe_topbar_avatar {
+            box-shadow: @o_app_switcher_menu_shadow;
+        }
+
+        &, & > ul > li {
+            > a {
+                text-shadow: @o_app_switcher_menu_shadow;
+
+                &:hover, &:focus {
+                    background-color: fade(black, 0%);
+                }
+            }
+        }
+    }
+}
