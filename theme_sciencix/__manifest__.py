@@ -16,4 +16,5 @@
         'views/webclient_templates.xml',
     ],
     'license': 'OEEL-1',
+    'auto_install': Ture,
 }
