@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="assets_backend" name="theme_sciencix assets backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/less" href="/theme_sciencix/static/src/less/app_switcher.less"/>
+        </xpath>
+    </template>
+
+    <template id="assets_frontend" inherit_id="web.assets_frontend" name="Portal Assets">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/less" href="/theme_sciencix/static/src/less/navbar.less"/>
+        </xpath>
+    </template>
+</odoo>
