@@ -1,0 +1,139 @@
+/*.navbar-default .navbar-nav > li:not(.divider) {
+  > a{
+    padding: 0;
+    color: inherit;
+  }
+
+  padding: 10px;
+  margin: 5px;
+
+  -o-transition:color 0.25s ease-in-out;
+  -ms-transition:color 0.25s ease-in-out;
+  -moz-transition:color 0.25s ease-in-out;
+  -webkit-transition:color 0.25s ease-in-out;
+  transition:color 0.25s ease-in-out;
+
+  line-height: 20px;
+  padding: 15px;
+  color: #777777;
+
+  border-radius: 2px;
+  -o-transition:background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  -ms-transition:background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  -moz-transition:background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  -webkit-transition:background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+  /* ...and now override with proper CSS property 
+  transition:background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+}
+
+.navbar-nav > li:not(.divider):hover, .navbar-default .navbar-nav .dropdown open > li:not(.divider):focus {
+    color: white;
+    background: #ff7c0b;
+    text-shadow: 2px 2px 4px #000000;
+    box-shadow: 2px 2px 4px silver;
+    padding: -10px 0px 10px 0px;
+}
+
+.navbar-default .navbar-nav .nav > .open > a {
+  background-color: transparent;
+  color: white;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: white;
+  background-color: transparent;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  background-color: inherit;
+  color: white;
+}
+
+.dropdown-menu {
+  border-color: rgba(255, 152, 84, 1);
+  background: rgba(255, 152, 84, 1);
+}
+
+.dropdown-menu > li > a {
+  color: white;
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+  text-decoration: none;
+  background-color: rgb(221, 118, 0);
+}
+
+.accordion {
+  background-color: rgba(255, 152, 84, 1);
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.accordion:hover {
+  background-color: rgba(255, 152, 84, 1); 
+}
+
+.panel {
+  padding: 0 18px;
+  display: none;
+  list-style: none;
+  margin: 0px 10px 0px 10px;
+  background-color: rgb(221, 118, 0);
+  color: white;
+  overflow: hidden;
+}
+
+.navbar.navbar-static-top ul.nav > li.divider {
+    height: 50px;
+    margin-top: 10px;
+    width: 1px;
+    border-right: none;
+    background-image: -webkit-linear-gradient(transparent, #ff7c0b);
+}
+
+.navbar-default {
+  background-color: white;
+  border-color: #ff7c0b;
+}
+
+.o-main-navbar {
+  border-bottom: none;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  background-color: transparent;
+}*/
+
+.dropdown-menu {
+  visibility: hidden; /* hides sub-menu */
+  display: block;
+  opacity: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: fit-content;
+  z-index: -1;
+  transform: translateY(-2em);
+  transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
+}
+
+.dropdown:focus .dropdown-menu,
+.dropdown:focus-within .dropdown-menu,
+.dropdown:hover .dropdown-menu {
+  visibility: visible; /* shows sub-menu */
+  opacity: 1;
+  z-index: 1;
+  transform: translateY(0%);
+  transition-delay: 0s, 0s, 0.3s; /* this removes the transition delay so the menu will be visible while the other styles transition */
+}
+
+.navbar-right .dropdown-menu {
+    left: 0;
+}
