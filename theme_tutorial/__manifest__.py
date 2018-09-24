@@ -1,8 +1,9 @@
 {
-  'name':'Tutorial theme',
+  'name':'Test theme',
   'description': 'Sciencix test theme.',
   'version':'1.0',
   'author':'Carl Molnar',
+  'summary': """Test Theme""",
   'sequence': 50,
 
   'data': [
@@ -13,5 +14,6 @@
     'views/options.xml'
   ],
   'category': 'Theme/Creative',
-  'depends': ['website'],
+  'depends': ['web_enterprise'],
+  'license': 'OEEL-1',
 }
