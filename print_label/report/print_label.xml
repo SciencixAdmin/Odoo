@@ -21,7 +21,7 @@
                             <div style="margin-top: 5.5in !important; margin-left: 6.5in; width:2in; height:1in;">
                                 <t t-call="print_label.report_label">
                                     <t t-set="product" t-value="mline.product_id"/>
-                                    <t t-set="lot" t-value="mline.move_line_ids[0].lot_id"/>
+                                    <t t-if="mline.move_line_ids" t-set="lot" t-value="mline.move_line_ids[0].lot_id"/>
                                 </t>
                             </div>
                         <footer style="page-break-after: always;"/>
