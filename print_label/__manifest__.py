@@ -20,7 +20,7 @@
 
     # always loaded
     'data': [
-        'views/views.xml',
-        'report/print_label.xml'
+        'report/print_label.xml',
+        'views/views.xml'
     ],
 }
