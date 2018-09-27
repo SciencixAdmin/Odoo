@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+<!-- Customize header  -->
+  <template id="custom_header" inherit_id="website.layout" name="Custom Header">
+
+  <!-- Assign an id
+  <xpath expr="//div[@id='wrapwrap']/header" position="attributes">
+    <attribute name="id">my_header</attribute>
+  </xpath>
+
+  Add an element after the top menu
+  <xpath expr="//div[@id='wrapwrap']/header/div" position="after">
+    <div class="container">
+      <div class="alert alert-info mt16" role="alert">
+        <strong>Welcome</strong> to our website!
+      </div>
+    </div>
+  </xpath>  -->
+
+    <xpath expr="//*[@id='top_menu']">
+      <li id="hplcrep" class="dropdown">
+          <span data-oe-model="website.menu" data-oe-id="12" data-oe-field="name" data-oe-type="char" data-oe-expression="submenu.name">HPLC Replacement Parts</span>
+          <span class="caret"></span>
+          <ul class="dropdown-menu">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+          </ul>
+      </li>
+    </xpath>
+
+    <xpath expr="//*[@id='top_menu']">
+      <li id="hplc" class="dropdown">
+          <span data-oe-model="website.menu" data-oe-id="12" data-oe-field="name" data-oe-type="char" data-oe-expression="submenu.name">HPLC</span>
+          <span class="caret"></span>
+          <ul class="dropdown-menu">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+          </ul>
+      </li>
+    </xpath>
+    
+    <xpath expr="//*[@id='top_menu']">
+      <li id="tubing" class="dropdown">
+          <span data-oe-model="website.menu" data-oe-id="12" data-oe-field="name" data-oe-type="char" data-oe-expression="submenu.name">Tubing</span>
+          <span class="caret"></span>
+          <ul class="dropdown-menu">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+          </ul>
+      </li>
+    </xpath>
+
+    <xpath expr="//*[@id='top_menu']">
+      <li id="vials" class="dropdown">
+          <span data-oe-model="website.menu" data-oe-id="12" data-oe-field="name" data-oe-type="char" data-oe-expression="submenu.name">Vials</span>
+          <span class="caret"></span>
+          <ul class="dropdown-menu">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+          </ul>
+      </li>
+    </xpath>
+
+    <xpath expr="//*[@id='top_menu']">
+      <li id="new" class="dropdown">
+        <span data-oe-model="website.menu" data-oe-id="12" data-oe-field="name" data-oe-type="char" data-oe-expression="submenu.name">New Products</span>
+        <span class="caret"></span>
+          <ul class="dropdown-menu">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+          </ul>
+      </li>
+    </xpath>
+
+    <xpath expr="//*[@id='top_menu']">
+      <li id="home">
+        <a href="/contactus">
+          <span data-oe-model="website.menu" data-oe-id="12" data-oe-field="name" data-oe-type="char" data-oe-expression="submenu.name">Home</span>
+        </a>
+      </li>
+    </xpath>
+
+    <xpath expr="//*[@id='top_menu']">
+      <li id="contact">
+        <a href="/contactus">
+          <span data-oe-model="website.menu" data-oe-id="12" data-oe-field="name" data-oe-type="char" data-oe-expression="submenu.name">Contact Us</span>
+        </a>
+      </li>
+    </xpath>
+  </template>
+</odoo>
