@@ -21,7 +21,7 @@
                             <div style="margin-top: 5.5in !important; margin-left: 6.5in; width:2in; height:1in;">
                                 <t t-call="print_label.report_label">
                                     <t t-set="product" t-value="mline.product_id"/>
-                                    <t t-set="lot" t-value="request.env['stock_barcode.lot'].search([('default_move_id','=',mline.id)])"/>
+                                    <t t-set="lot" t-value="mline.move_line_ids[0].lot_id"/>
                                 </t>
                             </div>
                         <footer style="page-break-after: always;"/>
@@ -53,10 +53,12 @@
                         </td>
                         <td class="col-xs-1"/>
                         <td style="text-align: center; font-size:5pt" class="col-xs-5">
-                            <img t-if="lot._barcode_scanned and len(lot._barcode_scanned) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', lot._barcode_scanned, 450, 100)" style="width:100%;height:20%;"/>
-                            <img t-elif="lot._barcode_scanned and len(lot._barcode_scanned) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', lot._barcode_scanned, 450, 100)" style="width:100%;height:20%;"/>
-                            <img t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', lot._barcode_scanned, 400, 100)" style="width:100%;height:20%;"/>
-                            <span t-field="lot._barcode_scanned"/>
+                            <t t-if="lot and lot.name">
+                                <img t-if="len(lot.name) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', lot.name, 450, 100)" style="width:100%;height:20%;"/>
+                                <img t-elif="len(lot.name) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', lot.name, 450, 100)" style="width:100%;height:20%;"/>
+                                <img t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', lot.name, 400, 100)" style="width:100%;height:20%;"/>
+                                <span t-field="lot.name"/>
+                            </t>
                         </td>
                     </tr>
                 </tbody>
