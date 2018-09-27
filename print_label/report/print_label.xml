@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <report
+        id="print_product_label"
+        string="Print Label"
+        model="stock.picking"
+        report_type="qweb-pdf"
+        file="print_label.print_label"
+        name="print_label.print_label"
+        menu="False"
+    />
+
+    <template id="print_label">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="picking">
+                    <t t-foreach="picking.move_lines" t-as="mline">
+                        <div class="page">
+                            <div style="margin-top: 6in; margin-left: 7in; width:2in; height:1in;">
+                                <t t-call="print_label.report_label">
+                                    <t t-set="product" t-value="mline.product_id"/>
+                                    <t t-set="lot" t-value="request.env['stock_barcode.lot'].search([('default_move_id','=',mline.id)])"/>
+                                </t>
+                            </div>
+                        </div>
+                        <footer style="page-break-after: always;"/>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_label">
+        <div style="padding:0;">
+            <table style="border-spacing:0;margin-bottom:0;" class="table">
+                <thead>
+                    <tr>
+                        <td style="border: 2px solid black; font-size:8pt" colspan="3" class="col-xs-8 danger">
+                            [<strong t-esc="product.oem"/>]
+                            <strong t-field="product.name"/>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border: 2px solid black;">
+                        <td style="text-align: center; font-size:5pt" class="col-xs-5">
+                            <img t-if="product.barcode and len(product.barcode) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', product.barcode, 450, 100)" style="width:100%;height:20%;"/>
+                            <img t-elif="product.barcode and len(product.barcode) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', product.barcode, 450, 100)" style="width:100%;height:20%;"/>
+                            <img t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', product.barcode, 400, 100)" style="width:100%;height:20%;"/>
+                            <span t-field="product.barcode"/>
+                        </td>
+                        <td class="col-xs-1"/>
+                        <td style="text-align: center; font-size:5pt" class="col-xs-5">
+                            <img t-if="lot._barcode_scanned and len(lot._barcode_scanned) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', lot._barcode_scanned, 450, 100)" style="width:100%;height:20%;"/>
+                            <img t-elif="lot._barcode_scanned and len(lot._barcode_scanned) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', lot._barcode_scanned, 450, 100)" style="width:100%;height:20%;"/>
+                            <img t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', lot._barcode_scanned, 400, 100)" style="width:100%;height:20%;"/>
+                            <span t-field="lot._barcode_scanned"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+
+</data>
+</odoo>
