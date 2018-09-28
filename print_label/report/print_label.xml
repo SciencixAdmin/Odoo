@@ -16,14 +16,26 @@
         <t t-name="print_label.print_label">
             <t t-call="web.basic_layout">
                 <t t-foreach="docs" t-as="picking">
-                    <t t-foreach="picking.move_lines" t-as="mline">
-                        <div style="height:0.1in;"></div>
+                    <t t-foreach="picking.move_lines" t-as="move_line">
+                        <t t-if="move_line.move_line_ids">
+                            <t t-foreach="move_line.move_line_ids" t-as="mline">
+                                <div style="height:0.1in;"></div>
+                                <div style="margin-top: 5.5in !important; margin-left: 6.5in; width:2in; height:1in;">
+                                    <t t-call="print_label.report_label">
+                                        <t t-set="product" t-value="move_line.product_id"/>
+                                        <t t-if="mline.lot_id" t-set="lot" t-value="mline.lot_id"/>
+                                    </t>
+                                </div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div style="height:0.1in;"></div>
                             <div style="margin-top: 5.5in !important; margin-left: 6.5in; width:2in; height:1in;">
                                 <t t-call="print_label.report_label">
-                                    <t t-set="product" t-value="mline.product_id"/>
-                                    <t t-if="mline.move_line_ids" t-set="lot" t-value="mline.move_line_ids[0].lot_id"/>
+                                    <t t-set="product" t-value="move_line.product_id"/>
                                 </t>
                             </div>
+                        </t>
                         <footer style="page-break-after: always;"/>
                     </t>
                 </t>
