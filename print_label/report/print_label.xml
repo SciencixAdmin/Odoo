@@ -26,6 +26,7 @@
                                         <t t-if="mline.lot_id" t-set="lot" t-value="mline.lot_id"/>
                                     </t>
                                 </div>
+                                <footer style="page-break-after: always;"/>
                             </t>
                         </t>
                         <t t-else="">
@@ -35,8 +36,9 @@
                                     <t t-set="product" t-value="move_line.product_id"/>
                                 </t>
                             </div>
+                            <footer style="page-break-after: always;"/>
                         </t>
-                        <footer style="page-break-after: always;"/>
+                        
                     </t>
                 </t>
             </t>
