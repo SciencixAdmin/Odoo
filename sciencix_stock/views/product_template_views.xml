@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="view_product_product_template_form_inherit_sciencix" model="ir.ui.view">
+            <field name="name">product_product_template_form_inherit_sciencix</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='toggle_active']" position="before">
+                    <button name="action_manufacture_qty" type="action" icon="fa-spinner" class="oe_stat_button">
+                        <field string="Manufacture Qty" name="manufacture_qty_count" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
