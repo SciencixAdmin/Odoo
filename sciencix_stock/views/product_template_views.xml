@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_view_stock_move_lines']" position="before">
-                    <button name="action_manufacture_qty" type="action" icon="fa-spinner" class="oe_stat_button">
+                    <button name="action_manufacture_qty" type="action" icon="fa-spinner" class="oe_stat_button" attrs="{'invisible': [('type', '!=', 'product')]}">
                         <field string="Manufacture Qty" name="manufacture_qty_count" widget="statinfo"/>
                     </button>
                 </xpath>
