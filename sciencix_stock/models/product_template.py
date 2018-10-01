@@ -32,7 +32,7 @@ class ProductTemplate(models.Model):
             bom_traverse(product_id, d, 1)  # traverse to make one root
             # print(d)
             qty_lst = [(key.qty_available + key.manufacture_qty_count)/d[key] for key in d.keys() if key.type == 'product']
-            return min(qty_lst) if qty_lst else 999999.0
+            return min(qty_lst) if qty_lst else 9999999999.0
         else:
             return 0.0
 
@@ -47,5 +47,6 @@ class ProductTemplate(models.Model):
             # need to subtract the qty_available
             # since previous recursion helper must include qty_available to compute recursive steps
             # product_tmpl_id.manufacture_qty_count = self._compute_manufacture_qty_helper(product_tmpl_id) - product_tmpl_id.qty_available
-            product_tmpl_id.manufacture_qty_count = self._compute_manufacture_qty_helper(product_tmpl_id)
+            if product_tmpl_id.type == 'product':
+                product_tmpl_id.manufacture_qty_count = self._compute_manufacture_qty_helper(product_tmpl_id)
 
