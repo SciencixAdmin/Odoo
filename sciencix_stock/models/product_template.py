@@ -8,7 +8,17 @@ class ProductTemplate(models.Model):
 
     manufacture_qty_count = fields.Float('Manufacture Quantity Count', compute='_compute_manufacture_qty', store=False, digits=dp.get_precision('Product Unit of Measure'))
 
-    # manufacture_infinity = fields.Char('Infinity', default='∞')
+    made_of_non_stockable = fields.Boolean('Stockable Product is made of non stockable BOM', compute='_compute_made_of_non_stockable')
+
+    manufacture_infinity = fields.Char('Inifinity', default='∞', readonly=True)
+
+    @api.depends('bom_ids', 'type')
+    def _compute_made_of_non_stockable(self):
+        for product in self:
+            if product.type == 'product' and product.bom_ids and not any(product.bom_ids[0].bom_line_ids.mapped('product_id').filtered(lambda p: p.type == 'product')):
+                product.made_of_non_stockable = True
+            else:
+                product.made_of_non_stockable = False
 
     # action is dummy
     def action_manufacture_qty(self):
@@ -31,8 +41,8 @@ class ProductTemplate(models.Model):
         if product_id.bom_ids:
             bom_traverse(product_id, d, 1)  # traverse to make one root
             # print(d)
-            qty_lst = [(key.qty_available + key.manufacture_qty_count)/d[key] for key in d.keys() if key.type == 'product']
-            return min(qty_lst) if qty_lst else 9999999999.0
+            qty_lst = [(key.qty_available + key.manufacture_qty_count)/d[key] for key in d.keys() if key.type == 'product' and not key.made_of_non_stockable]
+            return min(qty_lst) if qty_lst else 0.0
         else:
             return 0.0
 
