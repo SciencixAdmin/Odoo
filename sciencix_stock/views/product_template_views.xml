@@ -7,8 +7,25 @@
             <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_view_stock_move_lines']" position="before">
-                    <button name="action_manufacture_qty" type="action" icon="fa-spinner" class="oe_stat_button" attrs="{'invisible': [('type', '!=', 'product')]}">
-                        <field string="Manufacture Qty" name="manufacture_qty_count" widget="statinfo"/>
+                    <field name="made_of_non_stockable" invisible="1"/>
+                    <button name="action_manufacture_qty" type="action" icon="fa-spinner" class="oe_stat_button" attrs="{'invisible': ['|', ('type', '!=', 'product')]}">
+                        <field string="Manufacture Qty" name="manufacture_qty_count" widget="statinfo" attrs="{'invisible': [('made_of_non_stockable', '=', True)]}"/>
+                        <field string="Manufacture Qty" name="manufacture_infinity" widget="statinfo" attrs="{'invisible': [('made_of_non_stockable', '!=', True)]}"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_stock_product_form_view_procurement_button_inherit_sciencix" model="ir.ui.view">
+            <field name="name">stock_product_form_view_procurement_button_inherit_sciencix</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="stock.product_form_view_procurement_button"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_stock_move_lines']" position="before">
+                    <field name="made_of_non_stockable" invisible="1"/>
+                    <button name="action_manufacture_qty" type="action" icon="fa-spinner" class="oe_stat_button" attrs="{'invisible': ['|', ('type', '!=', 'product')]}">
+                        <field string="Manufacture Qty" name="manufacture_qty_count" widget="statinfo" attrs="{'invisible': [('made_of_non_stockable', '=', True)]}"/>
+                        <field string="Manufacture Qty" name="manufacture_infinity" widget="statinfo" attrs="{'invisible': [('made_of_non_stockable', '!=', True)]}"/>
                     </button>
                 </xpath>
             </field>
