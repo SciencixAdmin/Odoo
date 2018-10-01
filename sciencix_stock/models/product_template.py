@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+import odoo.addons.decimal_precision as dp
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    manufacture_qty_count = fields.Integer('Manufacture Quantity Count', compute='_compute_manufacture_qty', store=False)
+    manufacture_qty_count = fields.Float('Manufacture Quantity Count', compute='_compute_manufacture_qty', store=False, digits=dp.get_precision('Product Unit of Measure'))
+
+    # manufacture_infinity = fields.Char('Infinity', default='∞')
 
     # action is dummy
     def action_manufacture_qty(self):
@@ -25,10 +28,13 @@ class ProductTemplate(models.Model):
                         d[bom_line_id.product_id] += bom_line_id.product_qty * parent_qty
                     bom_traverse(bom_line_id.product_id, d, bom_line_id.product_qty)
 
-        bom_traverse(product_id, d, 1) # traverse to make one root
-        # print(d)
-        qty_lst = [(key.qty_available + key.manufacture_qty_count)/d[key] for key in d.keys()]
-        return min(qty_lst) if qty_lst else 0
+        if product_id.bom_ids:
+            bom_traverse(product_id, d, 1)  # traverse to make one root
+            # print(d)
+            qty_lst = [(key.qty_available + key.manufacture_qty_count)/d[key] for key in d.keys() if key.type == 'product']
+            return min(qty_lst) if qty_lst else 999999.0
+        else:
+            return 0.0
 
         # recursion: does not handle nested components
         # if product_id.bom_ids and product_id.bom_ids.mapped('bom_line_ids'):
