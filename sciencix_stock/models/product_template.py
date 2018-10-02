@@ -15,7 +15,7 @@ class ProductTemplate(models.Model):
     @api.depends('bom_ids', 'type')
     def _compute_made_of_non_stockable(self):
         for product in self:
-            if product.type == 'product' and product.bom_ids and not any(product.bom_ids[0].bom_line_ids.mapped('product_id').filtered(lambda p: p.type == 'product')):
+            if product.type == 'product' and product.bom_ids and (not any(product.bom_ids[0].bom_line_ids.mapped('product_id').filtered(lambda p: p.type == 'product')) or not any(product.bom_ids[0].bom_line_ids.mapped('product_id').filtered(lambda p: p.made_of_non_stockable == False))):
                 product.made_of_non_stockable = True
             else:
                 product.made_of_non_stockable = False
