@@ -51,26 +51,25 @@
             <table style="border-spacing:0;margin-bottom:0;" class="table">
                 <thead>
                     <tr>
-                        <td style="border: 2px solid black; font-size:8pt" colspan="3" class="col-xs-8 danger">
+                        <td style="font-size:8pt" colspan="2" class="col-xs-8">
                             [<strong t-esc="product.oem"/>]
                             <strong t-field="product.name"/>
                         </td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="border: 2px solid black;">
-                        <td style="text-align: center; font-size:5pt" class="col-xs-5">
-                            <img t-if="product.barcode and len(product.barcode) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', product.barcode, 450, 100)" style="width:100%;height:20%;"/>
-                            <img t-elif="product.barcode and len(product.barcode) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', product.barcode, 450, 100)" style="width:100%;height:20%;"/>
-                            <img t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', product.barcode, 400, 100)" style="width:100%;height:20%;"/>
+                    <tr>
+                        <td style="text-align: center; font-size:5pt; width:45%">
+                            <img t-if="product.barcode and len(product.barcode) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', product.barcode, 600, 100)" style="width:100%;height:20%;"/>
+                            <img t-elif="product.barcode and len(product.barcode) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', product.barcode, 600, 100)" style="width:100%;height:20%;"/>
+                            <img t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', product.barcode, 600, 100)" style="width:100%;height:20%;"/>
                             <span t-field="product.barcode"/>
                         </td>
-                        <td class="col-xs-1"/>
-                        <td style="text-align: center; font-size:5pt" class="col-xs-5">
+                        <td style="text-align: center; font-size:5pt; width:45%">
                             <t t-if="lot and lot.name">
-                                <img t-if="len(lot.name) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', lot.name, 450, 100)" style="width:100%;height:20%;"/>
-                                <img t-elif="len(lot.name) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', lot.name, 450, 100)" style="width:100%;height:20%;"/>
-                                <img t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', lot.name, 400, 100)" style="width:100%;height:20%;"/>
+                                <img t-if="len(lot.name) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', lot.name, 600, 100)" style="width:100%;height:20%;"/>
+                                <img t-elif="len(lot.name) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', lot.name, 600, 100)" style="width:100%;height:20%;"/>
+                                <img t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', lot.name, 600, 100)" style="width:100%;height:20%;"/>
                                 <span t-field="lot.name"/>
                             </t>
                         </td>
