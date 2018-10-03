@@ -38,10 +38,10 @@ class ProductTemplate(models.Model):
                         d[bom_line_id.product_id] += bom_line_id.product_qty * parent_qty
                     bom_traverse(bom_line_id.product_id, d, bom_line_id.product_qty)
 
-        if product_id.bom_ids:
+        if product_id.bom_ids and product_id.bom_ids[0].bom_line_ids:
             bom_traverse(product_id, d, 1)  # traverse to make one root
             # print(d)
-            qty_lst = [(key.qty_available + key.manufacture_qty_count)/d[key] for key in d.keys() if key.type == 'product' and not key.made_of_non_stockable]
+            qty_lst = [(key.qty_available + key.manufacture_qty_count)/d[key] for key in d.keys() if d[key] and key.type == 'product' and not key.made_of_non_stockable]
             return min(qty_lst) if qty_lst else 0.0
         else:
             return 0.0
