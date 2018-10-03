@@ -4,7 +4,7 @@ from odoo import http, tools, _
 from odoo.http import request
 from odoo.addons.website_sale.controllers.main import WebsiteSale
 
-class WebsiteSale(http.Controller):
+class WebsiteSale(WebsiteSale):
 
     def _get_search_domain(self, search, category, attrib_values):
         domain = request.website.sale_product_domain()
