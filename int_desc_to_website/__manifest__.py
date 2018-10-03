@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Internal Description on Website",
+    'name': "Website Product Notes",
 
-    'summary': "Adding product internal description to website",
+    'summary': "Adding product notes to website",
 
-    'description': "Adding product internal description to website",
+    'description': "Adding product notes to website",
 
     'author': "odoo",
     'website': "http://www.odoo.com",
@@ -16,10 +16,11 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['website','product'],
+    'depends': ['website_sale','product'],
 
     # always loaded
     'data': [
         'views/templates.xml',
+        'views/views.xml',
     ],
 }
