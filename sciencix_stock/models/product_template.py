@@ -58,5 +58,5 @@ class ProductTemplate(models.Model):
             # since previous recursion helper must include qty_available to compute recursive steps
             # product_tmpl_id.manufacture_qty_count = self._compute_manufacture_qty_helper(product_tmpl_id) - product_tmpl_id.qty_available
             if product_tmpl_id.type == 'product':
-                product_tmpl_id.manufacture_qty_count = self._compute_manufacture_qty_helper(product_tmpl_id)
+                product_tmpl_id.manufacture_qty_count = self._compute_manufacture_qty_helper(product_tmpl_id.product_variant_id)
 
