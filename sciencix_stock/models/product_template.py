@@ -14,22 +14,26 @@ class ProductTemplate(models.Model):
     def action_manufacture_qty(self):
         pass
 
+    # in order to use _bom_find, product must be product.product object
     def _is_made_of_stockable(self, product):
         if product.type != 'product':
             return False
-        elif not product.bom_ids or not product.bom_ids[0].bom_line_ids:
-            return True
         else:
-            return any([self._is_made_of_stockable(c) for c in product.bom_ids[0].bom_line_ids.mapped('product_id')])
+            bom_id = product.bom_ids._bom_find(product=product)  # find the right bom
+            if not bom_id or not bom_id.bom_line_ids:
+                return True
+            else:
+                return any([self._is_made_of_stockable(c) for c in bom_id.bom_line_ids.mapped('product_id')])
 
     # this func gives us how much in stock qty each product we need for 'product'
     def get_products_qty(self):
         self.ensure_one()
-        product = self
+        product = self.product_variant_id
         def get_products_qty_helper(p, d):
-            if not p.bom_ids or not p.bom_ids[0].bom_line_ids:
+            bom_id = p.bom_ids._bom_find(product=p)
+            if not bom_id or not bom_id.bom_line_ids:
                 return
-            direct_components = p.bom_ids[0].bom_line_ids.mapped('product_id')
+            direct_components = bom_id.bom_line_ids.mapped('product_id')
             for component in direct_components:
                 # we only care about products that have qty restrictions
                 if self._is_made_of_stockable(component):
@@ -46,8 +50,12 @@ class ProductTemplate(models.Model):
 
             # if there is no components at all, we can't make any
             direct_components = []
-            if product.bom_ids and product.bom_ids[0].bom_line_ids:
-                direct_components = {k: v for k, v in product.bom_ids[0].bom_line_ids.mapped(lambda l: (l.product_id, l.product_qty))}
+            bom_id = product.bom_ids._bom_find(product=product)
+            if bom_id and bom_id.bom_line_ids:
+                # direct_components = {k: v for k, v in bom_id.bom_line_ids.mapped(lambda l: (l.product_id, l.product_qty))}
+                # using explode()
+                boms_done, lines_done = bom_id.explode(product, 1)
+                direct_components = {l.product_id: dic.get('qty') for l, dic in lines_done}
             if not direct_components:
                 return False
 
@@ -75,6 +83,7 @@ class ProductTemplate(models.Model):
     def _compute_manufacture_qty(self):
         self.ensure_one()
         product = self.product_variant_id
+
         if not self._is_made_of_stockable(product):
             self.manufacture_qty_count_str = '∞'
         else:
