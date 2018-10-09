@@ -2,6 +2,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import odoo.addons.decimal_precision as dp
+import sys
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -83,6 +84,9 @@ class ProductTemplate(models.Model):
             while self.can_make(product, 1, products_qty):
                 # print('made one {}'.format(product.name))
                 count += 1
+                # add an upper bound just in case
+                if count >= sys.maxsize:
+                    break
             self.manufacture_qty_count_str = '{:.3f}'.format(count)
 
 
