@@ -16,4 +16,6 @@
         'views/webclient_templates.xml',
     ],
     'license': 'OEEL-1',
+    'installable': True,
+    'auto_install': True,
 }

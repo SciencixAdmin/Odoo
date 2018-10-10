@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_carrier_inherit_form_sciencix" model="ir.ui.view">
+        <field name="name">res.partner.carrier.form.inherit.sciencix</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="delivery.view_partner_property_form" />
+        <field name="arch" type="xml">
+            <field name="property_delivery_carrier_id" position="after">
+                <!-- <field name="default_delivery_carrier_id"/> -->
+                <field name="customer_account_no"/>
+            </field>
+        </field>
+    </record>
+</odoo>

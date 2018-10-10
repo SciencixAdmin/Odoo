@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- # Add a new column COO (Country of Origin) on Sale Order PDF and Delivery Slip PDF
+    # and display the relevant COO from the product template ONLY -->
+    <template id="report_delivery_document_sciencix" inherit_id="stock.report_delivery_document" priority="100">
+        <xpath expr="//div[hasclass('page')]//table[2]/thead/tr/th[1]" position="after">
+            <t t-set="country_origin" t-value="any([m.product_id.country_origin for m in o.move_lines])"/>
+            <t t-set="hs_code" t-value="any([m.product_id.hs_code for m in o.move_lines])"/>
+            <t t-if="not o.partner_id.country_id or o.partner_id.country_id.code != 'US'">
+                <th t-if="country_origin">Country of Origin</th>
+                <th t-if="hs_code">Schedule B Number</th>
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]//table[2]/tbody/tr/td[1]" position="after">
+            <t t-if="not o.partner_id.country_id or o.partner_id.country_id.code != 'US'">
+                <td t-if="move.product_id.country_origin"><span t-field="move.product_id.country_origin"/></td>
+                <td t-if="move.product_id.hs_code"><span t-field="move.product_id.hs_code"/></td>
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]//table[3]/thead/tr/th[1]" position="after">
+            <t t-set="country_origin" t-value="any([m.product_id.country_origin for m in o.move_line_ids])"/>
+            <t t-set="hs_code" t-value="any([m.product_id.hs_code for m in o.move_line_ids])"/>
+            <t t-if="o.partner_id.country_id.code != 'US'">
+                <th t-if="country_origin">Country of Origin</th>
+                <th t-if="hs_code">Schedule B Number</th>
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]//table[3]/tbody/tr/td[1]" position="after">
+            <t t-if="not o.partner_id.country_id or o.partner_id.country_id.code != 'US'">
+                <td t-if="move_line.product_id.country_origin" ><span t-field="move_line.product_id.country_origin"/></td>
+                <td t-if="move_line.product_id.hs_code" ><span t-field="move_line.product_id.hs_code"/></td>
+            </t>
+        </xpath>
+    </template>
+</odoo>

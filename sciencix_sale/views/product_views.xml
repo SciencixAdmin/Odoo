@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="form_view_product_template_inherit_sciencix" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.sciencix</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="website_sale.product_template_form_view" />
+        <field name="arch" type="xml">
+            <field name="website_style_ids" position="after">
+                <field name="country_origin" />
+                <!-- <field name="schedule_b_number" attrs="{'invisible': [('country_origin', '=', False)]}"/> -->
+            </field>
+        </field>
+    </record>
+</odoo>
