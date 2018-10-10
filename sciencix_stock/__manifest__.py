@@ -13,5 +13,6 @@
     'depends': ['stock', 'mrp'],
     'data': [
         'views/product_template_views.xml',
+        'views/mrp_bom_views.xml',
     ],
 }

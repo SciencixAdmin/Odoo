@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="mrp_bom_form_view_inheri_qty" model="ir.ui.view">
+            <field name="name">sciencix.mrp.bom.form.view.form.inherit</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+            <field name="arch" type="xml">
+                <button name="toggle_active" position="before">
+                    <button class="oe_stat_button" name= "action_view_bom_struct_products" type="object" icon="fa-building-o">
+                        <field string="Can Produce" name="qty_produce" widget="statinfo" />
+                    </button>
+                </button>
+            </field>
+        </record>
+
+        <record id="mrp_bom_tree_view_inheri_qty" model="ir.ui.view">
+            <field name="name">sciencix.mrp.bom.tree.view.form.inherit</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="product_qty" position="after">
+                    <field name="qty_produce" invisible="not context.get('show_qty_produce')"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>
