@@ -13,3 +13,4 @@ class ProductTemplate(models.Model):
     # and field Schedule B Number should not show up.
     country_origin = fields.Many2one('res.country', string="Country of Origin")
     # schedule_b_number = fields.Char("Schedule B Number")
+    website_notes = fields.Text('Website Notes', translate=True, help='Notes that will appear on the website product page')

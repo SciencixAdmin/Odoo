@@ -15,6 +15,7 @@ Sales Development
 * Customer: This will be a drop-down list of all delivery methods, another field 'Customer Account number'. This is the customer delivery a/c detail
 * sale order: above defined fields of Product and Customer auto-populate on Sale Order's Views
 * report modification
+* Adding product notes to website"
     """,
     'category': 'Custom Development',
     'depends': ['sale_management', 'delivery', 'website_sale'],
@@ -23,7 +24,7 @@ Sales Development
         'views/product_views.xml',
         'views/partner_views.xml',
         'views/sale_order_views.xml',
-
+        'views/templates.xml',
         # Report
         'views/report_delivery_slip.xml',
         'views/report_sale_order.xml',
