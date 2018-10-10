@@ -21,6 +21,6 @@
     # always loaded
     'data': [
         'views/templates.xml',
-        'views/views.xml',
+        'views/product_views.xml',
     ],
 }

@@ -6,4 +6,4 @@ from odoo import api, fields, models, tools
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    x_website_notes = fields.Text('Website Notes', translate=True, help='Notes that will appear on the website product page')
+    website_notes = fields.Text('Website Notes', translate=True, help='Notes that will appear on the website product page')
