@@ -3,7 +3,8 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import odoo.addons.decimal_precision as dp
 import sys
-from odoo.tools.profiler import profile
+# from odoo.tools.profiler import profile
+from odoo.tools.float_utils import float_round
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -81,7 +82,7 @@ class ProductTemplate(models.Model):
 
         return True
 
-    @profile
+    # @profile
     def _compute_manufacture_qty(self):
         self.ensure_one()
         product = self.product_variant_id
@@ -98,7 +99,9 @@ class ProductTemplate(models.Model):
                 # add an upper bound just in case
                 if count >= sys.maxsize:
                     break
-            self.manufacture_qty_count_str = '{:.3f}'.format(count)
+            manufacture_qty = float_round(count, precision_rounding=product.uom_id.rounding)
+            self.manufacture_qty_count_str = '{:.3f}'.format(manufacture_qty)
+
 
 
 
