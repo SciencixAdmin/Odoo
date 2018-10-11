@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import fields, models, api, _
 
 
 class ProductTemplate(models.Model):
@@ -14,3 +14,21 @@ class ProductTemplate(models.Model):
     country_origin = fields.Many2one('res.country', string="Country of Origin")
     # schedule_b_number = fields.Char("Schedule B Number")
     website_notes = fields.Text('Website Notes', translate=True, help='Notes that will appear on the website product page')
+
+
+class ProductAlias(models.Model):
+    _name = 'product.alias'
+
+    name = fields.Char('Alias')
+    product_id = fields.Many2one('product.product', ondelete='set null', string='Product')
+    partner_id = fields.Many2one('res.partner', ondelete='set null', string='Customer')
+
+    _sql_constraints = [
+        ('alias_uniq', 'UNIQUE(product_id, partner_id)',  _('Cannot create multiple alias for the same customer and the same product.')),
+    ]
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    alias_ids = fields.One2many('product.alias', 'product_id', string='Alias')
