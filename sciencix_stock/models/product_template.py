@@ -44,40 +44,40 @@ class ProductTemplate(models.Model):
         get_products_qty_helper(product, dic)
         return dic
 
+    # This function answers this question:
+    # is it possible to make n product with products_qty (a dictionary that
+    # holds all available qty for restriction components)?
     def can_make(self, product, n, products_qty):
-        count = 0
-        while count < n:
 
-            # if there is no components at all, we can't make any
-            direct_components = []
-            bom_id = product.bom_ids._bom_find(product=product)
-            if bom_id and bom_id.bom_line_ids:
-                # direct_components = {k: v for k, v in bom_id.bom_line_ids.mapped(lambda l: (l.product_id, l.product_qty))}
-                # using explode()
-                boms_done, lines_done = bom_id.explode(product, 1)
-                direct_components = {l.product_id: dic.get('qty') for l, dic in lines_done}
-            if not direct_components:
+        # if there is no components at all, we can't make any
+        direct_components = []
+        bom_id = product.bom_ids._bom_find(product=product)
+        if bom_id and bom_id.bom_line_ids:
+            # using explode() so that we get flattened qty - assuming uom is taken care of
+            boms_done, lines_done = bom_id.explode(product, n)
+            direct_components = {l.product_id: dic.get('qty') for l, dic in lines_done}
+        if not direct_components:
+            return False
+
+        next_layers = []
+        # we only care about restriction components
+        # if a component is a consumable or it is only made of consumable, it won't even show up in products_qty:
+        restriction_components = [c for c in direct_components.keys() if c in products_qty.keys()]
+
+        for component in restriction_components:
+            if products_qty[component] >= direct_components[component]:
+                # if we have enough on hand
+                products_qty[component] -= direct_components[component]
+            else:
+                # if there is possibility that it can be manufactured, then we calc this later
+                next_layers.append((component, direct_components[component] - products_qty[component]))
+                products_qty[component] = 0.0
+
+        # now it's time to calc the next layer if there is any
+        for c, need_n in next_layers:
+            if not self.can_make(c, need_n, products_qty):
                 return False
 
-            next_layers = []
-            # we only care about restriction components
-            # if a component is a consumable or it is only made of consumable, it won't even show up in products_qty:
-            restriction_components = [c for c in direct_components.keys() if c in products_qty.keys()]
-
-            for component in restriction_components:
-                if products_qty[component] >= direct_components[component]:
-                    # if we have enough on hand
-                    products_qty[component] -= direct_components[component]
-                else:
-                    # if there is possibility that it can be manufactured, then we calc this later
-                    next_layers.append((component, direct_components[component] - products_qty[component]))
-                    products_qty[component] = 0.0
-
-            # now it's time to calc the next layer if there is any
-            for c, need_n in next_layers:
-                if not self.can_make(c, need_n, products_qty):
-                    return False
-            count += 1
         return True
 
     def _compute_manufacture_qty(self):
