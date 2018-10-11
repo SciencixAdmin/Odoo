@@ -15,5 +15,18 @@
                 <td><span t-field="l.hs_code"/></td>
             </t>
         </xpath>
+
+        <xpath expr="//table/thead/tr/th[1]" position="before">
+            <t t-set="alias_exist" t-value="False"/>
+            <t t-if="any(doc.order_line.filtered(lambda line: line.product_alias_id))">
+                <t t-set="alias_exist" t-value="True"/>
+                <th>Product</th>
+            </t>
+        </xpath>
+        <xpath expr="//table/tbody/t/t[2]/tr/td[1]" position="before">
+            <t t-if="alias_exist">
+                <td><span t-field="l.product_alias_id"/></td>
+            </t>
+        </xpath>
     </template>
 </odoo>
