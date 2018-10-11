@@ -31,5 +31,35 @@
                 <td t-if="move_line.product_id.hs_code" ><span t-field="move_line.product_id.hs_code"/></td>
             </t>
         </xpath>
+
+        <xpath expr="//table[2]/thead/tr/th[1]" position="after">
+            <t t-set="alias_exist" t-value="False"/>
+            <t t-if="any(o.move_lines.mapped('product_alias_id'))">
+                <t t-set="alias_exist" t-value="True"/>
+                <th><strong>Description</strong></th>
+            </t>
+        </xpath>
+        <xpath expr="//table[3]/thead/tr/th[1]" position="after">
+            <t t-set="alias_exist" t-value="False"/>
+            <t t-if="any(o.move_line_ids.mapped('product_alias_id'))">
+                <t t-set="alias_exist" t-value="True"/>
+                <th><strong>Description</strong></th>
+            </t>
+        </xpath>
+        <xpath expr="//table[2]/tbody/tr/td[1]" position="before">
+            <t t-if="alias_exist">
+                <td>
+                    <span t-field="move.product_alias_id"/>
+                </td>
+            </t>
+        </xpath>
+        <xpath expr="//table[3]/tbody/tr/td[1]" position="before">
+            <t t-if="alias_exist">
+                <td>
+                    <span t-field="move_line.product_alias_id"/>
+                </td>
+            </t>
+        </xpath>
+
     </template>
 </odoo>
