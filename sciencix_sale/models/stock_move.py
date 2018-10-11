@@ -2,6 +2,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
+
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
@@ -29,6 +30,10 @@ class StockMove(models.Model):
             if product_alias_id:
                 vals['product_alias_id'] = product_alias_id.id
         rid = super(StockMove, self).create(vals)
+        if not rid.product_alias_id and rid.product_id and rid.picking_id and rid.picking_id.partner_id:
+            alias_ids = self.env['product.alias'].search(
+                [('product_id', '=', rid.product_id.id), ('partner_id', '=', rid.picking_id.partner_id.id)])
+            rid.product_alias_id = alias_ids[0] if alias_ids else False
         return rid
 
 
