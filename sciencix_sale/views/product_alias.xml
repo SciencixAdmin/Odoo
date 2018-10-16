@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="view_product_alias_tree" model="ir.ui.view">
+            <field name="name">Product Alias Tree View</field>
+            <field name="model">product.alias</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Alias" create="1" edit="1" import="1">
+                    <field name="name"/>
+                    <field name="product_id"/>
+                    <field name="partner_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="product_alias_action" model="ir.actions.act_window">
+            <field name="name">Product Alias</field>
+            <field name="res_model">product.alias</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_product_alias" name="Product Alias" action="product_alias_action" parent="stock.menu_warehouse_report" sequence="20"/>
+    </data>
+</odoo>
