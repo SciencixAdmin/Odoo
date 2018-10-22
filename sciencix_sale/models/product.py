@@ -14,6 +14,21 @@ class ProductTemplate(models.Model):
     country_origin = fields.Many2one('res.country', string="Country of Origin")
     # schedule_b_number = fields.Char("Schedule B Number")
     website_notes = fields.Text('Website Notes', translate=True, help='Notes that will appear on the website product page')
+    private = fields.Boolean()
+    prod_partner_id = fields.Many2one('res.partner', string="Contact")
+
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        # Get Current User and Partner
+        user = self.env['res.users'].browse(self.env.context.get('uid'))
+        partner = user.partner_id
+
+        # Domain added for checking whether product is private or not.
+        # IF private then, check for partner
+        args.extend(['|', ('private', '=', False), '&', ('private', '=', True), ('prod_partner_id', '=', partner.id)])
+
+        return super(ProductTemplate, self).search(args, offset, limit, order, count=count)
+
 
 
 class ProductAlias(models.Model):
