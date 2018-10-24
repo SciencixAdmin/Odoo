@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_product_inherit_sciencix" model="ir.ui.view">
+        <field name="name">sale.order.product.form.inherit.sciencix</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']//form//field[@name='product_id']" position="after">
+                <field name="product_alias_id" context="{'default_product_id': product_id, 'default_partner_id': parent.partner_id}" domain="[('product_id', '=', product_id) ,('partner_id', '=', parent.partner_id)]"/>
+                <field name="country_origin" invisible="1"/>
+                <field name="hs_code" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//tree//field[@name='name']" position="after">
+                <field name="country_origin" invisible="1"/>
+                <field name="hs_code" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']//tree//field[@name='product_id']" position="after">
+                <field name="product_alias_id" context="{'default_product_id': product_id, 'default_partner_id': parent.partner_id}" domain="[('product_id', '=', product_id) ,('partner_id', '=', parent.partner_id)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_form_with_carrier_inherit_sciencix" model="ir.ui.view">
+        <field name="name">sale.order.carrier.form.inherit.sciencix</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="delivery.view_order_form_with_carrier" />
+        <field name="arch" type="xml">
+            <div name="carrier_selection" position="after">
+                <!-- <field name="default_delivery_carrier_id" invisible="0"/> -->
+                <field name="customer_account_no"/>
+            </div>
+        </field>
+    </record>
+</odoo>

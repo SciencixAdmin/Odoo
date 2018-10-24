@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="form_view_product_template_inherit_sciencix" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.sciencix</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="website_sale.product_template_form_view" />
+        <field name="arch" type="xml">
+            <data>
+                <field name="website_style_ids" position="after">
+                    <field name="country_origin" />
+                    <!-- <field name="schedule_b_number" attrs="{'invisible': [('country_origin', '=', False)]}"/> -->
+                </field>
+
+                <xpath expr="//page[@name='notes']//group[@name='description']" position="before">
+                    <group name="description_website">
+                        <group string="Description for Website">
+                            <field name="website_notes" nolabel="1" placeholder="This note is for product page on website."/>
+                        </group>
+                    </group>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="view_product_product_normal_form_inherit_sciencix" model="ir.ui.view">
+        <field name="name">product_product_normal_form_inherit_sciencix</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+          <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+            <page name="alias" string="Alias">
+              <field name="alias_ids" mode="tree,form" context="{'default_product_id': active_id}">
+                    <tree editable="bottom" create="1">
+                        <field name="partner_id"/>
+                        <field name="name"/>
+                    </tree>
+                </field>
+            </page>
+          </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_form_scienix" model="ir.ui.view">
+        <field name="name">product.template.form.scienix</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="after">
+                <field name="private"/>
+                <field name="prod_partner_id" attrs="{'invisible': [('private', '==', False)], 'required': [('private', '==', True)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

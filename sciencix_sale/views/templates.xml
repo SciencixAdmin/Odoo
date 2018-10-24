@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="x_website_product_internal_description" inherit_id="website_sale.product">
+            <xpath expr="//hr[@t-if='product.description_sale']" position="replace">
+                <hr t-if="product.website_notes" />
+            </xpath>
+            <xpath expr="//div/p[@t-field='product.description_sale']" position="replace">
+                <p t-field="product.website_notes" class="text-muted" />
+            </xpath>
+        </template>
+    </data>
+</odoo>

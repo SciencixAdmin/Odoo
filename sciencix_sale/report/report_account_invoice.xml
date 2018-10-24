@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <template id="report_account_report_invoice_document_inherit_sciencix" inherit_id="account.report_invoice_document">
+
+            <xpath expr="//table/thead/tr/th[1]" position="before">
+                <t t-set="alias_exist" t-value="False"/>
+                <t t-if="any(o.invoice_line_ids.filtered(lambda line: line.product_alias_id))">
+                    <t t-set="alias_exist" t-value="True"/>
+                    <th>Product</th>
+                </t>
+            </xpath>
+            <xpath expr="//table/tbody/tr/td[1]" position="before">
+                <t t-if="alias_exist">
+                    <td><span t-field="l.product_alias_id"/></td>
+                </t>
+            </xpath>
+
+            <xpath expr="//table/tbody/tr[2]/td[1]" position="before">
+                <t t-if="alias_exist">
+                    <td/>
+                </t>
+            </xpath>
+
+        </template>
+
+        <template id="report_sale_report_invoice_layouted_inherit_tgwt" inherit_id="sale.report_invoice_layouted">
+            <xpath expr="//t[@name='lines_layouted']/table/thead/tr/th[1]" position="before">
+                <t t-set="alias_exist" t-value="False"/>
+                <t t-if="any(o.invoice_line_ids.filtered(lambda line: line.product_alias_id))">
+                    <t t-set="alias_exist" t-value="True"/>
+                    <th>Product</th>
+                </t>
+
+            </xpath>
+            <xpath expr="//t[@name='lines_layouted']/table/tbody/t[1]/t[2]/tr/td[1]" position="before">
+                <t t-if="alias_exist">
+                    <td><span t-field="l.product_alias_id"/></td>
+                </t>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

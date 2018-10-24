@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_alias,access_product_alias,sciencix_sale.model_product_alias,,1,1,1,0

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- # Add a new column COO (Country of Origin) on Sale Order PDF and Delivery Slip PDF
+    # and display the relevant COO from the product template ONLY -->
+    <template id="report_saleorder_document_layouted_sciencix" inherit_id="sale.report_saleorder_document" priority="100">
+       <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[1]" position="after">
+            <t t-if="not doc.partner_shipping_id.country_id or doc.partner_shipping_id.country_id.code != 'US'">
+                <th>Country of Origin</th>
+                <th>Schedule B Number</th>
+            </t>
+        </xpath>
+        <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.name']/.." position="after">
+            <t t-if="not doc.partner_shipping_id.country_id or doc.partner_shipping_id.country_id.code != 'US'">
+                <td><span t-field="l.country_origin"/></td>
+                <td><span t-field="l.hs_code"/></td>
+            </t>
+        </xpath>
+
+        <xpath expr="//table/thead/tr/th[1]" position="before">
+            <t t-set="alias_exist" t-value="False"/>
+            <t t-if="any(doc.order_line.filtered(lambda line: line.product_alias_id))">
+                <t t-set="alias_exist" t-value="True"/>
+                <th>Product</th>
+            </t>
+        </xpath>
+        <xpath expr="//table/tbody/t/t[2]/tr/td[1]" position="before">
+            <t t-if="alias_exist">
+                <td><span t-field="l.product_alias_id"/></td>
+            </t>
+        </xpath>
+    </template>
+</odoo>

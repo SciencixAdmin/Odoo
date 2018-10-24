@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="view_stock_view_picking_form_sciencix" model="ir.ui.view">
+            <field name="name">stock_view_picking_form_sciencix</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+              <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/field[@name='move_lines']/tree[1]/field[@name='product_id']" position="after">
+                <field name="product_alias_id" context="{'default_product_id': product_id, 'default_partner_id': parent.partner_id}" domain="[('product_id', '=', product_id) ,('partner_id', '=', parent.partner_id)]"/>
+              </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

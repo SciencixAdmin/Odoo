@@ -2,61 +2,102 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import odoo.addons.decimal_precision as dp
+import sys
+# from odoo.tools.profiler import profile
+from odoo.tools.float_utils import float_round
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    manufacture_qty_count = fields.Float('Manufacture Quantity Count', compute='_compute_manufacture_qty', store=False, digits=dp.get_precision('Product Unit of Measure'))
-
-    made_of_non_stockable = fields.Boolean('Stockable Product is made of non stockable BOM', compute='_compute_made_of_non_stockable')
-
-    manufacture_infinity = fields.Char('Inifinity', default='∞', readonly=True)
-
-    @api.depends('bom_ids', 'type')
-    def _compute_made_of_non_stockable(self):
-        for product in self:
-            if product.type == 'product' and product.bom_ids and product.bom_ids[0].bom_line_ids and (not any(product.bom_ids[0].bom_line_ids.mapped('product_id').filtered(lambda p: p.type == 'product')) or not any(product.bom_ids[0].bom_line_ids.mapped('product_id').filtered(lambda p: p.made_of_non_stockable == False))):
-                product.made_of_non_stockable = True
-            else:
-                product.made_of_non_stockable = False
+    # manufacture_qty_count = fields.Float('Manufacture Quantity Count',  store=False, digits=dp.get_precision('Product Unit of Measure'))
+    manufacture_qty_count_str = fields.Char('Manufacture Quantity Count', compute='_compute_manufacture_qty', store=False)
 
     # action is dummy
     def action_manufacture_qty(self):
         pass
 
-    def _compute_manufacture_qty_helper(self, product_id):
-        d = {}
-
-        def bom_traverse(root_product, d, parent_qty):
-            # only consider one bom
-            if root_product.bom_ids:
-                for bom_line_id in root_product.bom_ids[0].bom_line_ids:
-
-                    if bom_line_id.product_id not in d:
-                        d[bom_line_id.product_id] = bom_line_id.product_qty * parent_qty
-                    else:
-                        d[bom_line_id.product_id] += bom_line_id.product_qty * parent_qty
-                    bom_traverse(bom_line_id.product_id, d, bom_line_id.product_qty)
-
-        if product_id.bom_ids and product_id.bom_ids[0].bom_line_ids:
-            bom_traverse(product_id, d, 1)  # traverse to make one root
-            # print(d)
-            qty_lst = [(key.qty_available + key.manufacture_qty_count)/d[key] for key in d.keys() if d[key] and key.type == 'product' and not key.made_of_non_stockable]
-            return min(qty_lst) if qty_lst else 0.0
+    # in order to use _bom_find, product must be product.product object
+    def _is_made_of_stockable(self, product):
+        if product.type != 'product':
+            return False
         else:
-            return 0.0
+            bom_id = product.bom_ids._bom_find(product=product)  # find the right bom
+            if not bom_id or not bom_id.bom_line_ids:
+                return True
+            else:
+                return any([self._is_made_of_stockable(c) for c in bom_id.bom_line_ids.mapped('product_id')])
 
-        # recursion: does not handle nested components
-        # if product_id.bom_ids and product_id.bom_ids.mapped('bom_line_ids'):
-        #     return min([self._compute_manufacture_qty_helper(bl.product_id)/bl.product_qty if bl.product_qty else 0 for bl in product_id.bom_ids.mapped('bom_line_ids')]) + product_id.qty_available
-        # else:
-        #     return product_id.qty_available
+    # this func gives us how much in stock qty each product we need for 'product'
+    def get_products_qty(self):
+        self.ensure_one()
+        product = self.product_variant_id
+        def get_products_qty_helper(p, d):
+            bom_id = p.bom_ids._bom_find(product=p)
+            if not bom_id or not bom_id.bom_line_ids:
+                return
+            direct_components = bom_id.bom_line_ids.mapped('product_id')
+            for component in direct_components:
+                # we only care about products that have qty restrictions
+                if self._is_made_of_stockable(component):
+                    d[component] = component.qty_available
+                    get_products_qty_helper(component, d)
 
+        dic = {}
+        get_products_qty_helper(product, dic)
+        return dic
+
+    # This function answers this question:
+    # is it possible to make n product with products_qty (a dictionary that
+    # holds all available qty for restriction components)?
+    def can_make(self, product, n, products_qty):
+
+        # if there is no components at all, we can't make any
+        direct_components = []
+        bom_id = product.bom_ids._bom_find(product=product)
+        if bom_id and bom_id.bom_line_ids:
+            # using explode() so that we get flattened qty - assuming uom is taken care of
+            boms_done, lines_done = bom_id.explode(product, n)
+            direct_components = {l.product_id: dic.get('qty') for l, dic in lines_done}
+        if not direct_components:
+            return False
+
+        next_layers = []
+        # we only care about restriction components
+        # if a component is a consumable or it is only made of consumable, it won't even show up in products_qty:
+        restriction_components = [c for c in direct_components.keys() if c in products_qty.keys()]
+
+        for component in restriction_components:
+            if products_qty[component] >= direct_components[component]:
+                # if we have enough on hand
+                products_qty[component] -= direct_components[component]
+            else:
+                # if there is possibility that it can be manufactured, then we calc this later
+                next_layers.append((component, direct_components[component] - products_qty[component]))
+                products_qty[component] = 0.0
+
+        # now it's time to calc the next layer if there is any
+        for c, need_n in next_layers:
+            if not self.can_make(c, need_n, products_qty):
+                return False
+
+        return True
+
+    # @profile
     def _compute_manufacture_qty(self):
-        for product_tmpl_id in self:
-            # need to subtract the qty_available
-            # since previous recursion helper must include qty_available to compute recursive steps
-            # product_tmpl_id.manufacture_qty_count = self._compute_manufacture_qty_helper(product_tmpl_id) - product_tmpl_id.qty_available
-            if product_tmpl_id.type == 'product':
-                product_tmpl_id.manufacture_qty_count = self._compute_manufacture_qty_helper(product_tmpl_id)
+        self.ensure_one()
+        product = self.product_variant_id
 
+        if not self._is_made_of_stockable(product):
+            self.manufacture_qty_count_str = '∞'
+        else:
+            products_qty = self.get_products_qty()
+            # print(products_qty)
+            count = 0
+            while self.can_make(product, 1, products_qty):
+                # print('made one {}'.format(product.name))
+                count += 1
+                # add an upper bound just in case
+                if count >= sys.maxsize:
+                    break
+            manufacture_qty = float_round(count, precision_rounding=product.uom_id.rounding)
+            self.manufacture_qty_count_str = '{:.3f}'.format(manufacture_qty)
