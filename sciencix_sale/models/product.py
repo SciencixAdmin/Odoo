@@ -17,17 +17,27 @@ class ProductTemplate(models.Model):
     private = fields.Boolean()
     prod_partner_id = fields.Many2one('res.partner', string="Contact")
 
-    # @api.model
-    # def search(self, args, offset=0, limit=None, order=None, count=False):
-    #     # Get Current User and Partner
-    #     user = self.env['res.users'].browse(self.env.context.get('uid'))
-    #     partner = user.partner_id
-
-    #     # Domain added for checking whether product is private or not.
-    #     # IF private then, check for partner
-    #     args.extend(['|', ('private', '=', False), '&', ('private', '=', True), ('prod_partner_id', '=', partner.id)])
-
-    #     return super(ProductTemplate, self).search(args, offset, limit, order, count=count)
+    @api.model
+    def search(self, args, offset=0, limit=None, order=None, count=False):
+        # Get Current User and Partner
+        user = self.env['res.users'].browse(self.env.context.get('uid'))
+        partner = user.partner_id
+        if user.has_group('base.group_public') or user.has_group('base.group_portal'):
+            # Domain added for checking whether product is private or not.
+            # IF private then, check for partner and parent partner
+            if partner.parent_id:
+                args.extend([
+                    '|', ('private', '=', False),
+                    '&', ('private', '=', True),
+                    '|', ('prod_partner_id', 'child_of', [partner.id]),
+                         ('prod_partner_id', 'parent_of', [partner.parent_id.id]),
+                ])
+            else:
+                args.extend([
+                    '|', ('private', '=', False),
+                    '&', ('private', '=', True), ('prod_partner_id', 'child_of', [partner.id])
+                ])
+        return super(ProductTemplate, self).search(args, offset, limit, order, count=count)
 
 
 
