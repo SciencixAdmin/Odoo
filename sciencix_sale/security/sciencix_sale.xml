@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="website_sale.product_template_public" model="ir.rule">
+        <field name="domain_force">[('website_published', '=', True), ('sale_ok', '=', True), '|', ('private', '=', False), '&amp;', ('private', '=', True), ('prod_partner_id', '=', user.partner_id.id)]</field>
+    </record>
+
+</odoo>
