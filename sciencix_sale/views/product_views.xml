@@ -40,4 +40,17 @@
         </field>
     </record>
 
+    <record id="product_template_form_scienix" model="ir.ui.view">
+        <field name="name">product.template.form.scienix</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="after">
+                <field name="private"/>
+                <field name="prod_partner_id" attrs="{'invisible': [('private', '==', False)], 'required': [('private', '==', True)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
 </odoo>
