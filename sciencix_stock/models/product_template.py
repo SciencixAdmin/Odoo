@@ -101,9 +101,3 @@ class ProductTemplate(models.Model):
                     break
             manufacture_qty = float_round(count, precision_rounding=product.uom_id.rounding)
             self.manufacture_qty_count_str = '{:.3f}'.format(manufacture_qty)
-
-
-
-
-
-

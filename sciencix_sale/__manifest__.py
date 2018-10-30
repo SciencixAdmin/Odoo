@@ -38,8 +38,10 @@ In the model "Alias" The product name is at the variant level.
     'category': 'Custom Development',
     'depends': ['sale_management', 'delivery', 'website_sale', 'sale_stock'],
     'data': [
+        # 'security/sciencix_sale.xml',
         'security/ir.model.access.csv',
         # views
+        'views/product_alias.xml',
         'views/product_views.xml',
         'views/partner_views.xml',
         'views/sale_order_views.xml',
