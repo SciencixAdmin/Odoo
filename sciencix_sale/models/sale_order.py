@@ -33,8 +33,24 @@ class SaleOrderLine(models.Model):
             if line.product_id and line.order_id.partner_id:
                 alias_ids = self.env['product.alias'].search([('product_id', '=', line.product_id.id), ('partner_id', '=', line.order_id.partner_id.id)])
                 if alias_ids:
-                    line.product_alias_id = alias_ids[0]
+                    # to prevent endless loop
+                    # not sure if odoo automatically handle this kind of onchange?
+                    if not line.product_alias_id or line.product_alias_id.id != alias_ids[0].id:
+                        line.product_alias_id = alias_ids[0]
                 else:
                     line.product_alias_id = False
+
+    @api.onchange('product_alias_id')
+    def _onchange_product(self):
+        for line in self:
+            if line.product_alias_id and line.order_id.partner_id:
+                product_id = line.product_alias_id.product_id
+                if product_id:
+                    # to prevent endless loop
+                    # not sure if odoo automatically handle this kind of onchange?
+                    if not line.product_id or line.product_id.id != product_id.id:
+                        line.product_id = product_id
+                else:
+                    line.product_id = False
 
 
