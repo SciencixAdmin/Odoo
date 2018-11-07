@@ -26,20 +26,22 @@ class ProductTemplate(models.Model):
         if user.has_group('base.group_public') or user.has_group('base.group_portal'):
             # Domain added for checking whether product is private or not.
             # IF private then, check for partner and parent partner
-            if partner.parent_id:
-                args.extend([
-                    '|', ('private', '=', False),
-                    '&', ('private', '=', True),
-                    '|', ('prod_partner_ids', 'child_of', [partner.id]),
-                         ('prod_partner_ids', 'parent_of', [partner.parent_id.id]),
-                ])
+            if partner:
+                if partner.parent_id:
+                    args.extend([
+                        '|', ('private', '=', False),
+                        '&', ('private', '=', True),
+                        '|', ('prod_partner_ids', 'child_of', [partner.id]),
+                             ('prod_partner_ids', 'parent_of', [partner.parent_id.id]),
+                    ])
+                else:
+                    args.extend([
+                        '|', ('private', '=', False),
+                        '&', ('private', '=', True), ('prod_partner_ids', 'child_of', [partner.id])
+                    ])
             else:
-                args.extend([
-                    '|', ('private', '=', False),
-                    '&', ('private', '=', True), ('prod_partner_ids', 'child_of', [partner.id])
-                ])
+                args.extend([('private', '=', False)]) 
         return super(ProductTemplate, self).search(args, offset, limit, order, count=count)
-
 
 
 class ProductAlias(models.Model):
