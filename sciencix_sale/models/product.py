@@ -26,7 +26,7 @@ class ProductTemplate(models.Model):
         if user.has_group('base.group_public') or user.has_group('base.group_portal'):
             # Domain added for checking whether product is private or not.
             # IF private then, check for partner and parent partner
-            if partner.parent_id and prod_partner_ids:
+            if partner.parent_id:
                 args.extend([
                     '|', ('private', '=', False),
                     '&', ('private', '=', True),
