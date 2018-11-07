@@ -47,7 +47,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='default_code']" position="after">
                 <field name="private"/>
-                <field name="prod_partner_id" attrs="{'invisible': [('private', '==', False)], 'required': [('private', '==', True)]}"/>
+                <!-- <field name="prod_partner_id" attrs="{'invisible': [('private', '==', False)], 'required': [('private', '==', True)]}"/> -->
+                <field name="prod_partner_ids" attrs="{'invisible': [('private', '==', False)], 'required': [('private', '==', True)]}" widget="many2many_tags"/>
             </xpath>
         </field>
     </record>

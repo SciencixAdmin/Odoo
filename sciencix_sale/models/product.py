@@ -16,6 +16,7 @@ class ProductTemplate(models.Model):
     website_notes = fields.Text('Website Notes', translate=True, help='Notes that will appear on the website product page')
     private = fields.Boolean()
     prod_partner_id = fields.Many2one('res.partner', string="Contact")
+    prod_partner_ids = fields.Many2one(comodel_name='res.partner', relation="rel_prod_partner_ids_product", string="Contact")
 
     @api.model
     def search(self, args, offset=0, limit=None, order=None, count=False):
@@ -25,17 +26,17 @@ class ProductTemplate(models.Model):
         if user.has_group('base.group_public') or user.has_group('base.group_portal'):
             # Domain added for checking whether product is private or not.
             # IF private then, check for partner and parent partner
-            if partner.parent_id:
+            if partner.parent_id and prod_partner_ids:
                 args.extend([
                     '|', ('private', '=', False),
                     '&', ('private', '=', True),
-                    '|', ('prod_partner_id', 'child_of', [partner.id]),
-                         ('prod_partner_id', 'parent_of', [partner.parent_id.id]),
+                    '|', ('prod_partner_ids', 'child_of', [partner.id]),
+                         ('prod_partner_ids', 'parent_of', [partner.parent_id.id]),
                 ])
             else:
                 args.extend([
                     '|', ('private', '=', False),
-                    '&', ('private', '=', True), ('prod_partner_id', 'child_of', [partner.id])
+                    '&', ('private', '=', True), ('prod_partner_ids', 'child_of', [partner.id])
                 ])
         return super(ProductTemplate, self).search(args, offset, limit, order, count=count)
 
