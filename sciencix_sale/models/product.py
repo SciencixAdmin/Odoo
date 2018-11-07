@@ -16,7 +16,7 @@ class ProductTemplate(models.Model):
     website_notes = fields.Text('Website Notes', translate=True, help='Notes that will appear on the website product page')
     private = fields.Boolean()
     prod_partner_id = fields.Many2one('res.partner', string="Contact")
-    prod_partner_ids = fields.Many2one(comodel_name='res.partner', relation="rel_prod_partner_ids_product", string="Contact")
+    prod_partner_ids = fields.Many2many(comodel_name='res.partner', relation="rel_prod_partner_ids_product", column1='product_tmpl_id', column2='partner_id', string="Contact")
 
     @api.model
     def search(self, args, offset=0, limit=None, order=None, count=False):
