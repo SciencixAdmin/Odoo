@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mrp_production_view_form_sciencix" model="ir.ui.view">
+        <field name="name">mrp.production.view.form.sciencix</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="quality_mrp.mrp_production_view_form_inherit_quality"/>
+        <field name="arch" type="xml">
+             <xpath expr="//button[@name='button_quality_alert']" position="before">
+                <field name="is_quality_alert" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='button_quality_alert']" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_quality_alert', '=', False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

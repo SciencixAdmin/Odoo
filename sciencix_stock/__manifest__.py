@@ -10,8 +10,9 @@
     'license': 'OEEL-1',
     'author': 'Odoo Inc',
     'version': '0.1',
-    'depends': ['stock', 'mrp'],
+    'depends': ['stock', 'quality_mrp'],
     'data': [
+        'views/mrp_production_views.xml',
         'views/product_template_views.xml',
         'views/stock_picking_views.xml',
 
