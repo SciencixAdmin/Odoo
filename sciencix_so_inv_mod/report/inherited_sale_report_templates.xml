@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="inherited_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+    <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']//p[@t-if='doc.partner_id.vat']" position="after">
+        <div t-if="doc.picking_policy in ['direct']">
+            Ship Partial
+        </div>
+        <div t-if="doc.picking_policy in ['one']">
+            Ship Complete
+        </div>
+    </xpath>
+
+    <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']//p[@t-if='doc.partner_id.vat']" position='replace'>
+        <p t-if="doc.partner_id.vat">
+            <t t-if="doc.partner_id.country_id.code != 'US'">VAT: <span t-field="doc.partner_id.vat"/></t>
+            <t t-if="doc.partner_id.country_id.code == 'US'">TIN: <span t-field="doc.partner_id.vat"/></t>
+        </p>
+    </xpath>
+
+    <xpath expr="//p[@t-field='doc.confirmation_date']" position="replace">
+        <p t-field="doc.confirmation_date" t-field-options='{"format":"MM/dd/yyyy"}'/>
+    </xpath>
+
+    <xpath expr="//p[@t-field='doc.date_order']" position="replace">
+        <p t-field="doc.date_order" t-field-options='{"format":"MM/dd/yyyy"}'/>
+    </xpath>
+
+    <xpath expr="//p[@t-field='doc.note']" position="before">
+        <p t-field="doc.add_notes"/>
+    </xpath>
+
+    <xpath expr="//div[@t-if='doc.client_order_ref']" position="replace">
+        <div t-if="doc.client_order_ref" class="col-xs-3">
+            <strong>Customer PO:</strong>
+            <p t-field="doc.client_order_ref"/>
+        </div>
+    </xpath>
+
+    <xpath expr="//div[@class='row mt32 mb32']//div[last()]" position="after">
+        <div t-if="doc.cust_ref" class="col-xs-3">
+            <strong>Customer Ref</strong>
+            <p t-field="doc.cust_ref"/>
+        </div>
+    </xpath>
+
+    <xpath expr="//table//thead//tr//th[1]" position="before">
+        <th></th>
+    </xpath>
+
+    <xpath expr="//*[@t-as='page']/table/tbody/t/t[@t-as='l']/tr/td[1]" position="before">
+        <td class="text-center"><span t-esc="l_index + 1"/>.</td>
+    </xpath>
+
+</template>
+</odoo>
