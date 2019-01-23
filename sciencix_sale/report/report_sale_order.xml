@@ -3,7 +3,7 @@
     <!-- # Add a new column COO (Country of Origin) on Sale Order PDF and Delivery Slip PDF
     # and display the relevant COO from the product template ONLY -->
     <template id="report_saleorder_document_layouted_sciencix" inherit_id="sale.report_saleorder_document" priority="100">
-        <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[2]" position="after">
+        <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[1]" position="after">
             <th>Country of Origin</th>
             <th>Schedule B Number</th>
         </xpath>
@@ -25,5 +25,18 @@
                 <td><span t-field="l.product_alias_id"/></td>
             </t>
         </xpath>
+
+        <!-- Added Sequence numbering and PartID to SO line.-->
+        <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[1]" position="before">
+            <th> </th>
+            <th>PartID</th>
+        </xpath>
+
+        <xpath expr="//*[@t-as='page']/table/tbody/t/t[@t-as='l']/tr/td[1]" position="before">
+            <td class="text-center"><span t-esc="l_index + 1"/>.</td>
+            <td><span t-field="l.product_id.default_code"/></td>
+        </xpath>
+
+
     </template>
 </odoo>
