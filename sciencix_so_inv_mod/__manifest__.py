@@ -12,6 +12,7 @@
 
     'author': "Odoo",
     'website': "http://www.odoo.com",
+    'sequence': 200,
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/11.0/odoo/addons/base/module/module_data.xml

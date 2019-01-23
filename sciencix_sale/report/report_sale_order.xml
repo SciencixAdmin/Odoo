@@ -3,11 +3,11 @@
     <!-- # Add a new column COO (Country of Origin) on Sale Order PDF and Delivery Slip PDF
     # and display the relevant COO from the product template ONLY -->
     <template id="report_saleorder_document_layouted_sciencix" inherit_id="sale.report_saleorder_document" priority="100">
-       <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[1]" position="after">
+        <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[2]" position="after">
             <th>Country of Origin</th>
             <th>Schedule B Number</th>
-
         </xpath>
+
         <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.name']/.." position="after">
             <td><span t-field="l.country_origin"/></td>
             <td><span t-field="l.hs_code"/></td>

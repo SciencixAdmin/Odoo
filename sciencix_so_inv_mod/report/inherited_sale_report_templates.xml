@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<template id="inherited_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+<template id="inherited_report_saleorder_document" inherit_id="sale.report_saleorder_document" priority="1000">
     <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']//p[@t-if='doc.partner_id.vat']" position="after">
         <div t-if="doc.picking_policy in ['direct']">
             Ship Partial
@@ -44,11 +44,21 @@
     </xpath>
 
     <xpath expr="//table//thead//tr//th[1]" position="before">
-        <th></th>
+        <th>Number</th>
     </xpath>
 
     <xpath expr="//*[@t-as='page']/table/tbody/t/t[@t-as='l']/tr/td[1]" position="before">
         <td class="text-center"><span t-esc="l_index + 1"/>.</td>
+    </xpath>
+
+    <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[1]" position="after">
+        <th>Part ID</th>
+        <th>Description</th>
+    </xpath>
+
+    <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.name']/.." position="replace">
+        <td><span t-field="l.default_code"/></td>
+        <td><span t-field="l.product_id.name"/></td>
     </xpath>
 
 </template>
