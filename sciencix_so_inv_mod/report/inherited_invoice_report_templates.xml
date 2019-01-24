@@ -1,19 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<template id="inherited_report_saleorder_document" inherit_id="sale.report_saleorder_document">
-    <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']//p[@t-if='doc.partner_id.vat']" position="after">
+<template id="inherited_report_invoice_document" inherit_id="account.report_invoice_document">
+
+    <!-- <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[1]" position="after">
+        <th>Country of Origin</th>
+        <th>Schedule B Number</th>
+    </xpath> -->
+
+    <!-- Added Sequence numbering and PartID to SO line.-->
+    <!-- <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[1]" position="before">
+        <th> </th>
+        <th>PartID</th>
+    </xpath>
+
+    <xpath expr="//*[@t-as='page']/table/tbody/t/t[@t-as='l']/tr/td[1]" position="before">
+        <td class="text-center"><span t-esc="l_index + 1"/>.</td>
+        <td>[<span t-field="l.product_id.default_code"/>]</td>
+    </xpath>
+
+    <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.name']/.." position="after">
+        <td><span t-field="l.country_origin"/></td>
+        <td><span t-field="l.hs_code"/></td>
+    </xpath> -->
+
+    <xpath expr="//div[@class='col-xs-5 col-xs-offset-7']//p[@t-if='o.partner_id.vat']" position="after">
         <br></br>
-        <div t-if="doc.picking_policy in ['direct']">
+        <div t-if="o.picking_policy in ['direct']">
             <strong>Shipping Policy:</strong>
             <p>Ship Partial</p>
         </div>
-        <div t-if="doc.picking_policy in ['one']">
+        <div t-if="o.picking_policy in ['one']">
             <strong>Shipping Policy:</strong>
             <p>Ship Complete</p>
         </div>
     </xpath>
 
-    <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']//p[@t-if='doc.partner_id.vat']" position="replace">
+    <!-- <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']//p[@t-if='doc.partner_id.vat']" position="replace">
         <p t-if="doc.partner_id.vat">
             <t t-if="doc.partner_id.country_id.code != 'US'">VAT: <span t-field="doc.partner_id.vat"/></t>
             <t t-if="doc.partner_id.country_id.code == 'US'">TIN: <span t-field="doc.partner_id.vat"/></t>
@@ -44,12 +66,12 @@
             <strong>Customer Ref:</strong>
             <p t-field="doc.cust_ref"/>
         </div>
-    </xpath>
+    </xpath> -->
 
     <!-- Changing the description here because of pathing issues. This removes the reference in discription. -->
-    <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.name']/.." position="replace">
+    <!-- <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.name']/.." position="replace">
         <td><span t-field="l.product_id.name"/></td>
-    </xpath>
+    </xpath> -->
 
 </template>
 </odoo>
