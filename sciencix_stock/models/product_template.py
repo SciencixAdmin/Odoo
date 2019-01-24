@@ -108,7 +108,7 @@ class ProductTemplate(models.Model):
         else:
             return self.compute_manufactury_qty_optm_helper(product, products_qty_copy, count, step // 2)
 
-    @profile
+    # @profile
     def _compute_manufacture_qty(self):
         self.ensure_one()
         product = self.product_variant_id
