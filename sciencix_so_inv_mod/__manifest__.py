@@ -3,8 +3,7 @@
     'name': "Sciencix: Sale/Invoice Report Mod",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Report modifaction for SO/PRO-INV/INV for Sciencix.""",
 
     'description': """
         Long description of module's purpose
@@ -29,6 +28,7 @@
         #'views/views.xml',
         #'views/templates.xml',
         'report/inherited_sale_report_templates.xml',
+        'report/inherited_invoice_report_templates.xml',
     ],
 
 }
