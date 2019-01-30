@@ -3,7 +3,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import odoo.addons.decimal_precision as dp
 import sys
-# from odoo.tools.profiler import profile
+from odoo.tools.profiler import profile
 from odoo.tools.float_utils import float_round
 
 class ProductTemplate(models.Model):
@@ -82,6 +82,32 @@ class ProductTemplate(models.Model):
 
         return True
 
+    # brute force count helper
+    def compute_manufactury_qty_brute_force_helper(self, product, products_qty):
+        count = 0
+        while self.can_make(product, 1, products_qty):
+            # print('made one {}'.format(product.name))
+            count += 1
+            # add an upper bound just in case
+            if count >= sys.maxsize:
+                break
+        return count
+
+    # this helper functions helps improve runtime when there are too much on hand components
+    # could suck for deep layered boms tho
+    def compute_manufactury_qty_optm_helper(self, product, products_qty, count, step):
+        # base case
+        if step < 1:
+            return count
+
+        # prepare for rollback
+        products_qty_copy = products_qty.copy()
+
+        if self.can_make(product, step, products_qty):
+            return self.compute_manufactury_qty_optm_helper(product, products_qty, count + step, step * 2)
+        else:
+            return self.compute_manufactury_qty_optm_helper(product, products_qty_copy, count, step // 2)
+
     # @profile
     def _compute_manufacture_qty(self):
         self.ensure_one()
@@ -91,13 +117,16 @@ class ProductTemplate(models.Model):
             self.manufacture_qty_count_str = '∞'
         else:
             products_qty = self.get_products_qty()
-            # print(products_qty)
-            count = 0
-            while self.can_make(product, 1, products_qty):
-                # print('made one {}'.format(product.name))
-                count += 1
-                # add an upper bound just in case
-                if count >= sys.maxsize:
-                    break
-            manufacture_qty = float_round(count, precision_rounding=product.uom_id.rounding)
+
+            # test if the final result can be more than this threshold
+            # if that is true, we want to call optmized helper
+            threshold = 1000
+            products_qty_copy = products_qty.copy()
+            if not self.can_make(product, threshold, products_qty):
+                final_result = self.compute_manufactury_qty_brute_force_helper(product, products_qty_copy)
+            else:
+                count, step = threshold, 1
+                final_result = self.compute_manufactury_qty_optm_helper(product, products_qty, count, step)
+
+            manufacture_qty = float_round(final_result, precision_rounding=product.uom_id.rounding)
             self.manufacture_qty_count_str = '{:.3f}'.format(manufacture_qty)
