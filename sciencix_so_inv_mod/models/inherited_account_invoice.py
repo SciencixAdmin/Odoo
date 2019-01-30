@@ -7,7 +7,7 @@ class AccountInvoiceLine(models.Model):
     _inherit = ['account.invoice.line']
 
     inv_hs_code = fields.Char(compute="_compute_hs_origin", string="Schedule B Number")
-    inv_country_origin = fields.Many2one('res.country',compute="_compute_hs_origin",string="Country of Origin")
+    inv_origin_id = fields.Many2one('res.country',compute="_compute_hs_origin",string="Country of Origin")
 
     @api.multi
     @api.depends('product_id','sale_line_ids')
@@ -29,12 +29,16 @@ class AccountInvoice(models.Model):
         ('direct', 'Deliver each product when available'),
         ('one', 'Deliver all products at once')],
         compute="_compute_sale_fields", string="Shipping Policy", store=True)
-    inv_add_notes =  fields.Text(compute="_compute_sale_fields", string="Additional Notes", store=True)
-    inv_cust_ref = fields.Char(compute="_compute_sale_fields", string="Customer Ref", store=True)
+    #inv_add_notes =  fields.Text(compute="_compute_sale_fields", string="Additional Notes", store=True)
+    #inv_cust_ref = fields.Char(compute="_compute_sale_fields", string="Customer Ref", store=True)
 
-    orig_sale_order = fields.Many2one('sale.order',compute="_compute_origin_sale", string="Original Sale Order",store=True)
-    addition_notes = fields.Text(related='orig_sale_order.add_notes', string="Additional Notes", store=True)
-    customer_ref = fields.Char(related='orig_sale_order.cust_ref', string="Customer Ref", store=True)
+    sale_order_id = fields.Many2one('sale.order',compute="_compute_origin_sale", string="Original Sale Order",store=True)
+    inv_add_notes = fields.Text(related='sale_order_id.add_notes', string="Additional Notes", store=True)
+    inv_cust_ref = fields.Char(related='sale_order_id.cust_ref', string="Customer Ref", store=True)
+    # inv_picking_policy = fields.Selection([
+    #     ('direct', 'Deliver each product when available'),
+    #     ('one', 'Deliver all products at once')],
+    #     related='sale_order_id.picking_policy', string="Shipping Policy", store=True)
 
     @api.multi
     @api.depends('invoice_line_ids','invoice_line_ids.sale_line_ids','invoice_line_ids.sale_line_ids.order_id')
@@ -44,7 +48,7 @@ class AccountInvoice(models.Model):
                 if account.invoice_line_ids[0].sale_line_ids:
                     cur_order = account.invoice_line_ids[0].sale_line_ids[0].order_id
                     print("original sale: " + str(cur_order))
-                    account.orig_sale_order = cur_order
+                    account.sale_order_id = cur_order
 
     @api.multi
     @api.depends('invoice_line_ids','invoice_line_ids.sale_line_ids','invoice_line_ids.sale_line_ids.order_id')
@@ -53,11 +57,5 @@ class AccountInvoice(models.Model):
             if account.invoice_line_ids:
                 if account.invoice_line_ids[0].sale_line_ids:
                     cur_shipping = account.invoice_line_ids[0].sale_line_ids[0].order_id.picking_policy
-                    cur_note = account.invoice_line_ids[0].sale_line_ids[0].order_id.add_notes
-                    cur_ref = account.invoice_line_ids[0].sale_line_ids[0].order_id.cust_ref
-                    print("Account's Shipping: " + str(cur_shipping))
-                    print("Account's Notes: " + str(cur_note))
-                    print("Account's Cust: " + str(cur_ref))
+                    print("Account's Cust: " + str(cur_shipping))
                     account.inv_picking_policy = cur_shipping
-                    account.inv_add_notes = cur_note
-                    account.inv_cust_ref = cur_ref

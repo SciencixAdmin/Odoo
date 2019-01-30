@@ -13,32 +13,26 @@
         <th>PartID</th>
     </xpath>
 
-    <!-- <xpath expr="//table[@name='invoice_line_table']//tbody[@class='invoice_tbody']//tr/td[1]" position="after">
-        <td><span t-field="l.country_origin"/></td>
-        <td><span t-field="l.hs_code"/></td>
-    </xpath> -->
+    <xpath expr="//table[@name='invoice_line_table']//tbody[@class='invoice_tbody']//tr/td[1]" position="after">
+        <td><span t-field="l.inv_origin_id"/></td>
+        <td><span t-field="l.inv_hs_code"/></td>
+    </xpath>
     <xpath expr="//table[@name='invoice_line_table']//tbody[@class='invoice_tbody']//tr/td[1]" position="before">
         <td class="text-center"><span t-esc="l_index + 1"/>.</td>
         <td>[<span t-field="l.product_id.default_code"/>]</td>
     </xpath>
 
-
-
-    <!-- <xpath expr="//div[@class='col-xs-5 col-xs-offset-7']//div[@t-if='o.partner_id.vat']" position="after">
+    <xpath expr="//div[@t-if='o.partner_id.vat']" position="after">
         <br></br>
-        <div t-if="o.picking_policy in ['direct']">
+        <div t-if="o.inv_picking_policy in ['direct']">
             <strong>Shipping Policy:</strong>
             <p>Ship Partial</p>
         </div>
-        <div t-if="o.picking_policy in ['one']">
+        <div t-if="o.inv_picking_policy in ['one']">
             <strong>Shipping Policy:</strong>
             <p>Ship Complete</p>
         </div>
-    </xpath> -->
-
-    <!-- <xpath expr="//div[@class='col-xs-2']//p[@t-field='o.name']" position="after">
-        <p>HELLO PLEASE PRINT<p/>
-    </xpath> -->
+    </xpath>
 
     <xpath expr="//div[@t-if='o.partner_id.vat']" position="replace">
         <div t-if="o.partner_id.vat" class="mt16">
@@ -47,36 +41,18 @@
         </div>
     </xpath>
 
-    <!-- <xpath expr="//div[@class='page']//div[@class='row']//div[@class='col-xs-5 col-xs-offset-7']" position="replace">
-        <address t-field="o.partner_id"
-            t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
-
-        <div t-if="o.partner_id.vat" class="mt16">
-            <t t-if="o.partner_id.country_id.code != 'US'">VAT: <span t-field="o.partner_id.vat"/></t>
-            <t t-if="o.partner_id.country_id.code == 'US'">HERETIN: <span t-field="o.partner_id.vat"/></t>
-        </div>
-    </xpath> -->
-<!--
-    <xpath expr="//p[@t-field='doc.confirmation_date']" position="replace">
-        <p t-field="doc.confirmation_date" t-field-options="{&quot;format&quot;:&quot;MM/dd/yyyy&quot;}"/>
+    <xpath expr="//p[@t-if='o.comment']" position="before">
+        <p t-if="o.inv_add_notes">
+            <span t-field="o.inv_add_notes"/>
+        </p>
     </xpath>
-
-    <xpath expr="//p[@t-field='doc.date_order']" position="replace">
-        <p t-field="doc.date_order" t-field-options="{&quot;format&quot;:&quot;MM/dd/yyyy&quot;}"/>
-    </xpath>
-
-    <xpath expr="//p[@t-field='doc.note']" position="before">
-        <p t-field="doc.add_notes"/>
-    </xpath>
-
-
 
     <xpath expr="//div[@class='row mt32 mb32']//div[last()]" position="after">
-        <div t-if="doc.cust_ref" class="col-xs-3">
+        <div t-if="o.inv_cust_ref" class="col-xs-3">
             <strong>Customer Ref:</strong>
-            <p t-field="doc.cust_ref"/>
+            <p t-field="o.inv_cust_ref"/>
         </div>
-    </xpath> -->
+    </xpath>
 
     <xpath expr="//div[@t-if='o.name']" position="replace">
         <div t-if="o.name" class="col-xs-2">
