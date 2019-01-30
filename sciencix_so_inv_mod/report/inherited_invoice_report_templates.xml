@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<template id="inherited_report_invoice_document" inherit_id="account.report_invoice_document" priority="200">
+<template id="inherited_report_invoice_document_sciencix" inherit_id="account.report_invoice_document" priority="200">
 
     <xpath expr="//table[@name='invoice_line_table']//thead//tr/th[1]" position="after">
         <th>Country of Origin</th>
@@ -66,5 +66,28 @@
         <td><span t-field="l.product_id.name"/></td>
     </xpath>
 
+</template>
+
+<!-- Second Report Template to Inherit -->
+<template id="inherited_report_sale_report_invoice_layouted_sciencix" inherit_id="sale.report_invoice_layouted">
+    <xpath expr="//t[@name='lines_layouted']/table/thead/tr/th[1]" position="after">
+        <th>Country of Origin</th>
+        <th>Schedule B Number</th>
+    </xpath>
+
+    <!-- Added Sequence numbering and PartID to SO line.-->
+    <xpath expr="//t[@name='lines_layouted']/table/thead/tr/th[1]" position="before">
+        <th> </th>
+        <th>PartID</th>
+    </xpath>
+
+    <xpath expr="//t[@name='lines_layouted']/table/tbody/t[1]/t[2]/tr/td[1]" position="after">
+        <td><span t-field="l.inv_origin_id"/></td>
+        <td><span t-field="l.inv_hs_code"/></td>
+    </xpath>
+    <xpath expr="//t[@name='lines_layouted']/table/tbody/t[1]/t[2]/tr/td[1]" position="before">
+        <td class="text-center"><span t-esc="l_index + 1"/>.</td>
+        <td>[<span t-field="l.product_id.default_code"/>]</td>
+    </xpath>
 </template>
 </odoo>

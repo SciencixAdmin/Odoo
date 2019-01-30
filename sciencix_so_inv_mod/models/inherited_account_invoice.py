@@ -20,7 +20,7 @@ class AccountInvoiceLine(models.Model):
                 print("Account's Origin: " + str(line.product_id.country_origin))
 
                 line.inv_hs_code = cur_code
-                line.inv_country_origin = cur_country
+                line.inv_origin_id = cur_country
 
 class AccountInvoice(models.Model):
     _inherit = ['account.invoice']
