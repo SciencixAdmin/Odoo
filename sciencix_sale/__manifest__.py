@@ -47,11 +47,14 @@ In the model "Alias" The product name is at the variant level.
         'views/sale_order_views.xml',
         'views/templates.xml',
         'views/account_invoice.xml',
-        'views/stock_picking.xml',
         # Report
         'report/report_delivery_slip.xml',
         'report/report_sale_order.xml',
         'report/report_account_invoice.xml',
+        'report/reprot_product_label.xml',
+        #View refer to reprot
+        'views/stock_picking.xml',
+
     ],
     'demo': [],
     'qweb': [],
