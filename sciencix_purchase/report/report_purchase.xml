@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="external_layout_standard_sci" inherit_id="web.external_layout_standard">
+            <xpath expr="//div[@class='header']//div[@name='company_address']" position="attributes">
+                <attribute name="t-if">o._name not in ['purchase.order', 'purchase.requisition']</attribute>
+            </xpath>
+            <span t-field="company.email" position="replace">
+                <t t-if="o._name not in ['purchase.order', 'purchase.requisition']">
+                    <span t-field="company.email" />
+                </t>
+                <t t-else="">
+                    <span>ap@sciencix.com</span>
+                </t>
+            </span>
+        </template>
+
+        <template id="report_purchaseorder_document_sci" inherit_id="purchase.report_purchaseorder_document">
+            <xpath expr='//span[@t-field="o.name"][1]/..' position="replace">
+                <h2 t-if="o.state != 'draft'">Purchase Order No: <span t-field="o.name"/></h2>
+            </xpath>
+            <xpath expr='//p[@t-field="o.date_order"]/..' position="after">
+                <div t-if="o.payment_term_id" class="col-xs-3">
+                    <strong>Term:</strong>
+                    <p t-field="o.payment_term_id"/>
+                </div>
+                <div class="col-xs-3">
+                    <strong>Ship Via:</strong>
+                    <p t-field="o.x_studio_field_4G2h8"/><!-- Studio Field -->
+                </div>
+                <div class="col-xs-3">
+                    <strong>Shipping Acct:</strong>
+                    <p t-field="o.x_studio_field_pflLq"/><!-- Studio Field -->
+                </div>
+            </xpath>
+            <p t-field="o.date_order" position="replace">
+                <t t-set="date_order" t-value="datetime.datetime.strptime(o.date_order, '%Y-%m-%d %H:%M:%S').strftime('%m-%d-%Y')"/>
+                <p t-esc="date_order" />
+            </p>
+            <span t-field="line.date_planned" position="replace">
+                <t t-set="date_planned" t-value="datetime.datetime.strptime(line.date_planned, '%Y-%m-%d %H:%M:%S').strftime('%m-%d-%Y')"/>
+                <span t-esc="date_planned" />
+            </span>
+            <xpath expr="//table[1]/thead/tr/th[1]" position="before">
+                <th><strong>Part Id</strong></th>
+            </xpath>
+            <xpath expr="//table[1]/tbody/tr/td[1]" position="before">
+                <td>
+                    <span t-esc="line.product_id.default_code"/>
+                </td>
+            </xpath>
+            <span t-field="line.name" position="replace">
+                <span t-if="line.name" t-esc="line.name.split(']')[-1]"/>
+            </span>
+        </template>
+    </data>
+</odoo>

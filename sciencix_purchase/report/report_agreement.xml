@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="report_purchaserequisitions_sci" inherit_id="purchase_requisition.report_purchaserequisitions">
+            <xpath expr='//span[@t-field="o.name"][1]/..' position="before">
+                <div class="row">
+                    <t t-set='company' t-value='o.company_id' />
+                    <div class="col-xs-4">
+                        <strong>Ship To:</strong>
+                        <span t-field="company.partner_id"
+                            t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
+                            style="border-bottom: 1px solid black; display:inline-block;"/>
+                    </div>
+                    <div class="col-xs-4 ">
+                        <strong>Bill To:</strong>
+                        <t t-set="inveoice_address" t-value="company.partner_id.child_ids.filtered(lambda c: c.type == 'invoice')" />
+                        <div t-esc="inveoice_address"
+                            t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                    </div>
+                    <div class="col-xs-4 pull-right">
+                        <strong>Vendor Contact:</strong>
+                        <div t-field="o.vendor_id"
+                            t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                            
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr='//span[@t-field="o.name"][1]/..' position="replace">
+                <h2>Blanket Order No: <span t-field="o.name"/></h2>
+            </xpath>
+            <t t-if="o.purchase_ids" position="after">
+                <h4>Note: <span t-field="o.description"/></h4>
+            </t>
+            <t t-if="o.purchase_ids" position="replace">
+                <t t-if="o.purchase_ids">
+                    <t t-set="po" t-value="o.purchase_ids[0]" />
+                    <h3>Order Details</h3>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th><strong>PO </strong></th>
+                                <th><strong>Part ID</strong></th>
+                                <th><strong>Description</strong></th>
+                                <th><strong>Schedule Date</strong></th>
+                                <th><strong>QTY</strong></th>
+                                <th><strong>Unit Price</strong></th>
+                                <th><strong>Total</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="po.order_line" t-as="line">
+                                <td>
+                                    <span t-field="po.name"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line.product_id.default_code"/>
+                                </td>
+                                <td>
+                                    <span t-if="line.name" t-esc="line.name.split(']')[-1]"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.date_planned"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.product_qty"/>
+                                    <span t-field="line.product_uom.name" groups="product.group_uom"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.price_unit"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.price_subtotal"
+                                        t-options='{"widget": "monetary", "display_currency": po.currency_id}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-xs-4 pull-right">
+                            <table class="table table-condensed">
+                                <tr class="border-black">
+                                    <td><strong>Subtotal</strong></td>
+                                    <td class="text-right">
+                                        <span t-field="po.amount_untaxed"
+                                            t-options='{"widget": "monetary", "display_currency": po.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Taxes</td>
+                                    <td class="text-right">
+                                        <span t-field="po.amount_tax"
+                                            t-options='{"widget": "monetary", "display_currency": po.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr class="border-black">
+                                    <td><strong>Total</strong></td>
+                                    <td class="text-right">
+                                        <span t-field="po.amount_total"
+                                            t-options='{"widget": "monetary", "display_currency": po.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+            <t t-if="o.line_ids" position="replace">
+                <h3>Products</h3>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th><strong>Order Date</strong></th>
+                            <th><strong>Terms</strong></th>
+                            <th><strong>Ship Via</strong></th>
+                            <th><strong>Ship Acct</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span t-field="o.ordering_date"/>
+                            </td>
+                            <td >
+                                <span t-field="o.x_studio_field_C3e1u"/> 
+                            </td>
+                            <td>
+                                <span t-field="o.x_studio_field_bOxbA"/> 
+                            </td>
+                            <td>
+                                <span t-field="o.x_studio_field_DaUNK"/> 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </t>
+        </template>
+    </data>
+</odoo>
