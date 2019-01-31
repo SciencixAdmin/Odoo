@@ -44,7 +44,7 @@
         <p t-field="doc.add_notes"/>
         <t t-if="env.context.get('proforma', False) or is_pro_forma">
             <p>Please note: This proforma is valid until
-            <t t-field="doc.so_valid_date" t-field-options="{&quot;format&quot;:&quot;MM/dd/yyyy&quot;}"/>
+            <t t-esc="doc.so_valid_date" t-options='{"widget": "date"}'/>.
             If payment is not received by this date, your order will expire.</p>
         </t>
     </xpath>
