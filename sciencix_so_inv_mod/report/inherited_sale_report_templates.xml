@@ -3,6 +3,7 @@
 <template id="inherited_report_saleorder_document_sciencix" inherit_id="sale.report_saleorder_document" priority="200">
     <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']//p[@t-if='doc.partner_id.vat']" position="after">
         <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+            <br></br>
             <div t-if="doc.carrier_id">
                 <strong>Delivery Method:</strong>
                 <p><span t-field="doc.carrier_id"/></p>
@@ -43,7 +44,7 @@
         <p t-field="doc.add_notes"/>
         <t t-if="env.context.get('proforma', False) or is_pro_forma">
             <p>Please note: This proforma is valid until
-            <t t-esc="doc.so_valid_date"/>
+            <t t-field="doc.so_valid_date" t-field-options="{&quot;format&quot;:&quot;MM/dd/yyyy&quot;}"/>
             If payment is not received by this date, your order will expire.</p>
         </t>
     </xpath>
