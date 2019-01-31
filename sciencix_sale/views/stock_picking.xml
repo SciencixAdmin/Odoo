@@ -6,9 +6,27 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
-              <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/field[@name='move_lines']/tree[1]/field[@name='product_id']" position="after">
-                <field name="product_alias_id" context="{'default_product_id': product_id, 'default_partner_id': parent.partner_id}" domain="[('product_id', '=', product_id) ,('partner_id', '=', parent.partner_id)]"/>
-              </xpath>
+                <data>
+                    <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/field[@name='move_lines']/tree[1]/field[@name='product_id']" position="after">
+                        <field name="product_alias_id" context="{'default_product_id': product_id, 'default_partner_id': parent.partner_id}" domain="[('product_id', '=', product_id) ,('partner_id', '=', parent.partner_id)]"/>
+                    </xpath>
+                    <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='extra']/group[1]/group[1]/field[@name='picking_type_id']" position="after">
+                        <field name="print_label_bool" attrs="{'invisible': [('id', '!=', '-1')]}"/>
+                    </xpath>
+                    <xpath expr="//button[@name='action_toggle_is_locked']" position="after">
+                        <button name="%(print_product_label)d" attrs="{'invisible': [('print_label_bool', '!=', True)]}" string="Print Label" type="action"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="x_stock_picking_type">
+            <field name="name">print_label form</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='show_reserved']" position="after">
+                    <field name="print_label_bool"/>
+                </xpath>
             </field>
         </record>
     </data>

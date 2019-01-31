@@ -7,8 +7,8 @@
         string="Print Label"
         model="stock.picking"
         report_type="qweb-pdf"
-        file="print_label.print_label"
-        name="print_label.print_label"
+        file="sciencix_sale.print_label"
+        name="sciencix_sale.print_label"
         menu="False"
     />
 
@@ -20,7 +20,7 @@
                         <t t-foreach="move_line.move_line_ids" t-as="mline">
                             <div style="height:0.1in;"/>
                             <div style="margin-top: 5.5in !important; margin-left: 6.5in; width:3.5in; height:1in;">
-                                <t t-call="print_label.report_label">
+                                <t t-call="sciencix_sale.report_label">
                                     <t t-set="product" t-value="move_line.product_id"/>
                                     <t t-if="mline.lot_id" t-set="lot" t-value="mline.lot_id"/>
                                 </t>
@@ -31,7 +31,7 @@
                     <t t-else="">
                         <div style="height:0.1in;"/>
                         <div style="margin-top: 5.5in !important; margin-left: 6.5in; width:3.5in; height:1in;">
-                            <t t-call="print_label.report_label">
+                            <t t-call="sciencix_sale.report_label">
                                 <t t-set="product" t-value="move_line.product_id"/>
                             </t>
                         </div>
