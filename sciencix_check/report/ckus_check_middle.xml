@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_common" name="lockdowel pdf assets" inherit_id="web.report_assets_common">
+        <xpath expr="." position="inside">
+            <link href="/sciencix_check/static/src/less/report_check_middle.less" rel="stylesheet"/>
+        </xpath>
+    </template>
+
+    <template id="ckus_stub_inherit_sciencix" inherit_id="l10n_us_check_printing.ckus_stub">
+        <xpath expr="//div[hasclass('stub_total_amount')]" position="attributes">
+            <attribute name="class">stub_total_amount_sc</attribute>
+        </xpath>
+    </template>
+
+    <template id="ckus_check_inherit_sciencix" inherit_id="l10n_us_check_printing.ckus_check">
+        <xpath expr="//div[hasclass('ckus_payee_name')]" position="replace"/>
+        <xpath expr="//div[hasclass('ckus_memo')]" position="replace"/>
+
+        <xpath expr="//div[hasclass('ckus_payee_addr')]" position="attributes">
+            <attribute name="class">ckus_payee_addr_sc</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('ckus_date')]" position="attributes">
+            <attribute name="class">ckus_date_sc</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('ckus_amount')]" position="attributes">
+            <attribute name="class">ckus_amount_sc</attribute>
+        </xpath>
+    </template>
+</odoo>
