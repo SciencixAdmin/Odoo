@@ -5,3 +5,5 @@ from . import partner
 from . import sale_order
 from . import account_invoice
 from . import stock_move
+from . import stock_picking
+from . import inherited_sale_order, inherited_account_invoice

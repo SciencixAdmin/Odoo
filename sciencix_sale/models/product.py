@@ -7,6 +7,9 @@ from odoo import fields, models, api, _
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
+
+
+    oem = fields.Char(string='OEM')
     # IF the shipping address is outside United States.
     # Add a new field for Schedule B Number and display only if the COO is displayed.
     # If the country to where the order is being shipped is the United States then this column (COO)

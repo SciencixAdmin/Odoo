@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="inherited_report_saleorder_document_sciencix" inherit_id="sale.report_saleorder_document" priority="200">
+    <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']//p[@t-if='doc.partner_id.vat']" position="after">
+        <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+            <br></br>
+            <div t-if="doc.carrier_id">
+                <strong>Delivery Method:</strong>
+                <p><span t-field="doc.carrier_id"/></p>
+            </div>
+            <div t-if="doc.requested_date">
+                <strong>Requested Date:</strong>
+                <p><span t-field="doc.requested_date" t-field-options="{&quot;format&quot;:&quot;MM/dd/yy&quot;}"/></p>
+            </div>
+        </t>
+
+        <br></br>
+        <div t-if="doc.picking_policy in ['direct']">
+            <strong>Shipping Policy:</strong>
+            <p>Ship Partial</p>
+        </div>
+        <div t-if="doc.picking_policy in ['one']">
+            <strong>Shipping Policy:</strong>
+            <p>Ship Complete</p>
+        </div>
+    </xpath>
+
+    <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']//p[@t-if='doc.partner_id.vat']" position="replace">
+        <p t-if="doc.partner_id.vat">
+            <t t-if="doc.partner_id.country_id.code != 'US'">VAT: <span t-field="doc.partner_id.vat"/></t>
+            <t t-if="doc.partner_id.country_id.code == 'US'">TIN: <span t-field="doc.partner_id.vat"/></t>
+        </p>
+    </xpath>
+
+    <xpath expr="//p[@t-field='doc.confirmation_date']" position="replace">
+        <p t-field="doc.confirmation_date" t-field-options="{&quot;format&quot;:&quot;MM/dd/yyyy&quot;}"/>
+    </xpath>
+
+    <xpath expr="//p[@t-field='doc.date_order']" position="replace">
+        <p t-field="doc.date_order" t-field-options="{&quot;format&quot;:&quot;MM/dd/yyyy&quot;}"/>
+    </xpath>
+
+    <xpath expr="//p[@t-field='doc.note']" position="before">
+        <p t-field="doc.add_notes"/>
+        <t t-if="env.context.get('proforma', False) or is_pro_forma">
+            <p>Please note: This proforma is valid until
+            <t t-esc="doc.so_valid_date" t-options='{"widget": "date"}'/>.
+            If payment is not received by this date, your order will expire.</p>
+        </t>
+    </xpath>
+
+    <xpath expr="//div[@t-if='doc.client_order_ref']" position="replace">
+        <div t-if="doc.client_order_ref" class="col-xs-3">
+            <strong>Customer PO:</strong>
+            <p t-field="doc.client_order_ref"/>
+        </div>
+    </xpath>
+
+    <xpath expr="//div[@class='row mt32 mb32']//div[last()]" position="after">
+        <div t-if="doc.cust_ref" class="col-xs-3">
+            <strong>Customer Ref:</strong>
+            <p t-field="doc.cust_ref"/>
+        </div>
+    </xpath>
+
+    <!-- Changing the description here because of pathing issues. This removes the reference in discription. -->
+    <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.name']/.." position="replace">
+        <td><span t-field="l.product_id.name"/></td>
+    </xpath>
+
+</template>
+</odoo>

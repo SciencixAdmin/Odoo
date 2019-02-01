@@ -34,9 +34,13 @@ The alias that is selected in this SO should be printed in the SO report (additi
 When I create the Invoice and Delivery Order, this Alias should pass on to the invoice and Delivery Order Form with the new added column.
 Invoice Report and Delivery Slip report to have Product Column before Description
 In the model "Alias" The product name is at the variant level.
+
+Sales Development Part 3
+========================
+Various additions to the SO/PROFORMA-INVOICE/INVOICE reports.
     """,
     'category': 'Custom Development',
-    'depends': ['sale_management', 'delivery', 'website_sale', 'sale_stock'],
+    'depends': ['sale_management', 'delivery', 'website_sale', 'sale_stock','account'],
     'data': [
         # 'security/sciencix_sale.xml',
         'security/ir.model.access.csv',
@@ -47,11 +51,17 @@ In the model "Alias" The product name is at the variant level.
         'views/sale_order_views.xml',
         'views/templates.xml',
         'views/account_invoice.xml',
-        'views/stock_picking.xml',
         # Report
         'report/report_delivery_slip.xml',
         'report/report_sale_order.xml',
         'report/report_account_invoice.xml',
+        'report/reprot_product_label.xml',
+        #Report mod dev3
+        'report/inherited_sale_report_templates.xml',
+        'report/inherited_invoice_report_templates.xml',
+        #View refer to reprot
+        'views/stock_picking.xml',
+
     ],
     'demo': [],
     'qweb': [],
