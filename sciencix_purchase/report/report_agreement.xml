@@ -3,7 +3,7 @@
     <data>
         <template id="report_purchaserequisitions_sci" inherit_id="purchase_requisition.report_purchaserequisitions">
             <xpath expr='//span[@t-field="o.name"][1]/..' position="before">
-                <div class="row">
+                <!-- <div class="row">
                     <t t-set='company' t-value='o.company_id' />
                     <div class="col-xs-4">
                         <strong>Ship To:</strong>
@@ -20,9 +20,8 @@
                         <strong>Vendor Contact:</strong>
                         <div t-field="o.vendor_id"
                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
-                            
                     </div>
-                </div>
+                </div> -->
             </xpath>
             <xpath expr='//span[@t-field="o.name"][1]/..' position="replace">
                 <h2>Blanket Order No: <span t-field="o.name"/></h2>
@@ -132,6 +131,7 @@
                     </tbody>
                 </table>
             </t>
+            <xpath expr="//div[hasclass('page')]/div[2]" position="replace"/>
         </template>
     </data>
 </odoo>
