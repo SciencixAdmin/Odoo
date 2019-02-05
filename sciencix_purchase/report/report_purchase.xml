@@ -24,11 +24,11 @@
                     <strong>Term:</strong>
                     <p t-field="o.payment_term_id"/>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-3"  t-if="o.x_studio_field_4G2h8">
                     <strong>Ship Via:</strong>
                     <p t-field="o.x_studio_field_4G2h8"/><!-- Studio Field -->
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-3" t-if="o.x_studio_field_pflLq">
                     <strong>Shipping Acct:</strong>
                     <p t-field="o.x_studio_field_pflLq"/><!-- Studio Field -->
                 </div>
