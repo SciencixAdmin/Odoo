@@ -2,6 +2,7 @@
 <odoo>
     <data>
         <template id="report_purchaserequisitions_sci" inherit_id="purchase_requisition.report_purchaserequisitions">
+            <xpath expr="//div[hasclass('page')]/div[2]" position="replace"/>
             <xpath expr='//span[@t-field="o.name"][1]/..' position="before">
                 <div class="row">
                     <t t-set='company' t-value='o.company_id' />
@@ -131,7 +132,6 @@
                     </tbody>
                 </table>
             </t>
-            <xpath expr="//div[hasclass('page')]/div[2]" position="replace"/>
         </template>
     </data>
 </odoo>
