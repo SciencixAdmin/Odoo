@@ -8,8 +8,7 @@
                     <div class="col-xs-4">
                         <strong>Ship To:</strong>
                         <span t-field="company.partner_id"
-                            t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'
-                            style="border-bottom: 1px solid black; display:inline-block;"/>
+                            t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
                     </div>
                     <div class="col-xs-4 ">
                         <strong>Bill To:</strong>
@@ -111,8 +110,8 @@
                         <tr>
                             <th><strong>Order Date</strong></th>
                             <th><strong>Terms</strong></th>
-                            <th><strong>Ship Via</strong></th>
-                            <th><strong>Ship Acct</strong></th>
+                            <th t-if="o.x_studio_field_bOxbA"><strong>Ship Via</strong></th>
+                            <th t-if="o.x_studio_field_DaUNK"><strong>Ship Acct</strong></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -120,13 +119,13 @@
                             <td>
                                 <span t-field="o.ordering_date"/>
                             </td>
-                            <td >
+                            <td>
                                 <span t-field="o.x_studio_field_C3e1u"/> 
                             </td>
-                            <td>
+                            <td t-if="o.x_studio_field_bOxbA">
                                 <span t-field="o.x_studio_field_bOxbA"/> 
                             </td>
-                            <td>
+                            <td t-if="o.x_studio_field_DaUNK">
                                 <span t-field="o.x_studio_field_DaUNK"/> 
                             </td>
                         </tr>
