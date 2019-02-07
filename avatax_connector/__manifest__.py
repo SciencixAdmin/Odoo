@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Avalara Avatax Connector",
-    "version": "1.0",
+    "version": "1.1",
     "author": "Odoo S.A.",
     "summary": "Sales tax Calculation",
     "license": "LGPL-3",
@@ -39,6 +39,7 @@ This module has Following Features:
         "views/account_invoice_view.xml",
         "views/sale_order_view.xml",
         "views/account_tax_view.xml",
+        "report/sale_order_templates.xml",
         #"views/demo.xml",
     ],
     'demo': [
