@@ -58,7 +58,8 @@ class AccountInvoice(models.Model):
     def write(self, vals):
         res = super(AccountInvoice, self).write(vals)
         if not self._context.get('contact_avatax') and self:
-            self.with_context(contact_avatax=True)._onchange_invoice_line_ids()
+            for inv in self.filtered(lambda inv: inv.state == 'draft'):
+                inv.with_context(contact_avatax=True)._onchange_invoice_line_ids()
         return res
 
     invoice_doc_no = fields.Char('Source/Ref Invoice No', readonly=True, states={'draft': [('readonly', False)]}, help="Reference of the invoice")
@@ -256,6 +257,7 @@ class AccountInvoice(models.Model):
                                                     self.number, 'SalesOrder', self.partner_id, ship_from_address_id,
                                                     shipping_add_id, lines, self.user_id, self.exemption_code or None, self.exemption_code_id.code or None,
                                                     is_override=self.type == 'out_refund', currency_id=self.currency_id).TotalTax
+                    o_tax_amt = float(o_tax_amt)
                     if o_tax_amt:
                         
                         val = {
