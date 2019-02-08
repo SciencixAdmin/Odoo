@@ -33,6 +33,10 @@
             <t t-if="o.purchase_ids" position="replace">
                 <t t-if="o.purchase_ids">
                     <t t-set="po" t-value="o.purchase_ids[0]" />
+                    <t t-set="order_line" t-value="o.purchase_ids.mapped('order_line')" />
+                    <t t-set="amount_untaxed" t-value="sum(o.purchase_ids.mapped('amount_untaxed'))" />
+                    <t t-set="amount_tax" t-value="sum(o.purchase_ids.mapped('amount_tax'))" />
+                    <t t-set="amount_total" t-value="sum(o.purchase_ids.mapped('amount_total'))" />
                     <h3>Order Details</h3>
                     <table class="table table-condensed">
                         <thead>
@@ -47,9 +51,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="po.order_line" t-as="line">
+                            <tr t-foreach="order_line" t-as="line">
                                 <td>
-                                    <span t-field="po.name"/>
+                                    <span t-field="line.order_id.name"/>
                                 </td>
                                 <td>
                                     <span t-esc="line.product_id.default_code"/>
@@ -80,21 +84,21 @@
                                 <tr class="border-black">
                                     <td><strong>Subtotal</strong></td>
                                     <td class="text-right">
-                                        <span t-field="po.amount_untaxed"
+                                        <span t-esc="amount_untaxed"
                                             t-options='{"widget": "monetary", "display_currency": po.currency_id}'/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Taxes</td>
                                     <td class="text-right">
-                                        <span t-field="po.amount_tax"
+                                        <span t-esc="amount_tax"
                                             t-options='{"widget": "monetary", "display_currency": po.currency_id}'/>
                                     </td>
                                 </tr>
                                 <tr class="border-black">
                                     <td><strong>Total</strong></td>
                                     <td class="text-right">
-                                        <span t-field="po.amount_total"
+                                        <span t-esc="amount_total"
                                             t-options='{"widget": "monetary", "display_currency": po.currency_id}'/>
                                     </td>
                                 </tr>
