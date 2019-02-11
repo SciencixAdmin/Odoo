@@ -42,7 +42,7 @@
             </xpath>
             <xpath expr='//p[@t-field="o.date_order"]/..' position="after">
                 <div t-if="o.payment_term_id" class="col-xs-3">
-                    <strong>Term:</strong>
+                    <strong>Terms:</strong>
                     <p t-field="o.payment_term_id"/>
                 </div>
                 <div class="col-xs-3"  t-if="o.x_studio_field_4G2h8">
@@ -72,6 +72,9 @@
             </xpath>
             <span t-field="line.name" position="replace">
                 <span t-if="line.name" t-esc="line.name.split(']')[-1]"/>
+            </span>
+            <span t-field="line.product_qty" position="replace">
+                <span t-esc="round(line.product_qty)"/>
             </span>
         </template>
     </data>

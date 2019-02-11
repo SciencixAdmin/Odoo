@@ -45,7 +45,7 @@
                                 <th><strong>Part ID</strong></th>
                                 <th><strong>Description</strong></th>
                                 <th><strong>Schedule Date</strong></th>
-                                <th><strong>QTY</strong></th>
+                                <th class="text-left"><strong>QTY</strong></th>
                                 <th><strong>Unit Price</strong></th>
                                 <th><strong>Total</strong></th>
                             </tr>
@@ -62,10 +62,11 @@
                                     <span t-if="line.name" t-esc="line.name.split(']')[-1]"/>
                                 </td>
                                 <td>
-                                    <span t-field="line.date_planned"/>
+                                    <t t-set="date_planned" t-value="datetime.datetime.strptime(line.date_planned, '%Y-%m-%d %H:%M:%S').strftime('%m-%d-%Y')"/>
+                                    <span t-esc="date_planned"/>
                                 </td>
-                                <td>
-                                    <span t-field="line.product_qty"/>
+                                <td class="text-left">
+                                    <span t-esc="round(line.product_qty)"/>
                                     <span t-field="line.product_uom.name" groups="product.group_uom"/>
                                 </td>
                                 <td>
