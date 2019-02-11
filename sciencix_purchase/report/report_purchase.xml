@@ -62,6 +62,9 @@
                 <t t-set="date_planned" t-value="datetime.datetime.strptime(line.date_planned, '%Y-%m-%d %H:%M:%S').strftime('%m-%d-%Y')"/>
                 <span t-esc="date_planned" />
             </span>
+            <xpath expr="//table[1]/thead/tr/th[4]" position="attributes">
+                <attribute name="class">text-left</attribute>
+            </xpath>
             <xpath expr="//table[1]/thead/tr/th[1]" position="before">
                 <th><strong>Part Id</strong></th>
             </xpath>
@@ -73,6 +76,9 @@
             <span t-field="line.name" position="replace">
                 <span t-if="line.name" t-esc="line.name.split(']')[-1]"/>
             </span>
+            <xpath expr="//span[@t-field='line.product_qty']/.." position="attributes">
+                <attribute name="class">text-left</attribute>
+            </xpath>
             <span t-field="line.product_qty" position="replace">
                 <span t-esc="round(line.product_qty)"/>
             </span>
