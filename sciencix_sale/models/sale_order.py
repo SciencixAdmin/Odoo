@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
+from datetime import timedelta
 from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
-    _inherit = 'sale.order'
+    _inherit = ['sale.order']
 
     # already available "Delivery Method" on partner and sale order why they want added new field
     # default_delivery_carrier_id = fields.Many2one('delivery.carrier', string="Default Ship Method", help="When creating the SO for the customer, the default ship method should populate under 'Delivery Method' field")
     customer_account_no = fields.Char(string='Customer Account number', help="This is the customer delivery a/c detail, When creating the SO, this should also be pulled from the contact form if the delivery method is selected.")
+
+    add_notes = fields.Text(string="Additional notes", store=True)
+    cust_ref = fields.Char(string="Customer Ref", store=True)
+    so_valid_date = fields.Datetime(compute="_get_valid_date",string="Proforma Valid Until",store=True)
 
     @api.onchange('partner_id')
     def onchange_partner_id(self):
@@ -18,6 +22,14 @@ class SaleOrder(models.Model):
             self.customer_account_no = self.partner_id.customer_account_no
         self.order_line._onchange_product_alias_id()
 
+    @api.depends('date_order')
+    def _get_valid_date(self):
+        for r in self:
+            if r.date_order:
+                origin_date = fields.Datetime.from_string(r.date_order)
+                valid = origin_date + timedelta(days=14,seconds=-1)
+                print("origin Date: " + str(r.date_order) + " Valid Date: " + str(valid))
+                r.so_valid_date = valid
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
@@ -52,5 +64,3 @@ class SaleOrderLine(models.Model):
                         line.product_id = product_id
                 else:
                     line.product_id = False
-
-
