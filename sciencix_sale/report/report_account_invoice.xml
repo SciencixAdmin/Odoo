@@ -55,11 +55,11 @@
                 <th>PartID</th>
             </xpath>
 
-            <xpath expr="//table[@name='invoice_line_table']//tbody[@class='invoice_tbody']//tr/td[1]" position="after">
+            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr/td[1]" position="after">
                 <td><span t-field="l.inv_origin_id"/></td>
                 <td><span t-field="l.inv_hs_code"/></td>
             </xpath>
-            <xpath expr="//table[@name='invoice_line_table']//tbody[@class='invoice_tbody']//tr/td[1]" position="before">
+            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr/td[1]" position="before">
                 <td class="text-center"><span t-esc="l_index + 1"/>.</td>
                 <t t-if="l.product_id.default_code">
                     <td>[<span t-field="l.product_id.default_code"/>]</td>
@@ -94,7 +94,7 @@
                 </p>
             </xpath>
 
-            <xpath expr="//div[@class='row mt32 mb32']//div[last()]" position="after">
+            <xpath expr="//div[hasclass('row', 'mt32', 'mb32')]//div[last()]" position="after">
                 <div t-if="o.inv_cust_ref" class="col-xs-3">
                     <strong>Customer Ref:</strong>
                     <p t-field="o.inv_cust_ref"/>
@@ -109,7 +109,7 @@
             </xpath>
 
             <!-- Changing the description here because of pathing issues. This removes the reference in discription. -->
-            <xpath expr="//table[@name='invoice_line_table']//tbody[@class='invoice_tbody']//tr/td/span[@t-field='l.name']/.." position="replace">
+            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr/td/span[@t-field='l.name']/.." position="replace">
                 <td><span t-field="l.product_id.name"/></td>
             </xpath>
 

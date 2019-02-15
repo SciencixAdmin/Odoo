@@ -89,35 +89,50 @@
         <xpath expr="//p[@t-field='doc.note']" position="before">
             <p t-field="doc.add_notes"/>
             <t t-if="env.context.get('proforma', False) or is_pro_forma">
-                <div class="bank-box" style="margin:2px;width:71%;padding:8px;border-style:solid;border-width:1px;">
+                <div class="bank-box">
+                    <style>
+                        .bank-box{
+                            margin:2px;width:71%;padding:8px;border-style:solid;border-width:1px;
+                        }
+                        .bank-label{
+                            text-align:right;padding:3px 5px;
+                        }
+                        .bank-info{
+                            text-align:left;
+                        }
+                        .p-add{
+                            margin:1;
+                        }
+                    </style>
+
                     <table>
                         <tr>
-                            <td style="text-align:right;padding:3px 5px;"><strong>Beneficiary name: </strong></td>
-                            <td>B. Harris Enterprises, Inc. dba Sciencix</td>
+                            <td class="bank-label"><strong>Beneficiary name: </strong></td>
+                            <td class="bank-info">B. Harris Enterprises, Inc. dba Sciencix</td>
                         </tr>
                         <tr>
-                            <td style="text-align:right;padding:3px 5px;"><strong>Bank Name: </strong> </td>
-                            <td>
-                                <p style="margin:1;">Associated Bank, N.A. </p>
-                                <p style="margin:1;">200 North Adams Street</p>
-                                <p style="margin:1;">Green Bay, WI 54301 USA</p>
+                            <td class="bank-label"><strong>Bank Name: </strong> </td>
+                            <td class="bank-info">
+                                <p class="p-add">Associated Bank, N.A. </p>
+                                <p class="p-add">200 North Adams Street</p>
+                                <p class="p-add">Green Bay, WI 54301 USA</p>
                             </td>
                         </tr>
                         <tr>
-                            <td style="text-align:right;padding:3px 5px;"><strong>ABA Routing No.: </strong></td>
-                            <td> 075 900 575</td>
+                            <td class="bank-label"><strong>ABA Routing No.: </strong></td>
+                            <td class="bank-info"> 075 900 575</td>
                         </tr>
                         <tr>
-                            <td style="text-align:right;padding:3px 5px;"><strong>Account No.: </strong></td>
-                            <td> 2283 249 064</td>
+                            <td class="bank-label"><strong>Account No.: </strong></td>
+                            <td class="bank-info"> 2283 249 064</td>
                         </tr>
                         <tr>
-                            <td style="text-align:right;padding:3px 5px;"><strong>SWIFT Code: </strong></td>
-                            <td> ABGB US44</td>
+                            <td class="bank-label"><strong>SWIFT Code: </strong></td>
+                            <td class="bank-info"> ABGB US44</td>
                         </tr>
                         <tr>
-                            <td style="text-align:right;padding:3px 5px;"><strong>Note: </strong></td>
-                            <td><strong>Field 71A in your bank's SWIFT MT103 message should read "OUR"</strong></td>
+                            <td class="bank-label"><strong>Note: </strong></td>
+                            <td class="bank-info"><strong>Field 71A in your bank's SWIFT MT103 message should read "OUR"</strong></td>
                         </tr>
                     </table>
                 </div>
@@ -160,4 +175,5 @@
         <xpath expr="//p[@t-if='doc.payment_term_id.note']" position="replace"/>
 
     </template>
+
 </odoo>
