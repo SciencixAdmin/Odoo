@@ -70,7 +70,7 @@
                                     <span t-field="line.product_uom.name" groups="product.group_uom"/>
                                 </td>
                                 <td>
-                                    <span t-field="line.price_unit"/>
+                                    <span t-field="line.price_unit" t-options='{"widget": "monetary", "display_currency": po.currency_id}'/>
                                 </td>
                                 <td>
                                     <span t-field="line.price_subtotal"
