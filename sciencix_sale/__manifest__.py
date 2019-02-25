@@ -56,9 +56,6 @@ Various additions to the SO/PROFORMA-INVOICE/INVOICE reports.
         'report/report_sale_order.xml',
         'report/report_account_invoice.xml',
         'report/reprot_product_label.xml',
-        #Report mod dev3
-        'report/inherited_sale_report_templates.xml',
-        'report/inherited_invoice_report_templates.xml',
         #View refer to reprot
         'views/stock_picking.xml',
 

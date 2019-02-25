@@ -16,7 +16,10 @@
 
         <xpath expr="//*[@t-as='page']/table/tbody/t/t[@t-as='l']/tr/td[1]" position="before">
             <td class="text-center"><span t-esc="l_index + 1"/>.</td>
-            <td>[<span t-field="l.product_id.default_code"/>]</td>
+            <t t-if="l.product_id.default_code">
+                <td>[<span t-field="l.product_id.default_code"/>]</td>
+            </t>
+            <t t-else=""><td/></t>
         </xpath>
 
         <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.name']/.." position="after">
@@ -38,4 +41,139 @@
         </xpath>
 
     </template>
+
+    <!-- Dev for additional Invoice Report Modifications - CIC -->
+    <template id="inherited_report_saleorder_document_sciencix" inherit_id="sale.report_saleorder_document" priority="200">
+        <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//p[@t-if='doc.partner_id.vat']" position="after">
+            <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+                <div t-if="doc.carrier_id">
+                    <br/>
+                    <strong>Delivery Method:</strong>
+                    <p><span t-field="doc.carrier_id"/></p>
+                </div>
+                <div t-if="doc.requested_date">
+                    <br/>
+                    <strong>Requested Date:</strong>
+                    <p><span t-field="doc.requested_date" t-field-options="{&quot;format&quot;:&quot;MM/dd/yy&quot;}"/></p>
+                </div>
+            </t>
+
+            <div t-if="doc.picking_policy in ['direct']">
+                <br/>
+                <strong>Shipping Policy:</strong>
+                <p>Ship Partial</p>
+            </div>
+            <div t-if="doc.picking_policy in ['one']">
+                <br/>
+                <strong>Shipping Policy:</strong>
+                <p>Ship Complete</p>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//p[@t-if='doc.partner_id.vat']" position="replace">
+            <p t-if="doc.partner_id.vat">
+                <br/>
+                <t t-if="doc.partner_id.country_id.code != 'US'"><strong>VAT:</strong> <span t-field="doc.partner_id.vat"/></t>
+                <t t-if="doc.partner_id.country_id.code == 'US'"><strong>TIN:</strong> <span t-field="doc.partner_id.vat"/></t>
+            </p>
+        </xpath>
+
+        <xpath expr="//p[@t-field='doc.confirmation_date']" position="replace">
+            <p t-field="doc.confirmation_date" t-field-options="{&quot;format&quot;:&quot;MM/dd/yyyy&quot;}"/>
+        </xpath>
+
+        <xpath expr="//p[@t-field='doc.date_order']" position="replace">
+            <p t-field="doc.date_order" t-field-options="{&quot;format&quot;:&quot;MM/dd/yyyy&quot;}"/>
+        </xpath>
+
+        <xpath expr="//p[@t-field='doc.note']" position="before">
+            <p t-field="doc.add_notes"/>
+            <t t-if="env.context.get('proforma', False) or is_pro_forma">
+                <div class="bank-box">
+                    <style>
+                        .bank-box{
+                            margin:2px;width:71%;padding:8px;border-style:solid;border-width:1px;page-break-inside:avoid;
+                        }
+                        .bank-label{
+                            text-align:right;padding:3px 5px;
+                        }
+                        .bank-info{
+                            text-align:left;
+                        }
+                        .p-add{
+                            margin:1;
+                        }
+                    </style>
+
+                    <table>
+                        <tr>
+                            <td class="bank-label"><strong>Beneficiary name: </strong></td>
+                            <td class="bank-info">B. Harris Enterprises, Inc. dba Sciencix</td>
+                        </tr>
+                        <tr>
+                            <td class="bank-label"><strong>Bank Name: </strong> </td>
+                            <td class="bank-info">
+                                <p class="p-add">Associated Bank, N.A. </p>
+                                <p class="p-add">200 North Adams Street</p>
+                                <p class="p-add">Green Bay, WI 54301 USA</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bank-label"><strong>ABA Routing No.: </strong></td>
+                            <td class="bank-info"> 075 900 575</td>
+                        </tr>
+                        <tr>
+                            <td class="bank-label"><strong>Account No.: </strong></td>
+                            <td class="bank-info"> 2283 249 064</td>
+                        </tr>
+                        <tr>
+                            <td class="bank-label"><strong>SWIFT Code: </strong></td>
+                            <td class="bank-info"> ABGB US44</td>
+                        </tr>
+                        <tr>
+                            <td class="bank-label"><strong>Note: </strong></td>
+                            <td class="bank-info"><strong>Field 71A in your bank's SWIFT MT103 message should read "OUR"</strong></td>
+                        </tr>
+                    </table>
+                </div>
+                <br/>
+                <p>Please note: This proforma is valid until
+                <t t-esc="doc.so_valid_date" t-options='{"widget": "date"}'/>.
+                If payment is not received by this date, your order will expire.</p>
+            </t>
+        </xpath>
+
+        <xpath expr="//div[@t-if='doc.client_order_ref']" position="replace">
+            <div t-if="doc.client_order_ref" class="col-xs-3">
+                <strong>Customer PO:</strong>
+                <p t-field="doc.client_order_ref"/>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[hasclass('row', 'mt32', 'mb32')]//div[last()]" position="after">
+            <div t-if="doc.cust_ref" class="col-xs-3">
+                <strong>Customer Ref:</strong>
+                <p t-field="doc.cust_ref"/>
+            </div>
+        </xpath>
+
+        <!-- Changing the description here because of pathing issues. This removes the reference in discription. -->
+        <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.name']/.." position="replace">
+            <td><span t-field="l.product_id.name"/></td>
+        </xpath>
+
+        <!-- Change Invoicing to Invoice -->
+        <xpath expr="//strong[@t-if='doc.partner_shipping_id == doc.partner_invoice_id']" position="replace">
+            <strong t-if="doc.partner_shipping_id == doc.partner_invoice_id">Invoice and shipping address:</strong>
+        </xpath>
+
+        <xpath expr="//strong[@t-if='doc.partner_shipping_id != doc.partner_invoice_id']" position="replace">
+            <strong t-if="doc.partner_shipping_id != doc.partner_invoice_id">Invoice address:</strong>
+        </xpath>
+
+        <!-- Remove the Second Payment Terms near notes -->
+        <xpath expr="//p[@t-if='doc.payment_term_id.note']" position="replace"/>
+
+    </template>
+
 </odoo>
