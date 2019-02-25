@@ -33,7 +33,7 @@
             <t t-if="o.purchase_ids" position="replace">
                 <t t-if="o.purchase_ids">
                     <t t-set="po" t-value="o.purchase_ids[0]" />
-                    <t t-set="order_line" t-value="o.purchase_ids.mapped('order_line')" />
+                    <t t-set="order_line" t-value="o.purchase_ids.sorted(key=lambda r: r.date_planned).mapped('order_line')"/>
                     <t t-set="amount_untaxed" t-value="sum(o.purchase_ids.mapped('amount_untaxed'))" />
                     <t t-set="amount_tax" t-value="sum(o.purchase_ids.mapped('amount_tax'))" />
                     <t t-set="amount_total" t-value="sum(o.purchase_ids.mapped('amount_total'))" />
