@@ -32,7 +32,7 @@ Link this Alias to the Sale Order line. For Product "ABC123", I have 2 alias def
 When I create the SO for CustomerA and select product "ABC123", the system will display me the alias that I can choose for this product for the customer on the SO.
 The alias that is selected in this SO should be printed in the SO report (additional column"Product" before the description column)
 When I create the Invoice and Delivery Order, this Alias should pass on to the invoice and Delivery Order Form with the new added column.
-Invoice Report and Delivery y
+Invoice Report and Delivery Slip report to have Product Column before Description
 Slip report to have Product Column before Description
 In the model "Alias" The product name is at the variant level.
 
