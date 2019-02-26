@@ -28,7 +28,6 @@ class SaleOrder(models.Model):
             if r.date_order:
                 origin_date = fields.Datetime.from_string(r.date_order)
                 valid = origin_date + timedelta(days=14,seconds=-1)
-                print("origin Date: " + str(r.date_order) + " Valid Date: " + str(valid))
                 r.so_valid_date = valid
 
 class SaleOrderLine(models.Model):
@@ -64,5 +63,3 @@ class SaleOrderLine(models.Model):
                         line.product_id = product_id
                 else:
                     line.product_id = False
-
-
