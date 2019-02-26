@@ -64,5 +64,3 @@ class SaleOrderLine(models.Model):
                         line.product_id = product_id
                 else:
                     line.product_id = False
-
-
