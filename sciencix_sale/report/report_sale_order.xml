@@ -45,34 +45,34 @@
     <!-- Dev for additional Invoice Report Modifications - CIC -->
     <template id="inherited_report_saleorder_document_sciencix" inherit_id="sale.report_saleorder_document" priority="200">
         <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//p[@t-if='doc.partner_id.vat']" position="after">
+            <div t-if="doc.carrier_id">
+                <strong>Delivery Method:</strong>
+                <p><span t-field="doc.carrier_id"/></p>
+                <br/>
+            </div>
+
             <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
-                <div t-if="doc.carrier_id">
-                    <br/>
-                    <strong>Delivery Method:</strong>
-                    <p><span t-field="doc.carrier_id"/></p>
-                </div>
                 <div t-if="doc.requested_date">
-                    <br/>
                     <strong>Requested Date:</strong>
                     <p><span t-field="doc.requested_date" t-field-options="{&quot;format&quot;:&quot;MM/dd/yy&quot;}"/></p>
+                    <br/>
                 </div>
             </t>
 
             <div t-if="doc.picking_policy in ['direct']">
-                <br/>
                 <strong>Shipping Policy:</strong>
                 <p>Ship Partial</p>
+                <br/>
             </div>
             <div t-if="doc.picking_policy in ['one']">
-                <br/>
                 <strong>Shipping Policy:</strong>
                 <p>Ship Complete</p>
+                <br/>
             </div>
         </xpath>
 
         <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//p[@t-if='doc.partner_id.vat']" position="replace">
             <p t-if="doc.partner_id.vat">
-                <br/>
                 <t t-if="doc.partner_id.country_id.code != 'US'"><strong>VAT:</strong> <span t-field="doc.partner_id.vat"/></t>
                 <t t-if="doc.partner_id.country_id.code == 'US'"><strong>TIN:</strong> <span t-field="doc.partner_id.vat"/></t>
             </p>
@@ -92,7 +92,7 @@
                 <div class="bank-box">
                     <style>
                         .bank-box{
-                            margin:2px;width:71%;padding:8px;border-style:solid;border-width:1px;page-break-inside:avoid;
+                            margin:auto;width:71%;padding:8px;border-style:solid;border-width:3px;page-break-inside:avoid;
                         }
                         .bank-label{
                             text-align:right;padding:3px 5px;
@@ -137,6 +137,17 @@
                     </table>
                 </div>
                 <br/>
+
+                <div class="charge-box">
+                    <style>
+                        .charge-box{
+                            margin:auto;width:60%;padding:10px 8px 0px;border-style:solid;border-width:2px;page-break-inside:avoid;text-align:center;
+                        }
+                    </style>
+                    <p>Any bank charges arising from payment are borne by the purchaser.</p>
+                </div>
+                <br/>
+
                 <p>Please note: This proforma is valid until
                 <t t-esc="doc.so_valid_date" t-options='{"widget": "date"}'/>.
                 If payment is not received by this date, your order will expire.</p>
@@ -173,6 +184,10 @@
 
         <!-- Remove the Second Payment Terms near notes -->
         <xpath expr="//p[@t-if='doc.payment_term_id.note']" position="replace"/>
+        <!-- Remove the Customer's address -->
+        <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//div[@t-field='doc.partner_id']" position="replace"/>
+        <!-- Remove Sales Person -->
+        <xpath expr="//div[@t-if='doc.user_id.name']" position="replace"/>
 
     </template>
 
