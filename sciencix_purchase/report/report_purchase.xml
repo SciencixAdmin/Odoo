@@ -1,10 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <data noupdate="1">
+        <record id="paperformat_us_sci" model="report.paperformat">
+            <field name="name">US Letter Sciencix</field>
+            <field name="default" eval="True" />
+            <field name="format">Letter</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">15</field>
+            <field name="margin_bottom">25</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">15</field>
+            <field name="dpi">90</field>
+        </record>
+    </data>
     <data>
         <template id="external_layout_standard_sci" inherit_id="web.external_layout_standard">
-            <xpath expr="//div[@class='header']//div[@name='company_address']" position="attributes">
+            <xpath expr="//div[hasclass('header')]//div[@name='company_address']/.." position="attributes">
                 <attribute name="t-if">o._name not in ['purchase.order', 'purchase.requisition']</attribute>
+                <!-- <attribute name="class"></attribute> -->
+                <!-- <attribute name="t-att-class">'row' if o._name not in ['purchase.order', 'purchase.requisition'] else 'hidden'</attribute> -->
             </xpath>
+            <!-- <xpath expr="//div[hasclass('header')]//div[hasclass('zero_min_height')]" position="attributes">
+                <attribute name="class"></attribute>
+                <attribute name="t-att-class">'row zero_min_height' if o._name not in ['purchase.order', 'purchase.requisition'] else 'hidden'</attribute>
+            </xpath> -->
+            <!-- <xpath expr="//div[@class='header']//div[@name='company_address']" position="before">
+                <t t-if="o._name in ['purchase.requisition']">
+                    <t t-set='company' t-value='o.company_id' />
+                    <div class="col-xs-4">
+                        <strong>Ship To:</strong>
+                        <span t-field="company.partner_id"
+                            t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
+                    </div>
+                    <div class="col-xs-4 ">
+                        <strong>Bill To:</strong>
+                        <t t-set="inveoice_address" t-value="company.partner_id.child_ids.filtered(lambda c: c.type == 'invoice')" />
+                        <div t-esc="inveoice_address"
+                            t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                    </div>
+                    <div class="col-xs-4 pull-right">
+                        <strong>Vendor Contact:</strong>
+                        <div t-field="o.vendor_id"
+                            t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                    </div>
+                </t>
+            </xpath> -->
             <span t-field="company.email" position="replace">
                 <t t-if="o._name not in ['purchase.order', 'purchase.requisition']">
                     <span t-field="company.email" />
@@ -16,21 +60,26 @@
         </template>
 
         <template id="report_purchaseorder_document_sci" inherit_id="purchase.report_purchaseorder_document">
+            <xpath expr="//div[hasclass('page')]" position="attributes">
+                <attribute name="style">margin-top:0 !important; padding-top:0 !important</attribute>
+            </xpath>
             <xpath expr='//span[@t-field="o.name"][1]/..' position="replace">
                 <h2 t-if="o.state != 'draft'">Purchase Order No: <span t-field="o.name"/></h2>
             </xpath>
             <xpath expr='//p[@t-field="o.date_order"]/..' position="after">
                 <div t-if="o.payment_term_id" class="col-xs-3">
-                    <strong>Term:</strong>
+                    <strong>Terms:</strong>
                     <p t-field="o.payment_term_id"/>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-3"  t-if="o.x_studio_field_4G2h8">
                     <strong>Ship Via:</strong>
-                    <p t-field="o.x_studio_field_4G2h8"/><!-- Studio Field -->
+                    <p t-field="o.x_studio_field_4G2h8"/>
+                    <!-- Studio Field -->
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-3" t-if="o.x_studio_field_pflLq">
                     <strong>Shipping Acct:</strong>
-                    <p t-field="o.x_studio_field_pflLq"/><!-- Studio Field -->
+                    <p t-field="o.x_studio_field_pflLq"/>
+                    <!-- Studio Field -->
                 </div>
             </xpath>
             <p t-field="o.date_order" position="replace">
@@ -41,6 +90,9 @@
                 <t t-set="date_planned" t-value="datetime.datetime.strptime(line.date_planned, '%Y-%m-%d %H:%M:%S').strftime('%m-%d-%Y')"/>
                 <span t-esc="date_planned" />
             </span>
+            <xpath expr="//table[1]/thead/tr/th[4]" position="attributes">
+                <attribute name="class">text-left</attribute>
+            </xpath>
             <xpath expr="//table[1]/thead/tr/th[1]" position="before">
                 <th><strong>Part Id</strong></th>
             </xpath>
@@ -52,6 +104,15 @@
             <span t-field="line.name" position="replace">
                 <span t-if="line.name" t-esc="line.name.split(']')[-1]"/>
             </span>
+            <xpath expr="//span[@t-field='line.product_qty']/.." position="attributes">
+                <attribute name="class">text-left</attribute>
+            </xpath>
+            <span t-field="line.product_qty" position="replace">
+                <span t-esc="round(line.product_qty)"/>
+            </span>
         </template>
     </data>
+    <record id="purchase.action_report_purchase_order" model="ir.actions.report">
+        <field name="paperformat_id" ref="sciencix_purchase.paperformat_us_sci"/>
+    </record>
 </odoo>
