@@ -142,4 +142,7 @@
             </t>
         </template>
     </data>
+    <record id="purchase_requisition.action_report_purchase_requisitions" model="ir.actions.report">
+        <field name="paperformat_id" ref="sciencix_purchase.paperformat_us_sci"/>
+    </record>
 </odoo>
