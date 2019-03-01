@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
+    <!-- Add link to CSS to overide the clean layout style. -->
+    <template id="report_assets_common_inherit_sciencix" inherit_id="web.report_assets_common" name="Report Assets Sciencix">
+        <xpath expr="link[last()]" position="after">
+            <link rel="stylesheet" type="text/less" href="/sciencix_sale/static/less/change_report_layout.less"/>
+        </xpath>
+    </template>
+
+
     <!-- # Add a new column COO (Country of Origin) on Sale Order PDF and Delivery Slip PDF
     # and display the relevant COO from the product template ONLY -->
     <template id="report_saleorder_document_layouted_sciencix" inherit_id="sale.report_saleorder_document" priority="100">
@@ -16,7 +25,12 @@
 
         <xpath expr="//*[@t-as='page']/table/tbody/t/t[@t-as='l']/tr/td[1]" position="before">
             <td class="text-center"><span t-esc="l_index + 1"/>.</td>
-            <t t-if="l.product_id.default_code">
+
+            <!-- If there is a product alias, use that for partID elseif Refference, use that, else nothing -->
+            <t t-if="l.product_alias_id">
+                <td><span t-field="l.product_alias_id"/></td>
+            </t>
+            <t t-elif="l.product_id.default_code">
                 <td>[<span t-field="l.product_id.default_code"/>]</td>
             </t>
             <t t-else=""><td/></t>
@@ -26,20 +40,6 @@
             <td><span t-field="l.country_origin"/></td>
             <td><span t-field="l.hs_code"/></td>
         </xpath>
-
-        <xpath expr="//table/thead/tr/th[1]" position="before">
-            <t t-set="alias_exist" t-value="False"/>
-            <t t-if="any(doc.order_line.filtered(lambda line: line.product_alias_id))">
-                <t t-set="alias_exist" t-value="True"/>
-                <th>Product</th>
-            </t>
-        </xpath>
-        <xpath expr="//table/tbody/t/t[2]/tr/td[1]" position="before">
-            <t t-if="alias_exist">
-                <td><span t-field="l.product_alias_id"/></td>
-            </t>
-        </xpath>
-
     </template>
 
     <!-- Dev for additional Invoice Report Modifications - CIC -->
