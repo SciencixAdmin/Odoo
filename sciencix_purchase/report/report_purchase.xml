@@ -98,7 +98,7 @@
             </xpath>
             <xpath expr="//table[1]/tbody/tr/td[1]" position="before">
                 <td>
-                    <span t-esc="line.product_id.default_code"/>
+                    <span t-esc="line.seller_product_code"/>
                 </td>
             </xpath>
             <span t-field="line.name" position="replace">

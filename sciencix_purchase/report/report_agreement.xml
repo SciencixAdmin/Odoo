@@ -59,7 +59,7 @@
                                     <span t-field="line.order_id.name"/>
                                 </td>
                                 <td>
-                                    <span t-esc="line.product_id.default_code"/>
+                                    <span t-esc="line.seller_product_code"/>
                                 </td>
                                 <td>
                                     <span t-if="line.name" t-esc="line.name.split(']')[-1]"/>
