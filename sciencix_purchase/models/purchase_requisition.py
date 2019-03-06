@@ -19,7 +19,7 @@ class PurchaseRequisitionLine(models.Model):
                     quantity=line.product_qty,
                     date=line.requisition_id.ordering_date and line.requisition_id.ordering_date[:10],
                     uom_id=line.product_id.uom_id)
-                if seller:
+                if seller and seller.product_code:
                     seller_product_code = seller.product_code
             line.seller_product_code = seller_product_code
 

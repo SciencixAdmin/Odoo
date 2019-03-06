@@ -21,7 +21,7 @@ class PurchaseOrderLine(models.Model):
                     quantity=line.product_qty,
                     date=line.order_id.date_order and line.order_id.date_order[:10],
                     uom_id=line.product_uom)
-                if seller:
+                if seller and seller.product_code:
                     seller_product_code = seller.product_code
             line.seller_product_code = seller_product_code
 
