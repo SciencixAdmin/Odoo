@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record id="paperformat_us_sci" model="report.paperformat">
             <field name="name">US Letter Sciencix</field>
             <field name="default" eval="True" />
@@ -8,17 +8,17 @@
             <field name="page_height">0</field>
             <field name="page_width">0</field>
             <field name="orientation">Portrait</field>
-            <field name="margin_top">15</field>
+            <field name="margin_top">25</field>
             <field name="margin_bottom">25</field>
             <field name="margin_left">7</field>
             <field name="margin_right">7</field>
             <field name="header_line" eval="False" />
-            <field name="header_spacing">15</field>
+            <field name="header_spacing">25</field>
             <field name="dpi">90</field>
         </record>
     </data>
     <data>
-        <template id="external_layout_background_sci" inherit_id="web.external_layout_background">
+        <!-- <template id="external_layout_background_sci" inherit_id="web.external_layout_background">
             <xpath expr="//div[hasclass('header')]//div[hasclass('company_address')]" position="attributes">
                 <attribute name="t-if">o._name not in ['purchase.order', 'purchase.requisition']</attribute>
             </xpath>
@@ -43,7 +43,7 @@
                     <span>ap@sciencix.com</span>
                 </t>
             </span>
-        </template>
+        </template> -->
         <template id="external_layout_clean_sci" inherit_id="web.external_layout_clean">
             <span t-field="company.email" position="replace">
                 <t t-if="o._name not in ['purchase.order', 'purchase.requisition']">
