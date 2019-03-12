@@ -6,7 +6,7 @@
     'sequence': 100,
     'license': 'OEEL-1',
     'website': 'https://www.odoo.com',
-    'version': '1.1',
+    'version': '1.2',
     'author': 'Odoo Inc',
     'description': """
 Purchase Development

@@ -18,6 +18,45 @@
         </record>
     </data>
     <data>
+        <template id="external_layout_background_sci" inherit_id="web.external_layout_background">
+            <xpath expr="//div[hasclass('header')]//div[@name='company_address']/.." position="attributes">
+                <attribute name="t-if">o._name not in ['purchase.order', 'purchase.requisition']</attribute>
+            </xpath>
+            <span t-field="company.email" position="replace">
+                <t t-if="o._name not in ['purchase.order', 'purchase.requisition']">
+                    <span t-field="company.email" />
+                </t>
+                <t t-else="">
+                    <span>ap@sciencix.com</span>
+                </t>
+            </span>
+        </template>
+        <template id="external_layout_boxed_sci" inherit_id="web.external_layout_boxed">
+            <xpath expr="//div[hasclass('header')]//div[@name='company_address']/.." position="attributes">
+                <attribute name="t-if">o._name not in ['purchase.order', 'purchase.requisition']</attribute>
+            </xpath>
+            <span t-field="company.email" position="replace">
+                <t t-if="o._name not in ['purchase.order', 'purchase.requisition']">
+                    <span t-field="company.email" />
+                </t>
+                <t t-else="">
+                    <span>ap@sciencix.com</span>
+                </t>
+            </span>
+        </template>
+        <template id="external_layout_clean_sci" inherit_id="web.external_layout_clean">
+            <span t-field="company.email" position="replace">
+                <t t-if="o._name not in ['purchase.order', 'purchase.requisition']">
+                    <span t-field="company.email" />
+                </t>
+                <t t-else="">
+                    <span>ap@sciencix.com</span>
+                </t>
+            </span>
+            <xpath expr="//div[hasclass('footer')]//div[@name='company_address']/.." position="attributes">
+                <attribute name="t-if">o._name not in ['purchase.order', 'purchase.requisition']</attribute>
+            </xpath>
+        </template>
         <template id="external_layout_standard_sci" inherit_id="web.external_layout_standard">
             <xpath expr="//div[hasclass('header')]//div[@name='company_address']/.." position="attributes">
                 <attribute name="t-if">o._name not in ['purchase.order', 'purchase.requisition']</attribute>
