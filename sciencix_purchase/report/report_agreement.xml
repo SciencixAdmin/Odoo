@@ -118,8 +118,8 @@
                         <tr>
                             <th><strong>Order Date</strong></th>
                             <th><strong>Terms</strong></th>
-                            <!-- <th t-if="o.x_studio_field_bOxbA"><strong>Ship Via</strong></th> -->
-                            <!-- <th t-if="o.x_studio_field_DaUNK"><strong>Ship Acct</strong></th> -->
+                            <th t-if="o.x_studio_field_bOxbA"><strong>Ship Via</strong></th>
+                            <th t-if="o.x_studio_field_DaUNK"><strong>Ship Acct</strong></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -128,14 +128,14 @@
                                 <span t-field="o.ordering_date"/>
                             </td>
                             <td>
-                                <!-- <span t-field="o.x_studio_field_C3e1u"/>  -->
+                                <span t-field="o.x_studio_field_C3e1u"/> 
                             </td>
-                            <!-- <td t-if="o.x_studio_field_bOxbA"> -->
-                                <!-- <span t-field="o.x_studio_field_bOxbA"/>  -->
-                            <!-- </td> -->
-                            <!-- <td t-if="o.x_studio_field_DaUNK"> -->
-                                <!-- <span t-field="o.x_studio_field_DaUNK"/>  -->
-                            <!-- </td> -->
+                            <td t-if="o.x_studio_field_bOxbA">
+                                <span t-field="o.x_studio_field_bOxbA"/> 
+                            </td>
+                            <td t-if="o.x_studio_field_DaUNK">
+                                <span t-field="o.x_studio_field_DaUNK"/> 
+                            </td>
                         </tr>
                     </tbody>
                 </table>
