@@ -51,8 +51,8 @@
 
             <!-- Added Sequence numbering and PartID to SO line.-->
             <xpath expr="//table[@name='invoice_line_table']//thead//tr/th[1]" position="before">
-                <th> </th>
-                <th>PartID</th>
+                <th width="10%"> </th>
+                <th width="10%">PartID</th>
             </xpath>
 
             <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr/td[1]" position="after">
@@ -62,7 +62,7 @@
             <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr/td[1]" position="before">
                 <td class="text-center"><span t-esc="l_index + 1"/>.</td>
                 <t t-if="l.product_id.default_code">
-                    <td>[<span t-field="l.product_id.default_code"/>]</td>
+                    <td><span t-field="l.product_id.default_code"/></td>
                 </t>
                 <t t-else=""><td/></t>
             </xpath>
@@ -111,6 +111,10 @@
             <!-- Changing the description here because of pathing issues. This removes the reference in discription. -->
             <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr/td/span[@t-field='l.name']/.." position="replace">
                 <td><span t-field="l.product_id.name"/></td>
+            </xpath>
+
+            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr/td/span[@t-field='l.quantity']" position="replace">
+                <span t-esc="int(float(l.quantity))"/>
             </xpath>
 
         </template>
