@@ -133,7 +133,7 @@
                 <attribute name="class">text-left</attribute>
             </xpath>
             <xpath expr="//table[1]/thead/tr/th[1]" position="before">
-                <th><strong>Part Id</strong></th>
+                <th style="text-align: right ! important;"><strong>Part Id</strong></th>
             </xpath>
             <xpath expr="//table[1]/tbody/tr/td[1]" position="before">
                 <td>
