@@ -53,7 +53,7 @@ class AccountInvoice(models.Model):
 
     sale_order_id = fields.Many2one('sale.order',compute="_compute_origin_sale", string="Original Sale Order",store=True)
     inv_add_notes = fields.Text(related='sale_order_id.add_notes', string="Additional Notes", store=True)
-    inv_cust_ref = fields.Char(related='sale_order_id.cust_ref', string="Customer Ref", store=True)
+    inv_cust_ref = fields.Char(related='sale_order_id.cust_ref', string="Customer Reference (PO)", store=True)
 
     @api.multi
     @api.depends('invoice_line_ids','invoice_line_ids.sale_line_ids','invoice_line_ids.sale_line_ids.order_id')

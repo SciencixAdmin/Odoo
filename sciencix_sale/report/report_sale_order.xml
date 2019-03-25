@@ -163,7 +163,7 @@
 
         <xpath expr="//div[hasclass('row', 'mt32', 'mb32')]//div[last()]" position="after">
             <div t-if="doc.cust_ref" class="col-xs-3">
-                <strong>Customer Ref:</strong>
+                <strong>Customer Reference (PO):</strong>
                 <p t-field="doc.cust_ref"/>
             </div>
         </xpath>
