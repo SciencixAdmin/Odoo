@@ -14,6 +14,11 @@ class SaleOrder(models.Model):
     add_notes = fields.Text(string="Additional notes", store=True)
     cust_ref = fields.Char(string="Customer Ref", store=True)
     so_valid_date = fields.Datetime(compute="_get_valid_date",string="Proforma Valid Until",store=True)
+    welcome_materials = fields.Boolean(string="Welcome Materials")
+    do_not_insure = fields.Boolean(string="Do Not Insure")
+    duty_paid = fields.Boolean(string="Duty Paid")
+    incoterms = fields.Char(string="Incoterms")
+    no_signature_required = fields.Boolean(string="No Signature Required")
 
     @api.onchange('partner_id')
     def onchange_partner_id(self):
