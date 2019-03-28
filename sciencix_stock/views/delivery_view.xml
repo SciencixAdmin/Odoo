@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_withcarrier_out_form_inherit_sciencix" model="ir.ui.view">
+        <field name="name">delivery.stock.picking_withcarrier.form.view.inherit.sciencix</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='carrier_data']/field[@name='carrier_id']" position="after">
+                <field name="customer_account_number"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

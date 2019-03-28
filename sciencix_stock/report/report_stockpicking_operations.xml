@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_picking_inherit_sciencix" inherit_id="stock.report_picking">
+        <!-- Add column header for country_origin (COO)  -->
+        <xpath expr="//table[@t-if='o.move_line_ids']/thead/tr/th/t[@t-if='has_barcode']/.." position="after">
+            <th width="8%">COO</th>
+        </xpath>
+        <!-- Adjust widths to fit the new COO column -->
+        <xpath expr="//table[@t-if='o.move_line_ids']/thead/tr/th/t[@t-if='has_serial_number']/../following-sibling::th" position="attributes">
+            <attribute name="width">12%</attribute>
+        </xpath>
+        <!-- Add COO data -->
+        <xpath expr="//table[@t-if='o.move_line_ids']/tbody/tr/td/t[@t-if='has_barcode']/.." position="after">
+            <td>
+                <span t-field="move.product_id.country_origin"/>
+            </td>
+        </xpath>
+        <!-- Add Customer Account Number (custom field) and Carrier ID  -->
+        <xpath expr="//div[hasclass('page')]/div[hasclass('row')]" position="after">
+            <div class="row">
+                <div class="col-xs-12">
+                    <span><strong>Carrier/Service: <span t-field="o.carrier_id"/></strong></span>
+                    <br/>
+                    <span><strong>Customer Account: <span t-field="o.customer_account_number"/></strong></span>
+                </div>
+            </div>
+        </xpath>
+        <!-- Added Product name from source MO (if applicable) -->
+        <xpath expr="//th[@t-if='o.origin']" position="after">
+            <th t-if="o.source_mo_product_id">Product</th>
+        </xpath>
+        <xpath expr="//td[@t-if='o.origin']" position="after">
+            <td t-if="o.source_mo_product_id">
+                <span t-esc="o.source_mo_product_id.name"/>
+            </td>
+        </xpath>
+        <!-- Add Warning on Picking -->
+        <xpath expr="//th[@t-if='o.origin']/ancestor::table" position="after">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Welcome Materials</th>
+                        <th>Do Not Insure</th>
+                        <th>Duty Paid</th>
+                        <th>Incoterms</th>
+                        <th>No Signature Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span t-if="o.welcome_materials">Yes</span>
+                            <span t-else="">No</span>
+                        </td>
+                        <td>
+                            <span t-if="o.do_not_insure">Yes</span>
+                            <span t-else="">No</span>
+                        </td>
+                        <td>
+                            <span t-if="o.duty_paid">Yes</span>
+                            <span t-else="">No</span>
+                        </td>
+                        <td>
+                            <span t-field="o.incoterms"/>
+                        </td>
+                        <td>
+                            <span t-if="o.no_signature_required">Yes</span>
+                            <span t-else="">No</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <t t-if="o.partner_id and o.partner_id.picking_warn != 'no-message'">
+                <br/>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <span><strong>Notes: <span t-field="o.partner_id.picking_warn_msg"/></strong></span>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
