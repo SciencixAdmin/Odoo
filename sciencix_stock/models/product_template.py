@@ -12,6 +12,9 @@ class ProductTemplate(models.Model):
     # manufacture_qty_count = fields.Float('Manufacture Quantity Count',  store=False, digits=dp.get_precision('Product Unit of Measure'))
     manufacture_qty_count_str = fields.Char('Manufacture Quantity Count', compute='_compute_manufacture_qty', store=False)
 
+    cycle_code = fields.Char(name="Cycle Code")
+    revision = fields.Char(name="Revision")
+
     # action is dummy
     def action_manufacture_qty(self):
         pass
