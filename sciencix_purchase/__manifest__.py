@@ -6,7 +6,7 @@
     'sequence': 100,
     'license': 'OEEL-1',
     'website': 'https://www.odoo.com',
-    'version': '1.1',
+    'version': '1.2',
     'author': 'Odoo Inc',
     'description': """
 Purchase Development
@@ -43,6 +43,19 @@ Purchase Development
 * Total [Subtotal from PO line]
 * 10. Then add subtotal, Tax and Order Total (refer mockup) - this is the sum of all the PO Lines.
 * 11. Notes (Terms and conditions form Agreement go here)
+
+- Blanket Order -
+* The ordered date is right justified. Please make it left justified. (the actual field should be moved to left)
+* PO header should be left justified.
+* The address is messed up. See attached.
+* Remove the word "Products"
+* Change the footer email to ap@sciencix.com like how it is on the PO.
+
+- PO -
+* Please left justify the Part ID (customer apologizes for the confusion) and the fields.
+* Decrease the size of the description so that the entire requested date can be in one line.
+* Remove the dot from Date Req. (It should be Date Req)
+* Move tax column after unit price ( add it between the unit price and amount)
     """,
     'category': 'Custom Development',
     'depends': ['purchase', 'purchase_requisition'],
