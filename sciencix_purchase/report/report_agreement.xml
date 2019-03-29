@@ -55,7 +55,7 @@
                         </thead>
                         <tbody>
                             <tr t-foreach="order_line" t-as="line">
-                                <td>
+                                <td style="text-align: left ! important;">
                                     <span t-field="line.order_id.name"/>
                                 </td>
                                 <td>
@@ -116,7 +116,7 @@
                 <table class="table table-condensed">
                     <thead>
                         <tr>
-                            <th class="text-left" ><strong>Order Date</strong></th>
+                            <th style="text-align: left ! important;" ><strong>Order Date</strong></th>
                             <th><strong>Terms</strong></th>
                             <th t-if="o.x_studio_field_bOxbA"><strong>Ship Via</strong></th>
                             <th t-if="o.x_studio_field_DaUNK"><strong>Ship Acct</strong></th>
@@ -124,7 +124,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-left">
+                            <td style="text-align: left ! important;">
                                 <span t-field="o.ordering_date"/>
                             </td>
                             <td t-if="o.x_studio_field_C3e1u">
