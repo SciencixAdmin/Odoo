@@ -46,7 +46,7 @@
                             <tr>
                                 <th style="text-align: left ! important; width: 10% ! important;"><strong>PO </strong></th>
                                 <th style="text-align: left ! important; width: 10% ! important;"><strong>Part ID</strong></th>
-                                <th style="text-align: left ! important; width: 10% ! important;"><strong>Description</strong></th>
+                                <th style="text-align: left ! important; width: 30% ! important;"><strong>Description</strong></th>
                                 <th style="text-align: left ! important;"><strong>Schedule Date</strong></th>
                                 <th style="text-align: left ! important;"><strong>QTY</strong></th>
                                 <th style="text-align: left ! important;"><strong>Unit Price</strong></th>
