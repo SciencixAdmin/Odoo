@@ -155,7 +155,10 @@
             </xpath>
             <xpath expr="//t[@name='lines_layouted']/table/tbody/t[1]/t[2]/tr/td[1]" position="before">
                 <td class="text-center"><span t-esc="l_index + 1"/>.</td>
-                <td>[<span t-field="l.product_id.default_code"/>]</td>
+                <t t-if="l.product_id.default_code">
+                    <td><span t-field="l.product_id.default_code"/></td>
+                </t>
+                <t t-else=""><td/></t>
             </xpath>
         </template>
     </data>
