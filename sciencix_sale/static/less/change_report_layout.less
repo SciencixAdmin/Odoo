@@ -2,7 +2,7 @@
     table {
         thead {
             tr th:last-child {
-                text-align: left !important;
+                text-align: right !important;
             }
             tr th:first-child {
                 width: auto !important;
@@ -14,17 +14,23 @@
                     text-align: right !important;
                 }
                 td:last-child {
-                    text-align: left !important;
+                    text-align: right !important;
                 }
             }
         }
+
     }
+
     .bank-box {
         width: 60% !important;
 
         td {
             padding-top: 5px;
             padding-bottom: 5px;
+        }
+
+        td:last-child {
+            text-align: left !important;
         }
     }
     .clearfix {
