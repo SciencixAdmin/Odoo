@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_inventory_inherit_sciencix" inherit_id="stock.report_inventory" name="stock.inventory.report.sciencix">
+        <xpath expr="//thead/tr/th[contains(@groups, 'stock.group_production_lot')]" position="before">
+            <th><strong>Cycle Code</strong></th>
+        </xpath>
+        <xpath expr="//t[@t-foreach='locations']//tr[@groups]/td[contains(@groups, 'stock.group_production_lot')]" position="before">
+            <td></td>
+        </xpath>
+        <xpath expr="//t[@t-foreach='locations']//tr[@t-foreach]/td[contains(@groups, 'stock.group_production_lot')]" position="before">
+            <td><span t-field="line.cycle_code"/></td>
+        </xpath>
+    </template>
+</odoo>

@@ -39,9 +39,21 @@ In the model "Alias" The product name is at the variant level.
 Sales Development Part 3
 ========================
 Various additions to the SO/PROFORMA-INVOICE/INVOICE reports.
+
+Sales Development Part 4
+========================
+Various changes based on Task 1946626.
+* Added fields to sale.order (migrated from studio fields): welcome_materials, do_not_insure, duty_paid, incoterms, no_signature_required
+* Requirement 5: New report - Commercial Invoice
+  * Create a new report printable from a sale order.
+  * Duplicate the proforma Invoice report
+  * Rename Proforma Invoice to Commercial Invoice
+  * Remove the bank information block, Bank charge block and Please note block.
+  * Add field Customer Reference (PO) from the SO under Other Information.
+  * Add field Incoterms on the header from the SO form only if the field is filled in.
     """,
     'category': 'Custom Development',
-    'depends': ['sale_management', 'delivery', 'website_sale', 'sale_stock','account'],
+    'depends': ['sale_management', 'delivery', 'website_sale', 'sale_stock', 'account', 'sale_order_dates'],
     'data': [
         # 'security/sciencix_sale.xml',
         'security/ir.model.access.csv',
@@ -52,10 +64,12 @@ Various additions to the SO/PROFORMA-INVOICE/INVOICE reports.
         'views/sale_order_views.xml',
         'views/templates.xml',
         'views/account_invoice.xml',
+        'views/stock_picking.xml',
         # Report
         'report/report_delivery_slip.xml',
         'report/report_sale_order.xml',
         'report/report_account_invoice.xml',
+        'report/sale_report.xml',
         'report/reprot_product_label.xml',
         #View refer to reprot
         'views/stock_picking.xml',

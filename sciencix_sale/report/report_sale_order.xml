@@ -44,6 +44,18 @@
 
     <!-- Dev for additional Invoice Report Modifications - CIC -->
     <template id="inherited_report_saleorder_document_sciencix" inherit_id="sale.report_saleorder_document" priority="200">
+
+        <!-- Disable the default heading if is_commercial -->
+        <xpath expr="//div[hasclass('page')]/h2/t[starts-with(@t-if, 'not')]" position="attributes">
+            <attribute name="t-if">not (env.context.get('proforma', False) or is_pro_forma or is_commercial)</attribute>
+        </xpath>
+        <!-- Change heading if is_commercial -->
+        <xpath expr="//div[hasclass('page')]/h2/span[@t-field='doc.name']" position="before">
+            <t t-if="env.context.get('commercial', False) or is_commercial">
+                <span>Commercial Invoice # </span>
+            </t>
+        </xpath>
+
         <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//p[@t-if='doc.partner_id.vat']" position="after">
             <div t-if="doc.carrier_id">
                 <strong>Delivery Method:</strong>
@@ -88,7 +100,7 @@
 
         <xpath expr="//p[@t-field='doc.note']" position="before">
             <p t-field="doc.add_notes"/>
-            <t t-if="env.context.get('proforma', False) or is_pro_forma">
+            <t t-if="(env.context.get('proforma', False) or is_pro_forma) and not is_commercial">
                 <div class="bank-box">
                     <style>
                         .bank-box{
@@ -166,6 +178,10 @@
                 <strong>Customer Reference (PO):</strong>
                 <p t-field="doc.cust_ref"/>
             </div>
+            <div t-if="doc.incoterms" class="col-xs-3">
+                <strong>Incoterms:</strong>
+                <p t-field="doc.incoterms"/>
+            </div>
         </xpath>
 
         <!-- Changing the description here because of pathing issues. This removes the reference in discription. -->
@@ -196,4 +212,12 @@
 
     </template>
 
+    <template id="report_saleorder_commercial">
+        <t t-call="web.html_container">
+            <t t-set="is_commercial" t-value="True"/>
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="sale.report_saleorder_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
 </odoo>

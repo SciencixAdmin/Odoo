@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="report_delivery_document_inherit_sciencix" inherit_id="stock.report_delivery_document">
+        <xpath expr="//span[@t-field='o.date_done']" position="attributes">
+            <attribute name="t-options">{'widget': 'date'}</attribute>
+        </xpath>
+        <xpath expr="//span[@t-field='o.scheduled_date']" position="attributes">
+            <attribute name="t-options">{'widget': 'date'}</attribute>
+        </xpath>
+    </template>
+
+    <template id="report_delivery_document2_inherit_sciencix" inherit_id="delivery.report_delivery_document2">
+        <xpath expr="//th[@t-if='o.carrier_tracking_ref']" position="after">
+            <th t-if="o.customer_reference"><strong>Customer Reference (PO)</strong></th>
+            <th t-if="o.sale_id and o.sale_id.client_order_ref"><strong>Customer PO</strong></th>
+        </xpath>
+        <xpath expr="//td[@t-if='o.carrier_tracking_ref']" position="after">
+            <td t-if="o.customer_reference">
+                <span t-field="o.customer_reference"/>
+            </td>
+            <td t-if="o.sale_id and o.sale_id.client_order_ref">
+                <span t-field="o.sale_id.client_order_ref"/>
+            </td>
+        </xpath>
+    </template>
+
+</odoo>

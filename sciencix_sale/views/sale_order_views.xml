@@ -33,4 +33,19 @@
             </div>
         </field>
     </record>
+
+    <record id="view_order_form_inherit_sciencix" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.sciencix</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                <field name="welcome_materials"/>
+                <field name="do_not_insure"/>
+                <field name="duty_paid"/>
+                <field name="incoterms"/>
+                <field name="no_signature_required"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
