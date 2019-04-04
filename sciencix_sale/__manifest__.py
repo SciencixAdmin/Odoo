@@ -64,7 +64,6 @@ Various changes based on Task 1946626.
         'views/sale_order_views.xml',
         'views/templates.xml',
         'views/account_invoice.xml',
-        'views/stock_picking.xml',
         # Report
         'report/report_delivery_slip.xml',
         'report/report_sale_order.xml',
