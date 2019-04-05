@@ -43,14 +43,21 @@ Various additions to the SO/PROFORMA-INVOICE/INVOICE reports.
 Sales Development Part 4
 ========================
 Various changes based on Task 1946626.
-* Added fields to sale.order (migrated from studio fields): welcome_materials, do_not_insure, duty_paid, incoterms, no_signature_required
+
+* Added fields to sale.order (migrated from studio fields, data needs to be moved to new fields):
+    * Do Not Insure:            x_studio_field_oKpWY to do_not_insure
+    * Welcome Materials:        x_studio_field_BYiHE to welcome_materials
+    * Duty Paid:                x_studio_field_4jDfG to duty_paid
+    * No Signature Required:    x_studio_field_aKJQw to no_signature_required
+    * Incoterms:                x_studio_field_r5B8l to incoterms
+
 * Requirement 5: New report - Commercial Invoice
-  * Create a new report printable from a sale order.
-  * Duplicate the proforma Invoice report
-  * Rename Proforma Invoice to Commercial Invoice
-  * Remove the bank information block, Bank charge block and Please note block.
-  * Add field Customer Reference (PO) from the SO under Other Information.
-  * Add field Incoterms on the header from the SO form only if the field is filled in.
+    * Create a new report printable from a sale order.
+    * Duplicate the proforma Invoice report
+    * Rename Proforma Invoice to Commercial Invoice
+    * Remove the bank information block, Bank charge block and Please note block.
+    * Add field Customer Reference (PO) from the SO under Other Information.
+    * Add field Incoterms on the header from the SO form only if the field is filled in.
     """,
     'category': 'Custom Development',
     'depends': ['sale_management', 'delivery', 'website_sale', 'sale_stock', 'account', 'sale_order_dates'],
