@@ -63,6 +63,9 @@ Purchase Development
         # Report
         'report/report_purchase.xml',
         'report/report_agreement.xml',
+
+        # views
+        'views/purchase_view.xml',
     ],
     'demo': [],
     'qweb': [],
