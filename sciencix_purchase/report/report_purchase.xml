@@ -146,7 +146,7 @@
             </xpath>
             <xpath expr="//table[1]/tbody/tr/td[1]" position="before">
                 <td style="text-align: left ! important;">
-                    <span t-esc="line.seller_product_code"/>
+                    <span t-esc="line.seller_product_code or line.product_id.default_code"/>
                 </td>
             </xpath>
             <span t-field="line.name" position="replace">
