@@ -24,7 +24,9 @@ class StockPicking(models.Model):
     no_signature_required = fields.Boolean(related="sale_id.no_signature_required", string="No Signature Required")
     source_mo_product_id = fields.Many2one('product.product', 'Source MO Product', compute='_compute_source_mo_product_id')
 
+    @api.multi
     @api.depends('group_id.name')
     def _compute_source_mo_product_id(self):
-        origin_mo = self.env['mrp.production'].search([('name', '=', self.group_id.name)], limit=1)
-        self.source_mo_product_id = origin_mo.product_id
+        for picking in self:
+            origin_mo = self.env['mrp.production'].search([('name', '=', picking.group_id.name)], limit=1)
+            picking.source_mo_product_id = origin_mo.product_id
