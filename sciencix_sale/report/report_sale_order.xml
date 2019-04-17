@@ -19,8 +19,8 @@
 
         <!-- Added Sequence numbering and PartID to SO line.-->
         <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[1]" position="before">
-            <th> </th>
-            <th>PartID</th>
+            <th width="10%"> </th>
+            <th width="10%">PartID</th>
         </xpath>
 
         <xpath expr="//*[@t-as='page']/table/tbody/t/t[@t-as='l']/tr/td[1]" position="before">
@@ -31,7 +31,7 @@
                 <td><span t-field="l.product_alias_id"/></td>
             </t>
             <t t-elif="l.product_id.default_code">
-                <td>[<span t-field="l.product_id.default_code"/>]</td>
+                <td><span t-field="l.product_id.default_code"/></td>
             </t>
             <t t-else=""><td/></t>
         </xpath>
@@ -163,7 +163,7 @@
 
         <xpath expr="//div[hasclass('row', 'mt32', 'mb32')]//div[last()]" position="after">
             <div t-if="doc.cust_ref" class="col-xs-3">
-                <strong>Customer Ref:</strong>
+                <strong>Customer Reference (PO):</strong>
                 <p t-field="doc.cust_ref"/>
             </div>
         </xpath>
@@ -188,6 +188,11 @@
         <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//div[@t-field='doc.partner_id']" position="replace"/>
         <!-- Remove Sales Person -->
         <xpath expr="//div[@t-if='doc.user_id.name']" position="replace"/>
+        <!-- Remove trailing zeros in quantity -->
+        <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.product_uom_qty']" position="replace">
+            <span t-esc="int(float(l.product_uom_qty))"/>
+        </xpath>
+
 
     </template>
 

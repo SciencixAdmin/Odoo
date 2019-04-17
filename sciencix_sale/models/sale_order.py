@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
     customer_account_no = fields.Char(string='Customer Account number', help="This is the customer delivery a/c detail, When creating the SO, this should also be pulled from the contact form if the delivery method is selected.")
 
     add_notes = fields.Text(string="Additional notes", store=True)
-    cust_ref = fields.Char(string="Customer Ref", store=True)
+    cust_ref = fields.Char(string="Customer Reference (PO)", store=True)
     so_valid_date = fields.Datetime(compute="_get_valid_date",string="Proforma Valid Until",store=True)
 
     @api.onchange('partner_id')
