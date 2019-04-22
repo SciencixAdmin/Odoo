@@ -12,6 +12,14 @@
     <!-- # Add a new column COO (Country of Origin) on Sale Order PDF and Delivery Slip PDF
     # and display the relevant COO from the product template ONLY -->
     <template id="report_saleorder_document_layouted_sciencix" inherit_id="sale.report_saleorder_document" priority="100">
+        <!-- Mark tables with class to align their totals to the right - GYE -->
+        <xpath expr="//tbody[hasclass('sale_tbody')]/parent::table" position="attributes">
+            <attribute name="class">table table-condensed table-totals</attribute>
+        </xpath>
+        <xpath expr="//div[@name='total']//table" position="attributes">
+            <attribute name="class">table table-condensed table-totals</attribute>
+        </xpath>
+
         <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[1]" position="after">
             <th>Country of Origin</th>
             <th>Schedule B Number</th>
