@@ -4,9 +4,6 @@
             tr th:last-child {
                 text-align: right !important;
             }
-            tr th:first-child {
-                width: auto !important;
-            }
         }
         tbody {
             tr {
@@ -20,7 +17,13 @@
         }
 
     }
-
+    table {
+        thead {
+            tr th:first-child {
+                width: auto !important;
+            }
+        }
+    }
     .bank-box {
         width: 60% !important;
 
