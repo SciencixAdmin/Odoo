@@ -2,10 +2,7 @@
     table.table-totals {
         thead {
             tr th:last-child {
-                text-align: right !important;
-            }
-            tr th:first-child {
-                width: auto !important;
+                text-align: left !important;
             }
         }
         tbody {
@@ -14,13 +11,18 @@
                     text-align: right !important;
                 }
                 td:last-child {
-                    text-align: right !important;
+                    text-align: left !important;
                 }
             }
         }
-
     }
-
+    table {
+        thead {
+            tr th:first-child {
+                width: auto !important;
+            }
+        }
+    }
     .bank-box {
         width: 60% !important;
 
