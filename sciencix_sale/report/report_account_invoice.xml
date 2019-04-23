@@ -46,6 +46,10 @@
                     <td><span t-field="l.product_alias_id"/></td>
                 </t>
             </xpath>
+            <!-- Mark tables with class to align their totals to the right - GYE -->
+            <xpath expr="//t[@name='lines_layouted']/table" position="attributes">
+                <attribute name="class">table table-condensed table-totals</attribute>
+            </xpath>
         </template>
 
         <!-- Dev for additional Invoice Report Modifications - CIC -->
