@@ -17,7 +17,6 @@ class SaleOrder(models.Model):
     welcome_materials = fields.Boolean(string="Welcome Materials")
     do_not_insure = fields.Boolean(string="Do Not Insure")
     duty_paid = fields.Boolean(string="Duty Paid")
-    incoterms = fields.Char(string="Incoterms")
     no_signature_required = fields.Boolean(string="No Signature Required")
 
     @api.onchange('partner_id')
