@@ -23,6 +23,7 @@ class StockPicking(models.Model):
     incoterms = fields.Many2one(related="sale_id.incoterm", string="Incoterms")
     no_signature_required = fields.Boolean(related="sale_id.no_signature_required", string="No Signature Required")
     source_mo_product_id = fields.Many2one('product.product', 'Source MO Product', compute='_compute_source_mo_product_id')
+    source_so_carrier = fields.Char('Source SO Carrier', compute='_compute_source_so_carrier')
 
     @api.multi
     @api.depends('group_id.name')
@@ -30,3 +31,10 @@ class StockPicking(models.Model):
         for picking in self:
             origin_mo = self.env['mrp.production'].search([('name', '=', picking.group_id.name)], limit=1)
             picking.source_mo_product_id = origin_mo.product_id
+
+    @api.multi
+    @api.depends('group_id.name')
+    def _compute_source_so_carrier(self):
+        for picking in self:
+            origin_so = self.env['sale.order'].search([('name', '=', picking.group_id.name)], limit=1)
+            picking.source_so_carrier = origin_so.carrier_id.name
