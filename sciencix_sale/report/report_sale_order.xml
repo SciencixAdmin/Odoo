@@ -186,10 +186,6 @@
                 <strong>Customer Reference (PO):</strong>
                 <p t-field="doc.cust_ref"/>
             </div>
-            <div t-if="doc.incoterm" class="col-xs-3">
-                <strong>Incoterms:</strong>
-                <p t-field="doc.incoterm"/>
-            </div>
         </xpath>
 
         <!-- Changing the description here because of pathing issues. This removes the reference in discription. -->
