@@ -56,7 +56,6 @@ Various changes based on Task 1946626.
     * Rename Proforma Invoice to Commercial Invoice
     * Remove the bank information block, Bank charge block and Please note block.
     * Add field Customer Reference (PO) from the SO under Other Information.
-    * Add field Incoterms on the header from the SO form only if the field is filled in.
     """,
     'category': 'Custom Development',
     'depends': ['sale_management', 'delivery', 'website_sale', 'sale_stock', 'account', 'sale_order_dates'],
