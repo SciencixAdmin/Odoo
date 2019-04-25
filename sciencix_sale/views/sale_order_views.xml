@@ -43,7 +43,6 @@
                 <field name="welcome_materials"/>
                 <field name="do_not_insure"/>
                 <field name="duty_paid"/>
-                <field name="incoterms"/>
                 <field name="no_signature_required"/>
             </xpath>
         </field>

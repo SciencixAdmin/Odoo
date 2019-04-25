@@ -20,7 +20,7 @@ class StockPicking(models.Model):
     welcome_materials = fields.Boolean(related="sale_id.welcome_materials", string="Welcome Materials")
     do_not_insure = fields.Boolean(related="sale_id.do_not_insure", string="Do Not Insure")
     duty_paid = fields.Boolean(related="sale_id.duty_paid", string="Duty Paid")
-    incoterms = fields.Char(related="sale_id.incoterms", string="Incoterms")
+    incoterms = fields.Char(related="sale_id.incoterm", string="Incoterms")
     no_signature_required = fields.Boolean(related="sale_id.no_signature_required", string="No Signature Required")
     source_mo_product_id = fields.Many2one('product.product', 'Source MO Product', compute='_compute_source_mo_product_id')
 

@@ -49,7 +49,6 @@ Various changes based on Task 1946626.
     * Welcome Materials:        x_studio_field_BYiHE to welcome_materials
     * Duty Paid:                x_studio_field_4jDfG to duty_paid
     * No Signature Required:    x_studio_field_aKJQw to no_signature_required
-    * Incoterms:                x_studio_field_r5B8l to incoterms
 
 * Requirement 5: New report - Commercial Invoice
     * Create a new report printable from a sale order.
