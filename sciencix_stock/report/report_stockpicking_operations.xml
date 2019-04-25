@@ -17,9 +17,10 @@
         </xpath>
         <!-- Add Customer Account Number (custom field) and Carrier ID  -->
         <xpath expr="//div[hasclass('page')]/div[hasclass('row')]" position="after">
+            <t t-set="carrier_name" t-value="o.carrier_id.display_name or o.source_so_carrier"/>
             <div class="row">
                 <div class="col-xs-12">
-                    <span><strong>Carrier/Service: <span t-field="o.carrier_id"/></strong></span>
+                    <span><strong>Carrier/Service: <span t-esc="carrier_name"/></strong></span>
                     <br/>
                     <span><strong>Customer Account: <span t-field="o.customer_account_number"/></strong></span>
                 </div>
