@@ -186,9 +186,9 @@
                 <strong>Customer Reference (PO):</strong>
                 <p t-field="doc.cust_ref"/>
             </div>
-            <div t-if="doc.incoterms" class="col-xs-3">
+            <div t-if="doc.incoterm" class="col-xs-3">
                 <strong>Incoterms:</strong>
-                <p t-field="doc.incoterms"/>
+                <p t-field="doc.incoterm"/>
             </div>
         </xpath>
 
