@@ -8,9 +8,10 @@ from odoo import api, fields, models
 class PurchaseOrderLine(models.Model):
 
     _inherit = 'purchase.order.line'
-    
+
     seller_product_code = fields.Char(string="Seller Product Code")
-    
+    seller_product_name = fields.Char(string="Seller Product Name")
+
     @api.onchange('product_qty', 'product_uom')
     def _onchange_quantity(self):
         super(PurchaseOrderLine, self)._onchange_quantity()
@@ -24,3 +25,4 @@ class PurchaseOrderLine(models.Model):
             uom_id=self.product_uom)
 
         self.seller_product_code = seller.product_code if seller else self.product_id.default_code
+        self.seller_product_name = seller.product_name if seller else self.product_id.name
