@@ -12,9 +12,6 @@
         <xpath expr="//tr[@t-foreach='o.move_line_ids']//t[@t-if='has_serial_number']//table" position="attributes">
             <attribute name="class">table-clean</attribute>
         </xpath>
-        <xpath expr="//tr[@t-foreach='o.move_line_ids']//t[@t-if='has_serial_number']//table/parent::td" position="attributes">
-            <attribute name="class">td-clean</attribute>
-        </xpath>
         <!-- Remove 0s from quantity (if int(qty_done) == qty_done, then use int) -->
         <xpath expr="//span[@t-field='move_line.qty_done']" position="replace">
             <t t-set="qty_done" t-value="move_line.qty_done and ((int(move_line.qty_done) == move_line.qty_done and int(move_line.qty_done)) or move_line.qty_done)"/>
