@@ -40,6 +40,9 @@ Task 1946626
   1. Add field Customer Reference (PO) field. This is the Customer Reference (2) field on the Transfer Form (display only if there is a value)
   2. Remove time from the date.
   3. Add Customer PO field from the Sale Order form (display only if there is a value)
+  4. Add Incoterms (display only if there is a value)
+  5. Add TIN/VAT from partner_id. Label should be TIN if US, VAT if not. (display only if there is a value)
+
 
 Fields migrated from studio:
 ----------------------------

@@ -17,6 +17,22 @@
             <t t-set="qty_done" t-value="move_line.qty_done and ((int(move_line.qty_done) == move_line.qty_done and int(move_line.qty_done)) or move_line.qty_done)"/>
             <span t-esc="qty_done"/>
         </xpath>
+        <!-- Add Incoterms if present on stock.picking, add TIN/VAT if present on partner-->
+        <xpath expr="//th[@name='td_sched_date_h']" position="after">
+            <th t-if="o.incoterms"><strong>Incoterms</strong></th>
+            <th t-if="o.partner_id and o.partner_id.vat">
+                <strong t-if="o.partner_id.country_id.code == 'US'">TIN</strong>
+                <strong t-if="o.partner_id.country_id.code != 'US'">VAT</strong>
+            </th>
+        </xpath>
+        <xpath expr="//td[@name='td_sched_date']" position="after">
+            <td t-if="o.incoterms">
+                <span t-field="o.incoterms"/>
+            </td>
+            <td t-if="o.partner_id and o.partner_id.vat">
+                <span t-field="o.partner_id.vat"/>
+            </td>
+        </xpath>
     </template>
 
     <template id="report_delivery_document2_inherit_sciencix" inherit_id="delivery.report_delivery_document2">
