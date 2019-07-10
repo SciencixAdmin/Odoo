@@ -40,7 +40,7 @@
             <table class="table table-condensed">
                 <thead>
                     <tr>
-                        <th>Welcome Materials</th>
+                        <th class="text-left">Welcome Materials</th>
                         <th>Do Not Insure</th>
                         <th>Duty Paid</th>
                         <th>Incoterms</th>
@@ -49,7 +49,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
+                        <td class="text-left">
                             <span t-if="o.welcome_materials">Yes</span>
                             <span t-else="">No</span>
                         </td>
