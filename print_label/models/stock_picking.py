@@ -8,11 +8,6 @@ class StockPickingType(models.Model):
     print_label_bool = fields.Boolean(string='Print Label', default=False)
 
 class StockPicking(models.Model):
-	_inherit = 'stock.picking'
+    _inherit = 'stock.picking'
 
-	print_label_bool = fields.Boolean(related='picking_type_id.print_label_bool')
-
-class ProductTemplate(models.Model):
-	_inherit = 'product.template'
-
-	oem = fields.Char(string='OEM')
+    print_label_bool = fields.Boolean(related='picking_type_id.print_label_bool')
