@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Print Label",
-
+    'name': "Sciencix: Print Label",
     'summary': "Add barcode label on picking",
 
+    'license': 'OEEL-1',
     'description': "Add barcode label on picking",
 
-    'author': "Odoo",
+    'author': "Odoo Inc",
     'website': "http://www.odoo.com",
 
     # Categories can be used to filter modules in modules listing
