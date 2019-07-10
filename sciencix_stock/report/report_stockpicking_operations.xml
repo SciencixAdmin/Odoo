@@ -2,15 +2,15 @@
 <odoo>
     <template id="report_picking_inherit_sciencix" inherit_id="stock.report_picking">
         <!-- Add column header for country_origin (COO)  -->
-        <xpath expr="//table[@t-if='o.move_line_ids']/thead/tr/th/t[@t-if='has_barcode']/.." position="after">
+        <xpath expr="//table[@t-if='o.move_line_ids']/thead/tr/th[@t-if='has_barcode']/.." position="after">
             <th width="8%">COO</th>
         </xpath>
         <!-- Adjust widths to fit the new COO column -->
-        <xpath expr="//table[@t-if='o.move_line_ids']/thead/tr/th/t[@t-if='has_serial_number']/../following-sibling::th" position="attributes">
+        <xpath expr="//table[@t-if='o.move_line_ids']/thead/tr/th[@t-if='has_serial_number']/../following-sibling::th" position="attributes">
             <attribute name="width">12%</attribute>
         </xpath>
         <!-- Add COO data -->
-        <xpath expr="//table[@t-if='o.move_line_ids']/tbody/tr/td/t[@t-if='has_barcode']/.." position="after">
+        <xpath expr="//table[@t-if='o.move_line_ids']/tbody/t[1]/t[1]/tr/td[@t-if='has_barcode']/.." position="after">
             <td>
                 <span t-field="move.product_id.country_origin"/>
             </td>
