@@ -58,7 +58,7 @@ Various changes based on Task 1946626.
     * Add field Customer Reference (PO) from the SO under Other Information.
     """,
     'category': 'Custom Development',
-    'depends': ['sale_management', 'delivery', 'website_sale', 'sale_stock', 'account', 'sale_order_dates'],
+    'depends': ['sale_management', 'delivery', 'website_sale', 'sale_stock', 'account'],
     'data': [
         # 'security/sciencix_sale.xml',
         'security/ir.model.access.csv',
@@ -71,10 +71,10 @@ Various changes based on Task 1946626.
         'views/account_invoice.xml',
         'views/stock_picking.xml',
         # Report
-        'report/report_delivery_slip.xml',
-        'report/report_sale_order.xml',
-        'report/report_account_invoice.xml',
-        'report/sale_report.xml',
+        # 'report/report_delivery_slip.xml',
+        # 'report/report_sale_order.xml',
+        # 'report/report_account_invoice.xml',
+        # 'report/sale_report.xml',
 
     ],
     'demo': [],
