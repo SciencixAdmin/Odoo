@@ -19,7 +19,7 @@
         <xpath expr="//div[hasclass('page')]/div[hasclass('row')]" position="after">
             <t t-set="carrier_name" t-value="o.carrier_id.display_name or o.source_so_carrier"/>
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-6">
                     <span><strong>Carrier/Service: <span t-esc="carrier_name"/></strong></span>
                     <br/>
                     <span><strong>Customer Account: <span t-field="o.customer_account_number"/></strong></span>
@@ -74,7 +74,7 @@
             <t t-if="o.partner_id and o.partner_id.picking_warn != 'no-message'">
                 <br/>
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <span><strong>Notes: <span t-field="o.partner_id.picking_warn_msg"/></strong></span>
                     </div>
                 </div>
