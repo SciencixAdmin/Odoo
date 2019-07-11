@@ -73,7 +73,7 @@ Various changes based on Task 1946626.
         # Report
         # 'report/report_delivery_slip.xml',
         'report/report_sale_order.xml',
-        # 'report/report_account_invoice.xml',
+        'report/report_account_invoice.xml',
         'report/sale_report.xml',
 
     ],
