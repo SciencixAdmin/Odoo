@@ -10,19 +10,6 @@
             <xpath expr="//div[@id='total']//table" position="attributes">
                 <attribute name="class">table table-condensed table-totals</attribute>
             </xpath>
-
-            <xpath expr="//table/thead/tr/th[1]" position="before">
-                <t t-set="alias_exist" t-value="False"/>
-                <t t-if="any(o.invoice_line_ids.filtered(lambda line: line.product_alias_id))">
-                    <t t-set="alias_exist" t-value="True"/>
-                    <th>Product</th>
-                </t>
-            </xpath>
-            <xpath expr="//table/tbody[hasclass('invoice_tbody')]//tr/td[1]" position="before">
-                <t t-if="alias_exist">
-                    <td><span t-field="line.product_alias_id"/></td>
-                </t>
-            </xpath>
         </template>
 
 <!--        <template id="report_sale_report_invoice_layouted_inherit_tgwt" inherit_id="sale.report_invoice_layouted">-->
@@ -65,32 +52,37 @@
             </xpath>
             <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr//td[1]" position="before">
                 <td class="text-center"><span t-esc="line_index + 1"/>.</td>
-                <t t-if="line.product_id.default_code">
+
+                <!-- If there is a product alias, use that for partID elseif Reference, use that, else nothing -->
+                <t t-if="line.product_alias_id">
+                    <td><span t-field="line.product_alias_id"/></td>
+                </t>
+                <t t-elif="line.product_id.default_code">
                     <td><span t-field="line.product_id.default_code"/></td>
                 </t>
                 <t t-else=""><td/></t>
             </xpath>
 
-<!--            <xpath expr="//div[@t-if='o.partner_id.vat']" position="after">-->
-<!--                <div t-if="o.inv_picking_policy in ['direct']">-->
-<!--                    <br/>-->
-<!--                    <strong>Shipping Policy:</strong>-->
-<!--                    <p>Ship Partial</p>-->
-<!--                </div>-->
-<!--                <div t-if="o.inv_picking_policy in ['one']">-->
-<!--                    <br/>-->
-<!--                    <strong>Shipping Policy:</strong>-->
-<!--                    <p>Ship Complete</p>-->
-<!--                </div>-->
-<!--            </xpath>-->
+            <xpath expr="//t[@t-set='address']//div[@t-if='o.partner_id.vat']" position="replace">
+                <div t-if="o.partner_id.vat" class="mt16">
+                    <br/>
+                    <t t-if="o.partner_id.country_id.code != 'US'"><strong>VAT:</strong> <span t-field="o.partner_id.vat"/></t>
+                    <t t-if="o.partner_id.country_id.code == 'US'"><strong>TIN:</strong> <span t-field="o.partner_id.vat"/></t>
+                </div>
+            </xpath>
 
-<!--            <xpath expr="//div[@t-if='o.partner_id.vat']" position="replace">-->
-<!--                <div t-if="o.partner_id.vat" class="mt16">-->
-<!--                    <br/>-->
-<!--                    <t t-if="o.partner_id.country_id.code != 'US'"><strong>VAT:</strong> <span t-field="o.partner_id.vat"/></t>-->
-<!--                    <t t-if="o.partner_id.country_id.code == 'US'"><strong>TIN:</strong> <span t-field="o.partner_id.vat"/></t>-->
-<!--                </div>-->
-<!--            </xpath>-->
+            <xpath expr="//t[@t-set='address']//div[@t-if='o.partner_id.vat']" position="after">
+                <div t-if="o.inv_picking_policy in ['direct']">
+                    <br/>
+                    <strong>Shipping Policy:</strong>
+                    <p>Ship Partial</p>
+                </div>
+                <div t-if="o.inv_picking_policy in ['one']">
+                    <br/>
+                    <strong>Shipping Policy:</strong>
+                    <p>Ship Complete</p>
+                </div>
+            </xpath>
 
             <xpath expr="//p[@t-if='o.comment']" position="before">
                 <p t-if="o.inv_add_notes">

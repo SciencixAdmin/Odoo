@@ -33,7 +33,6 @@
 
         <xpath expr="//table/tbody[hasclass('sale_tbody')]//t[@t-as='line']/tr//td[1]" position="before">
             <td class="text-center"><span t-esc="line_index + 1"/>.</td>
-
             <!-- If there is a product alias, use that for partID elseif Reference, use that, else nothing -->
             <t t-if="line.product_alias_id">
                 <td><span t-field="line.product_alias_id"/></td>
@@ -48,7 +47,45 @@
             <td><span t-field="line.country_origin"/></td>
             <td><span t-field="line.hs_code"/></td>
         </xpath>
+
+        <xpath expr="//t[@t-set='address']//p[@t-if='doc.partner_id.vat']" position="replace">
+            <p t-if="doc.partner_id.vat">
+                <t t-if="doc.partner_id.country_id.code != 'US'"><strong>VAT:</strong> <span t-field="doc.partner_id.vat"/></t>
+                <t t-if="doc.partner_id.country_id.code == 'US'"><strong>TIN:</strong> <span t-field="doc.partner_id.vat"/></t>
+            </p>
+        </xpath>
+        <!-- Remove the Customer's address -->
+        <xpath expr="//t[@t-set='address']//div[@t-field='doc.partner_id']" position="replace"/>
+
+        <xpath expr="//t[@t-set='address']//p[@t-if='doc.partner_id.vat']" position="after">
+            <div t-if="doc.carrier_id">
+                <strong>Delivery Method:</strong>
+                <p><span t-field="doc.carrier_id"/></p>
+                <br/>
+            </div>
+
+            <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+                <div t-if="doc.commitment_date">
+<!--                    <strong>Requested Date:</strong>-->
+                    <strong>Commitment Date:</strong>
+                    <p><span t-field="doc.commitment_date" t-options='{"widget": "date"}'/></p>
+                    <br/>
+                </div>
+            </t>
+
+            <div t-if="doc.picking_policy in ['direct']">
+                <strong>Shipping Policy:</strong>
+                <p>Ship Partial</p>
+                <br/>
+            </div>
+            <div t-if="doc.picking_policy in ['one']">
+                <strong>Shipping Policy:</strong>
+                <p>Ship Complete</p>
+                <br/>
+            </div>
+        </xpath>
     </template>
+
 
     <!-- Dev for additional Invoice Report Modifications - CIC -->
     <template id="inherited_report_saleorder_document_sciencix" inherit_id="sale.report_saleorder_document" priority="200">
@@ -63,40 +100,6 @@
                 <span>Commercial Invoice # </span>
             </t>
         </xpath>
-
-<!--        <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//p[@t-if='doc.partner_id.vat']" position="after">-->
-<!--            <div t-if="doc.carrier_id">-->
-<!--                <strong>Delivery Method:</strong>-->
-<!--                <p><span t-field="doc.carrier_id"/></p>-->
-<!--                <br/>-->
-<!--            </div>-->
-
-<!--            <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">-->
-<!--                <div t-if="doc.requested_date">-->
-<!--                    <strong>Requested Date:</strong>-->
-<!--                    <p><span t-field="doc.requested_date" t-field-options="{&quot;format&quot;:&quot;MM/dd/yy&quot;}"/></p>-->
-<!--                    <br/>-->
-<!--                </div>-->
-<!--            </t>-->
-
-<!--            <div t-if="doc.picking_policy in ['direct']">-->
-<!--                <strong>Shipping Policy:</strong>-->
-<!--                <p>Ship Partial</p>-->
-<!--                <br/>-->
-<!--            </div>-->
-<!--            <div t-if="doc.picking_policy in ['one']">-->
-<!--                <strong>Shipping Policy:</strong>-->
-<!--                <p>Ship Complete</p>-->
-<!--                <br/>-->
-<!--            </div>-->
-<!--        </xpath>-->
-
-<!--        <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//p[@t-if='doc.partner_id.vat']" position="replace">-->
-<!--            <p t-if="doc.partner_id.vat">-->
-<!--                <t t-if="doc.partner_id.country_id.code != 'US'"><strong>VAT:</strong> <span t-field="doc.partner_id.vat"/></t>-->
-<!--                <t t-if="doc.partner_id.country_id.code == 'US'"><strong>TIN:</strong> <span t-field="doc.partner_id.vat"/></t>-->
-<!--            </p>-->
-<!--        </xpath>-->
 
         <xpath expr="//p[@t-field='doc.confirmation_date']" position="replace">
             <p class="m-0" t-field="doc.confirmation_date" t-options='{"widget": "date"}'/>
@@ -204,8 +207,6 @@
 
         <!-- Remove the Second Payment Terms near notes -->
         <xpath expr="//p[@t-if='doc.payment_term_id.note']" position="replace"/>
-<!--        &lt;!&ndash; Remove the Customer's address &ndash;&gt;-->
-<!--        <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//div[@t-field='doc.partner_id']" position="replace"/>-->
         <!-- Remove Sales Person -->
         <xpath expr="//div[@t-if='doc.user_id.name']" position="replace"/>
         <!-- Remove trailing zeros in quantity -->
@@ -213,6 +214,7 @@
             <span t-esc="int(float(line.product_uom_qty))"/>
         </xpath>
     </template>
+
 
     <template id="report_saleorder_commercial">
         <t t-call="web.html_container">
