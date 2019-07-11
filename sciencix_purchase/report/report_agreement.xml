@@ -2,34 +2,34 @@
 <odoo>
     <data>
         <template id="report_purchaserequisitions_sci" inherit_id="purchase_requisition.report_purchaserequisitions">
-            <xpath expr="//div[hasclass('page')]" position="attributes">
-                <attribute name="style">margin-top:0px !important; padding-top:0px !important</attribute>
-            </xpath>
+            <!-- <xpath expr="//div[hasclass('page')]" position="attributes"> -->
+            <!--     <attribute name="style">margin-top:0px !important; padding-top:0px !important</attribute> -->
+            <!-- </xpath> -->
             <xpath expr="//div[hasclass('page')]/div[2]" position="replace"/>
             <xpath expr='//span[@t-field="o.name"][1]/..' position="before">
                 <div class="row">
                     <t t-set='company' t-value='o.company_id' />
-                    <div class="col-xs-4" style="top:20px;width:33%;">
+                    <div class="col-4">
                         <strong>Ship To:</strong>
                         <span t-field="company.partner_id"
                             t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
                     </div>
-                    <div class="col-xs-4" style="top:20px;width:33%;">
+                    <div class="col-4">
                         <strong>Bill To:</strong>
                         <t t-set="inveoice_address" t-value="company.partner_id.child_ids.filtered(lambda c: c.type == 'invoice')" />
                         <div t-esc="inveoice_address"
                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
                     </div>
-                    <div class="col-xs-4" style="top:20px;width:34%;">
+                    <div class="col-4">
                         <strong>Vendor Contact:</strong>
                         <div t-field="o.vendor_id"
                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
                     </div>
                 </div>
             </xpath>
-            <xpath expr='//span[@t-field="o.name"][1]/..' position="replace">
-                <h2>Blanket Order No: <span t-field="o.name"/></h2>
-            </xpath>
+            <!-- <xpath expr='//span[@t-field="o.name"][1]/..' position="replace"> -->
+            <!--     <h2>Blanket Order No: <span t-field="o.name"/></h2> -->
+            <!-- </xpath> -->
             <t t-if="o.purchase_ids" position="after">
                 <h4>Note: <span t-field="o.description"/></h4>
             </t>
@@ -65,7 +65,7 @@
                                     <span t-if="line.name" t-esc="line.name.split(']')[-1]"/>
                                 </td>
                                 <td>
-                                    <t t-set="date_planned" t-value="datetime.datetime.strptime(line.date_planned, '%Y-%m-%d %H:%M:%S').strftime('%m-%d-%Y')"/>
+                                    <t t-set="date_planned" t-value="line.date_planned.strftime('%m-%d-%Y')"/>
                                     <span t-esc="date_planned"/>
                                 </td>
                                 <td class="text-left">
@@ -142,7 +142,7 @@
             </t>
         </template>
     </data>
-    <record id="purchase_requisition.action_report_purchase_requisitions" model="ir.actions.report">
-        <field name="paperformat_id" ref="sciencix_purchase.paperformat_us_sci"/>
-    </record>
+    <!-- <record id="purchase_requisition.action_report_purchase_requisitions" model="ir.actions.report"> -->
+    <!--     <field name="paperformat_id" ref="sciencix_purchase.paperformat_us_sci"/> -->
+    <!-- </record> -->
 </odoo>
