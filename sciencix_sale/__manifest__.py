@@ -72,9 +72,9 @@ Various changes based on Task 1946626.
         'views/stock_picking.xml',
         # Report
         # 'report/report_delivery_slip.xml',
-        # 'report/report_sale_order.xml',
+        'report/report_sale_order.xml',
         # 'report/report_account_invoice.xml',
-        # 'report/sale_report.xml',
+        'report/sale_report.xml',
 
     ],
     'demo': [],
