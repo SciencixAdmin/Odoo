@@ -12,7 +12,7 @@
         </xpath>
     </template> -->
     <template id="assets_common" inherit_id="web.assets_common" name="Web Editor Common Assets (used in backend interface and website)">
-        <xpath expr="script[last()]" position="after">
+        <xpath expr="//script[last()]" position="after">
             <script type="text/javascript" src="/theme_sciencix/static/src/js/sciencix.js"/>
         </xpath>
     </template>
