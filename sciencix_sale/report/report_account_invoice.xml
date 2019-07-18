@@ -91,28 +91,28 @@
             </xpath>
 
             <xpath expr="//div[@id='informations']//div[last()]" position="after">
-                <div t-if="o.inv_cust_ref" class="col-xs-3">
+                <div t-if="o.inv_cust_ref" class="col-auto mw-100 mb-2">
                     <strong>Customer Reference (PO):</strong>
                     <p t-field="o.inv_cust_ref"/>
                 </div>
-                <div t-if="o.payment_term_id" class="col-xs-3">
+                <div t-if="o.payment_term_id" class="col-auto mw-100 mb-2">
                     <strong>Payment Terms:</strong>
                     <p t-field="o.payment_term_id.note"/>
                 </div>
             </xpath>
 
             <xpath expr="//div[@t-if='o.name']" position="replace">
-                <div t-if="o.name" class="col-xs-2">
+                <div t-if="o.name" class="col-auto mw-100 mb-2" name="description">
                     <strong>Customer PO:</strong>
                     <p t-field="o.name"/>
                 </div>
             </xpath>
 
             <!-- Remove the Source from after Invoice Date -->
-            <xpath expr="//div[@t-if='o.origin']" position="replace"/>
+            <xpath expr="//div[@name='origin']" position="replace"/>
             <!-- Move it to in between cust PO and invoice date -->
-            <xpath expr="//div[@t-if='o.date_invoice']" position="before">
-                <div class="col-xs-2" t-if="o.origin">
+            <xpath expr="//div[@name='invoice_date']" position="before">
+                <div class="col-auto mw-100 mb-2" t-if="o.origin" name="origin">
                     <strong>Source:</strong>
                     <p t-field="o.origin"/>
                 </div>

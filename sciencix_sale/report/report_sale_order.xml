@@ -164,7 +164,7 @@
                 <div class="charge-box">
                     <style>
                         .charge-box{
-                            margin:auto;width:60%;padding:10px 8px 0px;border-style:solid;border-width:2px;page-break-inside:avoid;text-align:center;
+                            margin:auto;width:65%;padding:10px 8px 0px;border-style:solid;border-width:2px;page-break-inside:avoid;text-align:center;
                         }
                     </style>
                     <p>Any bank charges arising from payment are borne by the purchaser.</p>
