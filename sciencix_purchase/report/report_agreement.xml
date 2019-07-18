@@ -11,13 +11,13 @@
                     <t t-set='company' t-value='o.company_id' />
                     <div class="col-4">
                         <strong>Ship To:</strong>
-                        <span t-field="company.partner_id"
-                            t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
+                        <div t-field="company.partner_id"
+                            t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
                     </div>
                     <div class="col-4">
                         <strong>Bill To:</strong>
-                        <t t-set="inveoice_address" t-value="company.partner_id.child_ids.filtered(lambda c: c.type == 'invoice')" />
-                        <div t-esc="inveoice_address"
+                        <t t-set="invoice_address" t-value="company.partner_id.child_ids.filtered(lambda c: c.type == 'invoice')" />
+                        <div t-esc="invoice_address"
                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
                     </div>
                     <div class="col-4">
@@ -27,11 +27,11 @@
                     </div>
                 </div>
             </xpath>
-            <!-- <xpath expr='//span[@t-field="o.name"][1]/..' position="replace"> -->
-            <!--     <h2>Blanket Order No: <span t-field="o.name"/></h2> -->
-            <!-- </xpath> -->
+            <xpath expr='//span[@t-field="o.name"][1]/..' position="replace">
+                <h2>Blanket Order No: <span t-field="o.name"/></h2>
+            </xpath>
             <t t-if="o.purchase_ids" position="after">
-                <h4>Note: <span t-field="o.description"/></h4>
+                <h5>Note: <span t-field="o.description"/></h5>
             </t>
             <t t-if="o.purchase_ids" position="replace">
                 <t t-if="o.purchase_ids">
@@ -41,7 +41,7 @@
                     <t t-set="amount_tax" t-value="sum(o.purchase_ids.mapped('amount_tax'))" />
                     <t t-set="amount_total" t-value="sum(o.purchase_ids.mapped('amount_total'))" />
                     <h3>Order Details</h3>
-                    <table class="table table-condensed">
+                    <table class="table table-sm">
                         <thead>
                             <tr>
                                 <th style="text-align: left ! important; width: 10% ! important;"><strong>PO </strong></th>
@@ -83,8 +83,9 @@
                         </tbody>
                     </table>
                     <div class="row">
-                        <div class="col-xs-4 pull-right">
-                            <table class="table table-condensed">
+		      <div class="col-8"/>
+                        <div class="col-4">
+                            <table class="table table-sm">
                                 <tr class="border-black">
                                     <td><strong>Subtotal</strong></td>
                                     <td class="text-right">

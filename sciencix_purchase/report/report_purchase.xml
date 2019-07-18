@@ -102,22 +102,22 @@
             <!-- <xpath expr="//div[hasclass('page')]" position="attributes"> -->
             <!--     <attribute name="style">margin-top:0 !important; padding-top:0 !important</attribute> -->
             <!-- </xpath> -->
-            <!-- <xpath expr='//span[@t-field="o.name"][1]/..' position="replace"> -->
-            <!--     <h2 t-if="o.state != 'draft'">Purchase Order No: <span t-field="o.name"/></h2> -->
-            <!-- </xpath> -->
-            <xpath expr='//p[@t-field="o.date_order"]/..' position="after">
-                <div t-if="o.payment_term_id" class="col-xs-3">
+            <xpath expr="//h2[3]" position="replace">
+                <h2 t-if="o.state in ['purchase', 'done']">Purchase Order No: <span t-field="o.name"/></h2>
+            </xpath>
+            <xpath expr='//p[@t-field="o.date_order"]/..' position="after">	      
+	      <div t-if="o.payment_term_id" class="col-3 bm-2">
                     <strong>Terms:</strong>
-                    <p t-field="o.payment_term_id"/>
+                    <p t-field="o.payment_term_id" class="m-0"/>
                 </div>
-                <!-- <div class="col-xs-3" t-if="o.x_studio_field_4G2h8"> -->
-                <!--     <strong>Ship Via:</strong> -->
-                <!--     <p t-field="o.x_studio_field_4G2h8"/> -->
-                <!-- </div> -->
-                <!-- <div class="col-xs-3" t-if="o.x_studio_field_pflLq"> -->
-                <!--     <strong>Shipping Acct:</strong> -->
-                <!--     <p t-field="o.x_studio_field_pflLq"/> -->
-                <!-- </div> -->
+                <div class="col-3 bm-2" t-if="o.x_studio_field_4G2h8">
+                    <strong>Ship Via:</strong>
+                    <p t-field="o.x_studio_field_4G2h8" class="m-0"/>
+                </div>
+                <div class="col-3 bm-2" t-if="o.x_studio_field_pflLq">
+                    <strong>Shipping Acct:</strong>
+                    <p t-field="o.x_studio_field_pflLq" class="m-0"/>
+                </div>
             </xpath>
             <p t-field="o.date_order" position="replace">
                 <t t-set="date_order" t-value="o.date_order.strftime('%m-%d-%Y')"/>
