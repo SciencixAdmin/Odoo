@@ -4,7 +4,7 @@
     <record id="view_picking_form_sciencix" model="ir.ui.view">
         <field name="name">stock.picking.form.sciencix</field>
         <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="quality.stock_picking_view_form_inherit_quality"/>
+        <field name="inherit_id" ref="quality_control.stock_picking_view_form_inherit_quality"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='button_quality_alert']" position="before">
                 <field name="is_quality_alert" invisible="1"/>

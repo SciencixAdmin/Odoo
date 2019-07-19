@@ -20,51 +20,44 @@
             <attribute name="class">table table-condensed table-totals</attribute>
         </xpath>
 
-        <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[1]" position="after">
+        <xpath expr="//table/thead/tr//th[1]" position="after">
             <th>Country of Origin</th>
             <th>Schedule B Number</th>
         </xpath>
 
         <!-- Added Sequence numbering and PartID to SO line.-->
-        <xpath expr="//t[@t-foreach='doc.order_lines_layouted()']//table/thead/tr//th[1]" position="before">
+        <xpath expr="//table/thead/tr//th[1]" position="before">
             <th width="10%"> </th>
             <th width="10%">PartID</th>
         </xpath>
 
-        <xpath expr="//*[@t-as='page']/table/tbody/t/t[@t-as='l']/tr/td[1]" position="before">
-            <td class="text-center"><span t-esc="l_index + 1"/>.</td>
-
-            <!-- If there is a product alias, use that for partID elseif Refference, use that, else nothing -->
-            <t t-if="l.product_alias_id">
-                <td><span t-field="l.product_alias_id"/></td>
+        <xpath expr="//table/tbody[hasclass('sale_tbody')]//t[@t-as='line']/tr//td[1]" position="before">
+            <td class="text-center"><span t-esc="line_index + 1"/>.</td>
+            <!-- If there is a product alias, use that for partID elseif Reference, use that, else nothing -->
+            <t t-if="line.product_alias_id">
+                <td><span t-field="line.product_alias_id"/></td>
             </t>
-            <t t-elif="l.product_id.default_code">
-                <td><span t-field="l.product_id.default_code"/></td>
+            <t t-elif="line.product_id.default_code">
+                <td><span t-field="line.product_id.default_code"/></td>
             </t>
             <t t-else=""><td/></t>
         </xpath>
 
-        <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.name']/.." position="after">
-            <td><span t-field="l.country_origin"/></td>
-            <td><span t-field="l.hs_code"/></td>
-        </xpath>
-    </template>
-
-    <!-- Dev for additional Invoice Report Modifications - CIC -->
-    <template id="inherited_report_saleorder_document_sciencix" inherit_id="sale.report_saleorder_document" priority="200">
-
-        <!-- Disable the default heading if is_commercial -->
-        <xpath expr="//div[hasclass('page')]/h2/t[starts-with(@t-if, 'not')]" position="attributes">
-            <attribute name="t-if">not (env.context.get('proforma', False) or is_pro_forma or is_commercial)</attribute>
-        </xpath>
-        <!-- Change heading if is_commercial -->
-        <xpath expr="//div[hasclass('page')]/h2/span[@t-field='doc.name']" position="before">
-            <t t-if="env.context.get('commercial', False) or is_commercial">
-                <span>Commercial Invoice # </span>
-            </t>
+        <xpath expr="//table/tbody[hasclass('sale_tbody')]//t[@t-as='line']/tr//td/span[@t-field='line.name']/.." position="after">
+            <td><span t-field="line.country_origin"/></td>
+            <td><span t-field="line.hs_code"/></td>
         </xpath>
 
-        <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//p[@t-if='doc.partner_id.vat']" position="after">
+        <xpath expr="//t[@t-set='address']//p[@t-if='doc.partner_id.vat']" position="replace">
+            <p t-if="doc.partner_id.vat">
+                <t t-if="doc.partner_id.country_id.code != 'US'"><strong>VAT:</strong> <span t-field="doc.partner_id.vat"/></t>
+                <t t-if="doc.partner_id.country_id.code == 'US'"><strong>TIN:</strong> <span t-field="doc.partner_id.vat"/></t>
+            </p>
+        </xpath>
+        <!-- Remove the Customer's address -->
+        <xpath expr="//t[@t-set='address']//div[@t-field='doc.partner_id']" position="replace"/>
+
+        <xpath expr="//t[@t-set='address']//p[@t-if='doc.partner_id.vat']" position="after">
             <div t-if="doc.carrier_id">
                 <strong>Delivery Method:</strong>
                 <p><span t-field="doc.carrier_id"/></p>
@@ -72,9 +65,10 @@
             </div>
 
             <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
-                <div t-if="doc.requested_date">
-                    <strong>Requested Date:</strong>
-                    <p><span t-field="doc.requested_date" t-field-options="{&quot;format&quot;:&quot;MM/dd/yy&quot;}"/></p>
+                <div t-if="doc.commitment_date">
+<!--                    <strong>Requested Date:</strong>-->
+                    <strong>Commitment Date:</strong>
+                    <p><span t-field="doc.commitment_date" t-options='{"widget": "date"}'/></p>
                     <br/>
                 </div>
             </t>
@@ -90,20 +84,29 @@
                 <br/>
             </div>
         </xpath>
+    </template>
 
-        <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//p[@t-if='doc.partner_id.vat']" position="replace">
-            <p t-if="doc.partner_id.vat">
-                <t t-if="doc.partner_id.country_id.code != 'US'"><strong>VAT:</strong> <span t-field="doc.partner_id.vat"/></t>
-                <t t-if="doc.partner_id.country_id.code == 'US'"><strong>TIN:</strong> <span t-field="doc.partner_id.vat"/></t>
-            </p>
+
+    <!-- Dev for additional Invoice Report Modifications - CIC -->
+    <template id="inherited_report_saleorder_document_sciencix" inherit_id="sale.report_saleorder_document" priority="200">
+
+        <!-- Disable the default heading if is_commercial -->
+        <xpath expr="//div[hasclass('page')]/h2/t[starts-with(@t-if, 'not')]" position="attributes">
+            <attribute name="t-if">not (env.context.get('proforma', False) or is_pro_forma or is_commercial)</attribute>
+        </xpath>
+        <!-- Change heading if is_commercial -->
+        <xpath expr="//div[hasclass('page')]/h2/span[@t-field='doc.name']" position="before">
+            <t t-if="env.context.get('commercial', False) or is_commercial">
+                <span>Commercial Invoice # </span>
+            </t>
         </xpath>
 
         <xpath expr="//p[@t-field='doc.confirmation_date']" position="replace">
-            <p t-field="doc.confirmation_date" t-field-options="{&quot;format&quot;:&quot;MM/dd/yyyy&quot;}"/>
+            <p class="m-0" t-field="doc.confirmation_date" t-options='{"widget": "date"}'/>
         </xpath>
 
         <xpath expr="//p[@t-field='doc.date_order']" position="replace">
-            <p t-field="doc.date_order" t-field-options="{&quot;format&quot;:&quot;MM/dd/yyyy&quot;}"/>
+            <p t-field="doc.date_order" t-options='{"widget": "date"}'/>
         </xpath>
 
         <xpath expr="//p[@t-field='doc.note']" position="before">
@@ -161,7 +164,7 @@
                 <div class="charge-box">
                     <style>
                         .charge-box{
-                            margin:auto;width:60%;padding:10px 8px 0px;border-style:solid;border-width:2px;page-break-inside:avoid;text-align:center;
+                            margin:auto;width:65%;padding:10px 8px 0px;border-style:solid;border-width:2px;page-break-inside:avoid;text-align:center;
                         }
                     </style>
                     <p>Any bank charges arising from payment are borne by the purchaser.</p>
@@ -181,7 +184,7 @@
             </div>
         </xpath>
 
-        <xpath expr="//div[hasclass('row', 'mt32', 'mb32')]//div[last()]" position="after">
+        <xpath expr="//div[@id='informations']//div[last()]" position="after">
             <div t-if="doc.cust_ref" class="col-xs-3">
                 <strong>Customer Reference (PO):</strong>
                 <p t-field="doc.cust_ref"/>
@@ -189,8 +192,8 @@
         </xpath>
 
         <!-- Changing the description here because of pathing issues. This removes the reference in discription. -->
-        <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.name']/.." position="replace">
-            <td><span t-field="l.product_id.name"/></td>
+        <xpath expr="//table/tbody[hasclass('sale_tbody')]//t[@t-as='line']/tr//td/span[@t-field='line.name']/.." position="replace">
+            <td><span t-field="line.product_id.name"/></td>
         </xpath>
 
         <!-- Change Invoicing to Invoice -->
@@ -204,17 +207,14 @@
 
         <!-- Remove the Second Payment Terms near notes -->
         <xpath expr="//p[@t-if='doc.payment_term_id.note']" position="replace"/>
-        <!-- Remove the Customer's address -->
-        <xpath expr="//div[hasclass('col-xs-5', 'col-xs-offset-1')]//div[@t-field='doc.partner_id']" position="replace"/>
         <!-- Remove Sales Person -->
         <xpath expr="//div[@t-if='doc.user_id.name']" position="replace"/>
         <!-- Remove trailing zeros in quantity -->
-        <xpath expr="//table/tbody[hasclass('sale_tbody')]/t[@t-foreach='page']//t[@t-foreach]/tr//td/span[@t-field='l.product_uom_qty']" position="replace">
-            <span t-esc="int(float(l.product_uom_qty))"/>
+        <xpath expr="//table/tbody[hasclass('sale_tbody')]//t[@t-as='line']/tr//td/span[@t-field='line.product_uom_qty']" position="replace">
+            <span t-esc="int(float(line.product_uom_qty))"/>
         </xpath>
-
-
     </template>
+
 
     <template id="report_saleorder_commercial">
         <t t-call="web.html_container">

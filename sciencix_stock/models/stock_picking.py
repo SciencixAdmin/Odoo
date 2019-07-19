@@ -15,7 +15,7 @@ class StockPicking(models.Model):
     _inherit = "stock.picking"
 
     is_quality_alert = fields.Boolean(related="picking_type_id.is_quality_alert", string="Quality Alert")
-    customer_reference = fields.Char(related="sale_id.cust_ref", sting="Customer Reference (2)")
+    customer_reference = fields.Char(related="sale_id.cust_ref", string="Customer Reference (2)")
     customer_account_number = fields.Char(related="sale_id.customer_account_no", string="Customer Account Number", help="This is the customer delivery a/c detail, When creating the SO, this should also be pulled from the contact form if the delivery method is selected.")
     welcome_materials = fields.Boolean(related="sale_id.welcome_materials", string="Welcome Materials")
     do_not_insure = fields.Boolean(related="sale_id.do_not_insure", string="Do Not Insure")

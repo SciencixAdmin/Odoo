@@ -10,47 +10,27 @@
             <xpath expr="//div[@id='total']//table" position="attributes">
                 <attribute name="class">table table-condensed table-totals</attribute>
             </xpath>
-
-            <xpath expr="//table/thead/tr/th[1]" position="before">
-                <t t-set="alias_exist" t-value="False"/>
-                <t t-if="any(o.invoice_line_ids.filtered(lambda line: line.product_alias_id))">
-                    <t t-set="alias_exist" t-value="True"/>
-                    <th>Product</th>
-                </t>
-            </xpath>
-            <xpath expr="//table/tbody/tr/td[1]" position="before">
-                <t t-if="alias_exist">
-                    <td><span t-field="l.product_alias_id"/></td>
-                </t>
-            </xpath>
-
-            <xpath expr="//table/tbody/tr[2]/td[1]" position="before">
-                <t t-if="alias_exist">
-                    <td/>
-                </t>
-            </xpath>
-
         </template>
 
-        <template id="report_sale_report_invoice_layouted_inherit_tgwt" inherit_id="sale.report_invoice_layouted">
-            <xpath expr="//t[@name='lines_layouted']/table/thead/tr/th[1]" position="before">
-                <t t-set="alias_exist" t-value="False"/>
-                <t t-if="any(o.invoice_line_ids.filtered(lambda line: line.product_alias_id))">
-                    <t t-set="alias_exist" t-value="True"/>
-                    <th>Product</th>
-                </t>
+<!--        <template id="report_sale_report_invoice_layouted_inherit_tgwt" inherit_id="sale.report_invoice_layouted">-->
+<!--            <xpath expr="//t[@name='lines_layouted']/table/thead/tr/th[1]" position="before">-->
+<!--                <t t-set="alias_exist" t-value="False"/>-->
+<!--                <t t-if="any(o.invoice_line_ids.filtered(lambda line: line.product_alias_id))">-->
+<!--                    <t t-set="alias_exist" t-value="True"/>-->
+<!--                    <th>Product</th>-->
+<!--                </t>-->
 
-            </xpath>
-            <xpath expr="//t[@name='lines_layouted']/table/tbody/t[1]/t[2]/tr/td[1]" position="before">
-                <t t-if="alias_exist">
-                    <td><span t-field="l.product_alias_id"/></td>
-                </t>
-            </xpath>
-            <!-- Mark tables with class to align their totals to the right - GYE -->
-            <xpath expr="//t[@name='lines_layouted']/table" position="attributes">
-                <attribute name="class">table table-condensed table-totals</attribute>
-            </xpath>
-        </template>
+<!--            </xpath>-->
+<!--            <xpath expr="//t[@name='lines_layouted']/table/tbody/t[1]/t[2]/tr/td[1]" position="before">-->
+<!--                <t t-if="alias_exist">-->
+<!--                    <td><span t-field="l.product_alias_id"/></td>-->
+<!--                </t>-->
+<!--            </xpath>-->
+<!--            &lt;!&ndash; Mark tables with class to align their totals to the right - GYE &ndash;&gt;-->
+<!--            <xpath expr="//t[@name='lines_layouted']/table" position="attributes">-->
+<!--                <attribute name="class">table table-condensed table-totals</attribute>-->
+<!--            </xpath>-->
+<!--        </template>-->
 
         <!-- Dev for additional Invoice Report Modifications - CIC -->
         <template id="inherited_report_invoice_document_sciencix" inherit_id="account.report_invoice_document" priority="200">
@@ -66,19 +46,32 @@
                 <th width="10%">PartID</th>
             </xpath>
 
-            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr/td[1]" position="after">
-                <td><span t-field="l.inv_origin_id"/></td>
-                <td><span t-field="l.inv_hs_code"/></td>
+            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr//td[1]" position="after">
+                <td><span t-field="line.inv_origin_id"/></td>
+                <td><span t-field="line.inv_hs_code"/></td>
             </xpath>
-            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr/td[1]" position="before">
-                <td class="text-center"><span t-esc="l_index + 1"/>.</td>
-                <t t-if="l.product_id.default_code">
-                    <td><span t-field="l.product_id.default_code"/></td>
+            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr//td[1]" position="before">
+                <td class="text-center"><span t-esc="line_index + 1"/>.</td>
+
+                <!-- If there is a product alias, use that for partID elseif Reference, use that, else nothing -->
+                <t t-if="line.product_alias_id">
+                    <td><span t-field="line.product_alias_id"/></td>
+                </t>
+                <t t-elif="line.product_id.default_code">
+                    <td><span t-field="line.product_id.default_code"/></td>
                 </t>
                 <t t-else=""><td/></t>
             </xpath>
 
-            <xpath expr="//div[@t-if='o.partner_id.vat']" position="after">
+            <xpath expr="//t[@t-set='address']//div[@t-if='o.partner_id.vat']" position="replace">
+                <div t-if="o.partner_id.vat" class="mt16">
+                    <br/>
+                    <t t-if="o.partner_id.country_id.code != 'US'"><strong>VAT:</strong> <span t-field="o.partner_id.vat"/></t>
+                    <t t-if="o.partner_id.country_id.code == 'US'"><strong>TIN:</strong> <span t-field="o.partner_id.vat"/></t>
+                </div>
+            </xpath>
+
+            <xpath expr="//t[@t-set='address']//div[@t-if='o.partner_id.vat']" position="after">
                 <div t-if="o.inv_picking_policy in ['direct']">
                     <br/>
                     <strong>Shipping Policy:</strong>
@@ -91,43 +84,35 @@
                 </div>
             </xpath>
 
-            <xpath expr="//div[@t-if='o.partner_id.vat']" position="replace">
-                <div t-if="o.partner_id.vat" class="mt16">
-                    <br/>
-                    <t t-if="o.partner_id.country_id.code != 'US'"><strong>VAT:</strong> <span t-field="o.partner_id.vat"/></t>
-                    <t t-if="o.partner_id.country_id.code == 'US'"><strong>TIN:</strong> <span t-field="o.partner_id.vat"/></t>
-                </div>
-            </xpath>
-
             <xpath expr="//p[@t-if='o.comment']" position="before">
                 <p t-if="o.inv_add_notes">
                     <span t-field="o.inv_add_notes"/>
                 </p>
             </xpath>
 
-            <xpath expr="//div[hasclass('row', 'mt32', 'mb32')]//div[last()]" position="after">
-                <div t-if="o.inv_cust_ref" class="col-xs-3">
+            <xpath expr="//div[@id='informations']//div[last()]" position="after">
+                <div t-if="o.inv_cust_ref" class="col-auto mw-100 mb-2">
                     <strong>Customer Reference (PO):</strong>
                     <p t-field="o.inv_cust_ref"/>
                 </div>
-                <div t-if="o.payment_term_id" class="col-xs-3">
+                <div t-if="o.payment_term_id" class="col-auto mw-100 mb-2">
                     <strong>Payment Terms:</strong>
                     <p t-field="o.payment_term_id.note"/>
                 </div>
             </xpath>
 
             <xpath expr="//div[@t-if='o.name']" position="replace">
-                <div t-if="o.name" class="col-xs-2">
+                <div t-if="o.name" class="col-auto mw-100 mb-2" name="description">
                     <strong>Customer PO:</strong>
                     <p t-field="o.name"/>
                 </div>
             </xpath>
 
             <!-- Remove the Source from after Invoice Date -->
-            <xpath expr="//div[@t-if='o.origin']" position="replace"/>
+            <xpath expr="//div[@name='origin']" position="replace"/>
             <!-- Move it to in between cust PO and invoice date -->
-            <xpath expr="//div[@t-if='o.date_invoice']" position="before">
-                <div class="col-xs-2" t-if="o.origin">
+            <xpath expr="//div[@name='invoice_date']" position="before">
+                <div class="col-auto mw-100 mb-2" t-if="o.origin" name="origin">
                     <strong>Source:</strong>
                     <p t-field="o.origin"/>
                 </div>
@@ -137,40 +122,40 @@
             <xpath expr="//p[@t-if='o.payment_term_id']//span[@t-field='o.payment_term_id.note']" position="replace"/>
 
             <!-- Changing the description here because of pathing issues. This removes the reference in discription. -->
-            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr/td/span[@t-field='l.name']/.." position="replace">
-                <td><span t-field="l.product_id.name"/></td>
+            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr//td//span[@t-field='line.name']/.." position="replace">
+                <td><span t-field="line.product_id.name"/></td>
             </xpath>
 
-            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr/td/span[@t-field='l.quantity']" position="replace">
-                <span t-esc="int(float(l.quantity))"/>
+            <xpath expr="//table[@name='invoice_line_table']//tbody[hasclass('invoice_tbody')]//tr//td//span[@t-field='line.quantity']" position="replace">
+                <span t-esc="int(float(line.quantity))"/>
             </xpath>
 
         </template>
 
         <!-- Second Report Template to Inherit -->
-        <template id="inherited_report_sale_report_invoice_layouted_sciencix" inherit_id="sale.report_invoice_layouted">
-            <xpath expr="//t[@name='lines_layouted']/table/thead/tr/th[1]" position="after">
-                <th>Country of Origin</th>
-                <th>Schedule B Number</th>
-            </xpath>
+<!--        <template id="inherited_report_sale_report_invoice_layouted_sciencix" inherit_id="sale.report_invoice_layouted">-->
+<!--            <xpath expr="//t[@name='lines_layouted']/table/thead/tr/th[1]" position="after">-->
+<!--                <th>Country of Origin</th>-->
+<!--                <th>Schedule B Number</th>-->
+<!--            </xpath>-->
 
-            <!-- Added Sequence numbering and PartID to SO line.-->
-            <xpath expr="//t[@name='lines_layouted']/table/thead/tr/th[1]" position="before">
-                <th> </th>
-                <th>PartID</th>
-            </xpath>
+<!--            &lt;!&ndash; Added Sequence numbering and PartID to SO line.&ndash;&gt;-->
+<!--            <xpath expr="//t[@name='lines_layouted']/table/thead/tr/th[1]" position="before">-->
+<!--                <th> </th>-->
+<!--                <th>PartID</th>-->
+<!--            </xpath>-->
 
-            <xpath expr="//t[@name='lines_layouted']/table/tbody/t[1]/t[2]/tr/td[1]" position="after">
-                <td><span t-field="l.inv_origin_id"/></td>
-                <td><span t-field="l.inv_hs_code"/></td>
-            </xpath>
-            <xpath expr="//t[@name='lines_layouted']/table/tbody/t[1]/t[2]/tr/td[1]" position="before">
-                <td class="text-center"><span t-esc="l_index + 1"/>.</td>
-                <t t-if="l.product_id.default_code">
-                    <td><span t-field="l.product_id.default_code"/></td>
-                </t>
-                <t t-else=""><td/></t>
-            </xpath>
-        </template>
+<!--            <xpath expr="//t[@name='lines_layouted']/table/tbody/t[1]/t[2]/tr/td[1]" position="after">-->
+<!--                <td><span t-field="l.inv_origin_id"/></td>-->
+<!--                <td><span t-field="l.inv_hs_code"/></td>-->
+<!--            </xpath>-->
+<!--            <xpath expr="//t[@name='lines_layouted']/table/tbody/t[1]/t[2]/tr/td[1]" position="before">-->
+<!--                <td class="text-center"><span t-esc="l_index + 1"/>.</td>-->
+<!--                <t t-if="l.product_id.default_code">-->
+<!--                    <td><span t-field="l.product_id.default_code"/></td>-->
+<!--                </t>-->
+<!--                <t t-else=""><td/></t>-->
+<!--            </xpath>-->
+<!--        </template>-->
     </data>
 </odoo>
