@@ -43,6 +43,7 @@ class ProductTemplate(models.Model):
 
 class ProductAlias(models.Model):
     _name = 'product.alias'
+    _description = 'Product Alias'
 
     name = fields.Char('Alias')
     product_id = fields.Many2one('product.product', ondelete='set null', string='Product')

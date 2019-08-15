@@ -7,7 +7,7 @@
     'category': 'Hidden',
     'sequence': 50,
     'summary': """Change Header Color""",
-    'depends': ['web_enterprise'],
+    'depends': ['web_enterprise', 'website_theme_install'],
     'description': """
 * Change Header Color: #32CD32
 

@@ -11,7 +11,7 @@
                     <!-- <field name="schedule_b_number" attrs="{'invisible': [('country_origin', '=', False)]}"/> -->
                 </field>
 
-                <xpath expr="//page[@name='notes']//group[@name='description']" position="before">
+                <xpath expr="//group[@name='description']" position="before">
                     <group name="description_website">
                         <group string="Description for Website">
                             <field name="website_notes" nolabel="1" placeholder="This note is for product page on website."/>
